@@ -236,4 +236,12 @@ public class ReportServiceImpl implements ReportService{
         }
         return centers;
     }
+
+    @Override
+    public List<EventRepository.EventSchedule> getSatteliteSchedule(String raCode, String yearMonth) throws CustomException {
+        if(raCode.isEmpty() || yearMonth.isEmpty()){
+            throw new CustomException("Please select Region and Year month");
+        }
+        return eventService.getSatelliteSchedule(raCode, yearMonth);
+    }
 }

@@ -196,4 +196,19 @@ public interface EventRepository extends JpaRepository<Event,Long> {
             "ORDER BY hc.id ASC , ec.id ASC, e.event_date ASC",nativeQuery = true)
     List<EventSchedule> findCampScheduleByMonth(@Param("raCode") String raCode,
                                                 @Param("yearMonth") String yearMonth);
+
+
+    @Query(value = "SELECT hc.id as hcId, hc.name as hcName, ec.id AS ecId, " +
+            "ec.NAME AS ecName, e.event_date as eventDate, e.event_type as eventType, " +
+            "ep.employee_id as empId, e2.full_name as doctorName FROM HEALTH_CENTERS hc " +
+            "JOIN EVENTS e ON e.CENTER_ID = hc.id " +
+            "JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID = ec.ID " +
+            "JOIN EVENT_PERSONNEL ep ON ep.EVENT_ID = e.ID " +
+            "JOIN EMPLOYEES e2 ON ep.EMPLOYEE_ID = e2.ID " +
+            "WHERE e.EVENT_TYPE='satellite' " +
+            " AND (:raCode IS NULL OR hc.THIRD_LEVEL = :raCode) " +
+            " AND (:yearMonth IS NULL OR TO_CHAR(e.event_date,'YYYY-MM') = :yearMonth) " +
+            " ORDER BY hc.id ASC, ec.id ASC, e.event_date ASC",nativeQuery = true)
+    List<EventSchedule> findSatelliteScheduleByMonth(@Param("raCode") String raCode,
+                                                     @Param("yearMonth") String yearMonth);
 }

@@ -26,4 +26,6 @@ public interface ReportService {
      MonthWiseReceived getMonthWiseTotalAmountReceived(Long centerId);
 
     List<HCenter> getEventSchedule(String raCode, String yearMonth) throws CustomException;
+
+    List<EventRepository.EventSchedule> getSatteliteSchedule(String orElse, String orElse1) throws CustomException;
 }

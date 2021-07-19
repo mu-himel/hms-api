@@ -88,8 +88,6 @@ public class EventServiceImpl implements EventService{
         return eventRepository.findByCenterAndEventDate(center, eventDate);
     }
 
-
-
     @Override
     public List<EventRepository.EventLite> hasEventForDoctorAt(Employee doctor, LocalDateTime eventDate) {
         return eventRepository.hasSchedule(doctor, eventDate);
@@ -103,5 +101,10 @@ public class EventServiceImpl implements EventService{
     @Override
     public List<EventRepository.EventSchedule> getEventSchedule(String raCode, String yearMonth) {
         return eventRepository.findCampScheduleByMonth(raCode,yearMonth);
+    }
+
+    @Override
+    public List<EventRepository.EventSchedule> getSatelliteSchedule(String raCode, String yearMonth) {
+        return eventRepository.findSatelliteScheduleByMonth(raCode,yearMonth);
     }
 }

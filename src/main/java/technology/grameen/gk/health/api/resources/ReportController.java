@@ -14,6 +14,7 @@ import technology.grameen.gk.health.api.responses.IResponse;
 import technology.grameen.gk.health.api.responses.StatsResponse;
 import technology.grameen.gk.health.api.services.report.ReportService;
 
+import javax.swing.text.html.Option;
 import java.math.BigDecimal;
 import java.util.Optional;
 
@@ -87,6 +88,16 @@ public class ReportController {
         return new ResponseEntity<>(new EntityCollectionResponse<>(
                 HttpStatus.OK.value(),
                 reportService.getEventSchedule(raThirdLevelCode.orElse(null),yearMonth.orElse(null))
+        ), HttpStatus.OK);
+    }
+
+    @GetMapping("/satellite-schedule")
+    public ResponseEntity<IResponse> getSatelliteSchedule(@RequestParam Optional<String> raThirdLevelCode,
+                                                          @RequestParam Optional<String> yearMonth) throws CustomException {
+        return new ResponseEntity<>(new EntityCollectionResponse<>(
+                HttpStatus.OK.value(),
+                reportService.getSatteliteSchedule(raThirdLevelCode.orElse(""),
+                        yearMonth.orElse(""))
         ), HttpStatus.OK);
     }
 }
