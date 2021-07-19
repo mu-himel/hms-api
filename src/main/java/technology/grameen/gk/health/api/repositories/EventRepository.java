@@ -69,7 +69,7 @@ public interface EventRepository extends JpaRepository<Event,Long> {
     @Query(value = "SELECT e.id, hc.NAME as center , e.event_date as eventDate, ec.NAME as eventCategory , " +
             "e.EVENT_TYPE as eventType, e2.FULL_NAME as doctor, e.status FROM Events e\n" +
             "JOIN EVENT_PERSONNEL ep ON ep.EVENT_ID = e.ID \n" +
-            "JOIN EMPLOYEES e2 ON e2.ID  = ep.EMPLOYEE_ID \n" +
+            "LEFT JOIN EMPLOYEES e2 ON e2.ID  = ep.EMPLOYEE_ID \n" +
             "JOIN HEALTH_CENTERS hc ON hc.ID = e.CENTER_ID \n" +
             "JOIN EVENT_CATEGORIES ec ON ec.ID  = e.EVENT_CATEGORY_ID \n" +
             "JOIN LG_VILLAGES lv ON lv.LG_VILLAGE_ID  = e.VILLAGE_LG_VILLAGE_ID " +
@@ -101,7 +101,7 @@ public interface EventRepository extends JpaRepository<Event,Long> {
     @Query(value = "SELECT e.id, hc.NAME as center , e.event_date as eventDate, ec.NAME as eventCategory , " +
             "e.EVENT_TYPE as eventType, e2.FULL_NAME as doctor, e.status FROM Events e\n" +
             "JOIN EVENT_PERSONNEL ep ON ep.EVENT_ID = e.ID \n" +
-            "JOIN EMPLOYEES e2 ON e2.ID  = ep.EMPLOYEE_ID \n" +
+            "LEFT JOIN EMPLOYEES e2 ON e2.ID  = ep.EMPLOYEE_ID \n" +
             "JOIN HEALTH_CENTERS hc ON hc.ID = e.CENTER_ID \n" +
             "JOIN EVENT_CATEGORIES ec ON ec.ID  = e.EVENT_CATEGORY_ID \n" +
             "JOIN LG_VILLAGES lv ON lv.LG_VILLAGE_ID  = e.VILLAGE_LG_VILLAGE_ID",
@@ -111,7 +111,7 @@ public interface EventRepository extends JpaRepository<Event,Long> {
     @Query(value = "SELECT e.id, hc.NAME as center , e.event_date as eventDate, ec.NAME as eventCategory , " +
             "e.EVENT_TYPE as eventType, e2.FULL_NAME as doctor, e.status FROM Events e\n" +
             "JOIN EVENT_PERSONNEL ep ON ep.EVENT_ID = e.ID " +
-            "JOIN EMPLOYEES e2 ON e2.ID  = ep.EMPLOYEE_ID " +
+            "LEFT JOIN EMPLOYEES e2 ON e2.ID  = ep.EMPLOYEE_ID " +
             "JOIN HEALTH_CENTERS hc ON hc.ID = e.CENTER_ID " +
             "JOIN EVENT_CATEGORIES ec ON ec.ID  = e.EVENT_CATEGORY_ID " +
             "JOIN LG_VILLAGES lv ON lv.LG_VILLAGE_ID  = e.VILLAGE_LG_VILLAGE_ID " +
@@ -164,7 +164,7 @@ public interface EventRepository extends JpaRepository<Event,Long> {
     }
     @Query(value = "SELECT e FROM Event e JOIN FETCH e.eventCategory ec " +
             " JOIN FETCH e.eventPersonnels ep " +
-            " JOIN FETCH ep.employee emp " +
+            " LEFT JOIN FETCH ep.employee emp " +
             " JOIN FETCH e.center c " +
             " JOIN FETCH e.village v " +
             "WHERE e.id = :id")
