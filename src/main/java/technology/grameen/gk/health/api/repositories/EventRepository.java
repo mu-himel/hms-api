@@ -30,7 +30,7 @@ public interface EventRepository extends JpaRepository<Event,Long> {
     @Query(value = "SELECT e.id, hc.NAME as center , e.event_date as eventDate, ec.NAME as eventCategory , " +
             "e.EVENT_TYPE as eventType, e2.FULL_NAME as doctor, e.status FROM Events e\n" +
             "JOIN EVENT_PERSONNEL ep ON ep.EVENT_ID = e.ID \n" +
-            "JOIN EMPLOYEES e2 ON e2.ID  = ep.EMPLOYEE_ID \n" +
+            "LEFT JOIN EMPLOYEES e2 ON e2.ID  = ep.EMPLOYEE_ID \n" +
             "JOIN HEALTH_CENTERS hc ON hc.ID = e.CENTER_ID \n" +
             "JOIN EVENT_CATEGORIES ec ON ec.ID  = e.EVENT_CATEGORY_ID \n" +
             "JOIN LG_VILLAGES lv ON lv.LG_VILLAGE_ID  = e.VILLAGE_LG_VILLAGE_ID " +
@@ -51,7 +51,7 @@ public interface EventRepository extends JpaRepository<Event,Long> {
     @Query(value = "SELECT e.id, hc.NAME as center , e.event_date as eventDate, ec.NAME as eventCategory , " +
             "e.EVENT_TYPE as eventType, e2.FULL_NAME as doctor, e.status FROM Events e\n" +
             "JOIN EVENT_PERSONNEL ep ON ep.EVENT_ID = e.ID \n" +
-            "JOIN EMPLOYEES e2 ON e2.ID  = ep.EMPLOYEE_ID \n" +
+            "LEFT JOIN EMPLOYEES e2 ON e2.ID  = ep.EMPLOYEE_ID \n" +
             "JOIN HEALTH_CENTERS hc ON hc.ID = e.CENTER_ID \n" +
             "JOIN EVENT_CATEGORIES ec ON ec.ID  = e.EVENT_CATEGORY_ID \n" +
             "JOIN LG_VILLAGES lv ON lv.LG_VILLAGE_ID  = e.VILLAGE_LG_VILLAGE_ID " +
@@ -129,6 +129,7 @@ public interface EventRepository extends JpaRepository<Event,Long> {
         String getNote();
         Village getVillage();
         String getEventType();
+        String getStatus();
 
         @JsonFormat(pattern = "yyyy-MM-dd")
         LocalDateTime getEventDate();
@@ -171,6 +172,7 @@ public interface EventRepository extends JpaRepository<Event,Long> {
 
 
     interface EventSchedule{
+        Long getEventId();
         Long getHcId();
         String getHcName();
         Integer getEcId();
@@ -183,7 +185,7 @@ public interface EventRepository extends JpaRepository<Event,Long> {
         String getDoctorName();
 
     }
-    @Query(value = "SELECT hc.id AS hcId,hc.name as hcName,ec.id AS ecId, ec.NAME as ecName,e.EVENT_DATE as eventDate" +
+    @Query(value = "SELECT e.id as eventId, hc.id AS hcId,hc.name as hcName,ec.id AS ecId, ec.NAME as ecName,e.EVENT_DATE as eventDate" +
             ",e.EVENT_TYPE as eventType, ep.EMPLOYEE_ID AS empId, e2.FULL_NAME as doctorName " +
             "FROM HEALTH_CENTERS hc " +
             "JOIN EVENTS e ON e.CENTER_ID = hc.id " +
@@ -198,7 +200,7 @@ public interface EventRepository extends JpaRepository<Event,Long> {
                                                 @Param("yearMonth") String yearMonth);
 
 
-    @Query(value = "SELECT hc.id as hcId, hc.name as hcName, ec.id AS ecId, " +
+    @Query(value = "SELECT e.id as eventId, hc.id as hcId, hc.name as hcName, ec.id AS ecId, " +
             "ec.NAME AS ecName, e.event_date as eventDate, e.event_type as eventType, " +
             "ep.employee_id as empId, e2.full_name as doctorName FROM HEALTH_CENTERS hc " +
             "JOIN EVENTS e ON e.CENTER_ID = hc.id " +
@@ -206,9 +208,9 @@ public interface EventRepository extends JpaRepository<Event,Long> {
             "JOIN EVENT_PERSONNEL ep ON ep.EVENT_ID = e.ID " +
             "LEFT JOIN EMPLOYEES e2 ON ep.EMPLOYEE_ID = e2.ID " +
             "WHERE e.EVENT_TYPE='satellite' " +
-            " AND (:raCode IS NULL OR hc.THIRD_LEVEL = :raCode) " +
+            " AND (:raCode IS NULL OR hc.center_code = :raCode) " +
             " AND (:yearMonth IS NULL OR TO_CHAR(e.event_date,'YYYY-MM') = :yearMonth) " +
-            " ORDER BY hc.id ASC, ec.id ASC, e.event_date ASC",nativeQuery = true)
+            " ORDER BY e.event_date ASC",nativeQuery = true)
     List<EventSchedule> findSatelliteScheduleByMonth(@Param("raCode") String raCode,
                                                      @Param("yearMonth") String yearMonth);
 }

@@ -19,6 +19,7 @@ public class EventCategory {
     private String name;
     private String description;
     private Boolean status;
+    private Boolean isSatellite;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -62,6 +63,13 @@ public class EventCategory {
         this.status = status;
     }
 
+    public Boolean getSatellite() {
+        return isSatellite;
+    }
+
+    public void setSatellite(Boolean satellite) {
+        isSatellite = satellite;
+    }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;

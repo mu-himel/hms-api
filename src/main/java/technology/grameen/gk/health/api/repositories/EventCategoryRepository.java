@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import technology.grameen.gk.health.api.entity.EventCategory;
 
@@ -19,9 +21,11 @@ public interface EventCategoryRepository extends JpaRepository<EventCategory,Int
         String getName();
         String getDescription();
         Boolean getStatus();
+        Boolean getSatellite();
 
         @JsonFormat(pattern = "yyyy-MM-dd")
         LocalDateTime getCreatedAt();
     }
-    Optional<EventCategoryDetail> findEventCategoryById(Integer id);
+    @Query(value = "SELECT ec FROM EventCategory ec WHERE ec.id=:id")
+    Optional<EventCategoryDetail> findEventCategoryById(@Param("id") Integer id);
 }
