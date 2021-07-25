@@ -107,4 +107,9 @@ public class EventServiceImpl implements EventService{
     public List<EventRepository.EventSchedule> getSatelliteSchedule(String raCode, String yearMonth) {
         return eventRepository.findSatelliteScheduleByMonth(raCode,yearMonth);
     }
+
+    @Override
+    public Optional<EventRepository.LiveEvent> hasCampEventOnCenterAt(HealthCenter center, LocalDateTime eventDate) {
+        return eventRepository.findByEventTypeAndCenterAndEventDate(EventService.CAMP,center,eventDate);
+    }
 }

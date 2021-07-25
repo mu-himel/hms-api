@@ -1,5 +1,6 @@
 package technology.grameen.gk.health.api.resources;
 
+import org.keycloak.authorization.client.util.Http;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -7,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import technology.grameen.gk.health.api.entity.Event;
+import technology.grameen.gk.health.api.entity.HealthCenter;
 import technology.grameen.gk.health.api.exceptions.CustomException;
 import technology.grameen.gk.health.api.requests.EventRequest;
 import technology.grameen.gk.health.api.responses.EntityResponse;
@@ -14,6 +16,7 @@ import technology.grameen.gk.health.api.responses.IResponse;
 import technology.grameen.gk.health.api.services.event.EventService;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 @RestController
@@ -80,5 +83,21 @@ public class EventController {
                 HttpStatus.OK.value(),
                 eventService.getEventById(id)
         ), HttpStatus.OK);
+    }
+
+    @GetMapping("/{centerId}/{eventDate}")
+    public ResponseEntity<IResponse> hasCampEvent(@PathVariable("centerId") Long centerId,
+                                             @PathVariable("eventDate") String eventDate) throws CustomException{
+        try {
+            HealthCenter center = new HealthCenter();
+            center.setId(centerId);
+            LocalDateTime ldt = LocalDateTime.parse(eventDate);
+            return new ResponseEntity<>(new EntityResponse<>(
+                    HttpStatus.OK.value(),
+                    eventService.hasCampEventOnCenterAt(center, ldt)
+            ), HttpStatus.OK);
+        }catch(DateTimeParseException ex){
+            throw new CustomException(ex.getMessage());
+        }
     }
 }

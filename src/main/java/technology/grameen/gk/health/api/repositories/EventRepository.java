@@ -83,7 +83,14 @@ public interface EventRepository extends JpaRepository<Event,Long> {
         LocalDateTime getEventDate();
     }
 
-
+    interface LiveEvent{
+        Long getId();
+        String getEventType();
+        EventDetail.EventCategory getEventCategory();
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        LocalDateTime getEventDate();
+    }
+    Optional<LiveEvent> findByEventTypeAndCenterAndEventDate(String camp, HealthCenter center, LocalDateTime eventDate);
     List<EventLite> findByCenterAndEventDate(HealthCenter center, LocalDateTime eventDate);
 
     interface EventItem{
