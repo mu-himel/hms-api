@@ -177,6 +177,7 @@ public interface EventRepository extends JpaRepository<Event,Long> {
         String getHcName();
         Integer getEcId();
         String getEcName();
+        String getLocationAddress();
 
         @JsonFormat(pattern = "yyyy-MM-dd")
         LocalDateTime getEventDate();
@@ -185,8 +186,9 @@ public interface EventRepository extends JpaRepository<Event,Long> {
         String getDoctorName();
 
     }
-    @Query(value = "SELECT e.id as eventId, hc.id AS hcId,hc.name as hcName,ec.id AS ecId, ec.NAME as ecName,e.EVENT_DATE as eventDate" +
-            ",e.EVENT_TYPE as eventType, ep.EMPLOYEE_ID AS empId, e2.FULL_NAME as doctorName " +
+    @Query(value = "SELECT e.id as eventId, hc.id AS hcId,hc.name as hcName,ec.id AS ecId, ec.NAME as ecName," +
+            "e.EVENT_DATE as eventDate ,e.EVENT_TYPE as eventType, ep.EMPLOYEE_ID AS empId, " +
+            "e2.FULL_NAME as doctorName, e.location_address as locationAddress " +
             "FROM HEALTH_CENTERS hc " +
             "JOIN EVENTS e ON e.CENTER_ID = hc.id " +
             "JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID = ec.ID " +
@@ -202,7 +204,8 @@ public interface EventRepository extends JpaRepository<Event,Long> {
 
     @Query(value = "SELECT e.id as eventId, hc.id as hcId, hc.name as hcName, ec.id AS ecId, " +
             "ec.NAME AS ecName, e.event_date as eventDate, e.event_type as eventType, " +
-            "ep.employee_id as empId, e2.full_name as doctorName FROM HEALTH_CENTERS hc " +
+            "ep.employee_id as empId, e2.full_name as doctorName,e.location_address as locationAddress " +
+            "FROM HEALTH_CENTERS hc " +
             "JOIN EVENTS e ON e.CENTER_ID = hc.id " +
             "JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID = ec.ID " +
             "JOIN EVENT_PERSONNEL ep ON ep.EVENT_ID = e.ID " +
