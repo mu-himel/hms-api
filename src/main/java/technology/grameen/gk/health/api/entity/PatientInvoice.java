@@ -187,4 +187,20 @@ public class PatientInvoice {
     public void setPosted(Boolean posted) {
         isPosted = posted;
     }
+
+    public void setInvoiceType(String invoiceType) {
+        this.invoiceType = invoiceType;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
+    public String getInvoiceType() {
+        return invoiceType;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
 }
