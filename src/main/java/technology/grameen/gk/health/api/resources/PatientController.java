@@ -1,5 +1,7 @@
 package technology.grameen.gk.health.api.resources;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -8,8 +10,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import technology.grameen.gk.health.api.entity.CardMember;
 import technology.grameen.gk.health.api.entity.Patient;
+import technology.grameen.gk.health.api.entity.PatientOperation;
+import technology.grameen.gk.health.api.exceptions.CustomException;
 import technology.grameen.gk.health.api.projection.PatientSearchResult;
 import technology.grameen.gk.health.api.projection.PatientNumberAutoComplete;
 import technology.grameen.gk.health.api.requests.PatientRequest;
@@ -17,6 +22,7 @@ import technology.grameen.gk.health.api.requests.PatientSearch;
 import technology.grameen.gk.health.api.responses.*;
 import technology.grameen.gk.health.api.services.PatientManageService;
 import technology.grameen.gk.health.api.services.card_registration.CardMemberService;
+import technology.grameen.gk.health.api.services.operation.PatientOperationService;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,12 +31,18 @@ import java.util.Optional;
 @RequestMapping(value = "/api/v1/patient")
 public class PatientController {
 
+    private static final Logger logger = LoggerFactory.getLogger(PatientController.class);
+
     private PatientManageService patientManageService;
+    private PatientOperationService patientOperationService;
     private CardMemberService cardMemberService;
 
-    PatientController(PatientManageService patientManageService, CardMemberService cardMemberService){
+    PatientController(PatientManageService patientManageService,
+                      CardMemberService cardMemberService,
+                      PatientOperationService patientOperationService){
        this.patientManageService = patientManageService;
        this.cardMemberService = cardMemberService;
+       this.patientOperationService = patientOperationService;
     }
 
 
@@ -40,18 +52,6 @@ public class PatientController {
 
         return new ResponseEntity<>(patientManageService.getPatientById(id), HttpStatus.OK);
     }
-
-//    @RequestMapping(value = "")
-//    public ResponseEntity<Page<PatientListItem>> list(@Param("page") Integer page,@Param("size") Integer size){
-//        if(page==null){
-//            page=0;
-//        }
-//        if(size==null){
-//            size=20;
-//        }
-//        Pageable pageable = PageRequest.of(page,size);
-//        return new ResponseEntity<>(patientManageService.getPatients(pageable), HttpStatus.OK);
-//    }
 
     @PostMapping(value = "/add")
     public ResponseEntity<IResponse>addPatient(@RequestBody PatientRequest patient){
@@ -124,5 +124,17 @@ public class PatientController {
                 patientManageService.getPatientsBySearch(centerId.orElse(null),
                                 field.orElse(null), value.orElse(null), pageable)),
                                     HttpStatus.OK);
+    }
+
+    @PostMapping("/operation")
+    public ResponseEntity<IResponse> patientOperation(@RequestBody PatientOperation patientOperation) throws CustomException{
+        try {
+            PatientOperation po = patientOperationService.saveOperation(patientOperation);
+            return new ResponseEntity<>(new EntityResponse<>(
+                    HttpStatus.OK.value(),po), HttpStatus.OK);
+        }catch (Exception ex){
+            logger.debug(ex.getMessage());
+            throw new CustomException("Sorry! try later");
+        }
     }
 }
