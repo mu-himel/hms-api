@@ -1,5 +1,7 @@
 package technology.grameen.gk.health.api.services.operation;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import technology.grameen.gk.health.api.entity.PatientOperation;
 import technology.grameen.gk.health.api.repositories.PatientOperationRepository;
@@ -16,5 +18,10 @@ public class PatientOperationServiceImpl implements PatientOperationService{
     @Override
     public PatientOperation saveOperation(PatientOperation patientOperation) {
         return patientOperationRepository.save(patientOperation);
+    }
+
+    @Override
+    public Page<PatientOperationRepository.PatientOperation> getOperations(Pageable pageable) {
+        return patientOperationRepository.findAllOperations(pageable);
     }
 }

@@ -32,6 +32,7 @@ import java.util.Optional;
 public class PatientController {
 
     private static final Logger logger = LoggerFactory.getLogger(PatientController.class);
+    private static final Integer PAGE_SIZE = 10;
 
     private PatientManageService patientManageService;
     private PatientOperationService patientOperationService;
@@ -117,8 +118,8 @@ public class PatientController {
                     : Sort.by(_sortBy).ascending();
         }
 
-        Pageable pageable = (sort!=null)? PageRequest.of(page.orElse(0),size.orElse(5),sort) :
-                 PageRequest.of(page.orElse(0),size.orElse(5));
+        Pageable pageable = (sort!=null)? PageRequest.of(page.orElse(0),size.orElse(PAGE_SIZE),sort) :
+                 PageRequest.of(page.orElse(0),size.orElse(PAGE_SIZE));
 
         return new ResponseEntity<>(new EntityResponse(HttpStatus.OK.value(),
                 patientManageService.getPatientsBySearch(centerId.orElse(null),
@@ -136,5 +137,28 @@ public class PatientController {
             logger.debug(ex.getMessage());
             throw new CustomException("Sorry! try later");
         }
+    }
+
+    @GetMapping("/operations")
+    public ResponseEntity<IResponse> getPatientOperations(@RequestParam Optional<Integer> page,
+                                                          @RequestParam Optional<Integer> size,
+                                                          @RequestParam Optional<String> sortBy,
+                                                          @RequestParam Optional<Boolean> sortDesc){
+        String _sortBy = sortBy.orElse(null);
+
+        Sort sort = null;
+
+        if(!_sortBy.isEmpty()) {
+            sort =   (sortDesc.orElse(false)) ? Sort.by(_sortBy).descending()
+                    : Sort.by(_sortBy).ascending();
+        }
+
+        Pageable pageable = (sort!=null)? PageRequest.of(page.orElse(0),size.orElse(PAGE_SIZE),sort) :
+                PageRequest.of(page.orElse(0),size.orElse(PAGE_SIZE));
+
+        return new ResponseEntity<>(new EntityResponse<>(
+                HttpStatus.OK.value(),
+                patientOperationService.getOperations(pageable)
+        ), HttpStatus.OK);
     }
 }
