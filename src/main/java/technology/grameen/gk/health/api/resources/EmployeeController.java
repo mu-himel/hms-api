@@ -7,19 +7,16 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.*;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import technology.grameen.gk.health.api.entity.Employee;
 import technology.grameen.gk.health.api.entity.HealthCenter;
-import technology.grameen.gk.health.api.projection.EmployeeRestTemplateObject;
+import technology.grameen.gk.health.api.entity.JobHistory;
 import technology.grameen.gk.health.api.requests.EmployeeSyncRequestForAll;
 import technology.grameen.gk.health.api.responses.*;
-import technology.grameen.gk.health.api.services.EmployeeService;
+import technology.grameen.gk.health.api.services.employee.EmployeeService;
 import technology.grameen.gk.health.api.services.HealthCenterService;
 
-import javax.swing.text.html.Option;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -101,6 +98,14 @@ public class EmployeeController {
         return new ResponseEntity<>(employeeService.getEmployeeByApiEmployeeId(apiEmployeeId),HttpStatus.OK);
     }
 
+    @GetMapping("/by-id/{id}")
+    public ResponseEntity<IResponse> getEmployeeById(@PathVariable("id") Long employeeId){
+        return new ResponseEntity<>(new EntityResponse<>(
+                HttpStatus.OK.value(),
+                employeeService.getEmployeeById(employeeId)
+        ),HttpStatus.OK);
+    }
+
     @GetMapping("/employees")
     public ResponseEntity<IResponse> getEmployees(@RequestHeader("Authorization") String authorization){
 
@@ -165,5 +170,13 @@ public class EmployeeController {
                 HttpStatus.OK.value(),
                 employeeService.getEmployeeByDesignation(designation)
         ), HttpStatus.OK);
+    }
+
+    @PostMapping("/assign-job-responsibility")
+    public ResponseEntity<IResponse> assignResponsibility(@RequestBody JobHistory jobHistory){
+        return new ResponseEntity<>(new EntityResponse<>(
+                HttpStatus.OK.value(),
+                employeeService.getJobHistoryService().addJobHistory(jobHistory)
+        ),HttpStatus.OK);
     }
 }

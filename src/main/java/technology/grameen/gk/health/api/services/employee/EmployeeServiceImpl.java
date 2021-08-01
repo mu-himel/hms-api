@@ -1,4 +1,4 @@
-package technology.grameen.gk.health.api.services;
+package technology.grameen.gk.health.api.services.employee;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +9,7 @@ import technology.grameen.gk.health.api.entity.Employee;
 import technology.grameen.gk.health.api.entity.HealthCenter;
 import technology.grameen.gk.health.api.projection.EmployeeItem;
 import technology.grameen.gk.health.api.repositories.EmployeeRepository;
+import technology.grameen.gk.health.api.responses.EmployeeDetail;
 import technology.grameen.gk.health.api.responses.EntityResponse;
 import technology.grameen.gk.health.api.responses.IResponse;
 import technology.grameen.gk.health.api.responses.SimpleResponse;
@@ -20,9 +21,11 @@ import java.util.Optional;
 public class EmployeeServiceImpl implements EmployeeService {
 
     private EmployeeRepository employeeRepository;
+    private JobHistoryService jobHistoryService;
 
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository){
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository, JobHistoryService jobHistoryService) {
         this.employeeRepository = employeeRepository;
+        this.jobHistoryService = jobHistoryService;
     }
 
     @Override
@@ -34,6 +37,10 @@ public class EmployeeServiceImpl implements EmployeeService {
             employeeRepository.save(employee);
         }
         return employee;
+    }
+
+    public JobHistoryService getJobHistoryService() {
+        return jobHistoryService;
     }
 
     @Override
@@ -79,5 +86,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<EmployeeItem> getEmployeeByDesignation(String designation) {
         return employeeRepository.findAllByDesignationContainingIgnoreCase(designation);
+    }
+
+    @Override
+    public Optional<EmployeeDetail> getEmployeeById(Long employeeId) {
+        return employeeRepository.findByEmployeeId(employeeId);
     }
 }

@@ -47,6 +47,10 @@ public class Employee {
     @OneToMany(mappedBy = "employee")
     private Set<PatientOperation> patientOperations;
 
+    @OneToMany(mappedBy = "employee")
+    @OrderBy("latest DESC")
+    private Set<JobHistory> jobHistories;
+
     @OneToMany(mappedBy = "doctor",fetch = FetchType.LAZY)
     @JsonManagedReference
     @JsonIgnore
