@@ -110,6 +110,6 @@ public class EventServiceImpl implements EventService{
 
     @Override
     public Optional<EventRepository.LiveEvent> hasCampEventOnCenterAt(HealthCenter center, LocalDateTime eventDate) {
-        return eventRepository.findByEventTypeAndCenterAndEventDateAndStatus(EventService.CAMP,center,eventDate,EventService.APPROVED);
+        return eventRepository.findByCenterAndEventDateAndStatus(center,eventDate,EventService.APPROVED);
     }
 }
