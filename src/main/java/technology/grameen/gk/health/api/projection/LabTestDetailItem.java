@@ -1,5 +1,7 @@
 package technology.grameen.gk.health.api.projection;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -31,6 +33,8 @@ public interface LabTestDetailItem {
     interface PatientInvoice{
         Long getId();
         String getInvoiceNumber();
+
+        @JsonFormat(pattern = "yyyy-MM-dd")
         LocalDateTime getCreatedAt();
     }
 
@@ -80,7 +84,11 @@ public interface LabTestDetailItem {
      LabTestGroup getLabTestGroup();
      Service getService();
      Set<LabTestReportDetail> getDetails();
+
+     @JsonFormat(pattern = "yyyy-MM-dd")
      LocalDateTime getCreatedAt();
+
+     @JsonFormat(pattern = "yyyy-MM-dd")
      LocalDate getDeliveryDate();
      String getStatus();
 
