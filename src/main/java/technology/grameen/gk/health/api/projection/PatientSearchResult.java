@@ -99,6 +99,8 @@ public interface PatientSearchResult {
                 String getFullName();
                 CardMemberCardRegistration getCardRegistration();
                 Patient getPatient();
+                String getGender();
+                String getAge();
 
         }
 
