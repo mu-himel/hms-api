@@ -35,6 +35,7 @@ public interface PatientManageService {
 
    List<PatientNumberAutoComplete> getPatientIds(String pid);
    List<PatientNumberAutoComplete> getPatientIds(String type,String pid);
+   List<PatientNumberAutoComplete> getPatientIds(String type,String pid,Long centerId);
 
 
    Page<PatientListItem> getPatientsBySearch(Long centerId, String field, String value, Pageable pageable);

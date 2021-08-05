@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import technology.grameen.gk.health.api.entity.HealthCenter;
 import technology.grameen.gk.health.api.entity.Patient;
 import technology.grameen.gk.health.api.projection.PatientNumberAutoComplete;
 import technology.grameen.gk.health.api.projection.PatientSearchResult;
@@ -130,6 +131,7 @@ public interface PatientRepository extends JpaRepository<Patient,Long> {
     Optional<PatientSearchResult> findPatientById(@Param("number") Long id);
 
     List<PatientNumberAutoComplete> findByPidContainingIgnoreCase(String number);
+    List<PatientNumberAutoComplete> findByPidContainingIgnoreCaseAndCenter(String number, HealthCenter center);
 
 
     @Query(value = "SELECT count(*) FROM patients WHERE " +
@@ -202,4 +204,8 @@ public interface PatientRepository extends JpaRepository<Patient,Long> {
     List<PatientNumberAutoComplete> findByMobileNumberContainingIgnoreCase(String mobileNumber);
 
     List<PatientNumberAutoComplete> findByFullNameContainingIgnoreCase(String pid);
+
+    List<PatientNumberAutoComplete> findByMobileNumberContainingIgnoreCaseAndCenter(String pid, HealthCenter center);
+
+    List<PatientNumberAutoComplete> findByFullNameContainingIgnoreCaseAndCenter(String pid, HealthCenter center);
 }

@@ -199,6 +199,20 @@ public class PatientManageServiceImpl implements PatientManageService {
     }
 
     @Override
+    public List<PatientNumberAutoComplete> getPatientIds(String type, String pid, Long centerId) {
+        HealthCenter center = new HealthCenter();
+        center.setId(centerId);
+        if(type.equalsIgnoreCase("pid")){
+            return patientRepository.findByPidContainingIgnoreCaseAndCenter(pid,center);
+        }else if(type.equalsIgnoreCase("mobile")){
+            return patientRepository.findByMobileNumberContainingIgnoreCaseAndCenter(pid,center);
+        }else if(type.equalsIgnoreCase("name")){
+            return patientRepository.findByFullNameContainingIgnoreCaseAndCenter(pid,center);
+        }
+        return null;
+    }
+
+    @Override
     public Page<PatientListItem> getPatientsBySearch(Long centerId, String field, String value, Pageable pageable) {
 
         if(centerId != null && field != null && value != null){
