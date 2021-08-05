@@ -33,7 +33,7 @@ public interface EventRepository extends JpaRepository<Event,Long> {
             "LEFT JOIN EMPLOYEES e2 ON e2.ID  = ep.EMPLOYEE_ID \n" +
             "JOIN HEALTH_CENTERS hc ON hc.ID = e.CENTER_ID \n" +
             "JOIN EVENT_CATEGORIES ec ON ec.ID  = e.EVENT_CATEGORY_ID \n" +
-            "JOIN LG_VILLAGES lv ON lv.LG_VILLAGE_ID  = e.VILLAGE_LG_VILLAGE_ID " +
+            "LEFT JOIN LG_VILLAGES lv ON lv.LG_VILLAGE_ID  = e.VILLAGE_LG_VILLAGE_ID " +
             "WHERE (:centerId IS NULL OR e.center_id = :centerId) " +
             "AND (:eventCategoryId IS NULL OR e.event_category_id = :eventCategoryId) "+
             "AND (:eventType IS NULL OR e.event_type = :eventType) "+
@@ -54,7 +54,7 @@ public interface EventRepository extends JpaRepository<Event,Long> {
             "LEFT JOIN EMPLOYEES e2 ON e2.ID  = ep.EMPLOYEE_ID \n" +
             "JOIN HEALTH_CENTERS hc ON hc.ID = e.CENTER_ID \n" +
             "JOIN EVENT_CATEGORIES ec ON ec.ID  = e.EVENT_CATEGORY_ID \n" +
-            "JOIN LG_VILLAGES lv ON lv.LG_VILLAGE_ID  = e.VILLAGE_LG_VILLAGE_ID " +
+            "LEFT JOIN LG_VILLAGES lv ON lv.LG_VILLAGE_ID  = e.VILLAGE_LG_VILLAGE_ID " +
             "WHERE (:centerId IS NULL OR e.center_id = :centerId) " +
             "AND (:eventCategoryId IS NULL OR e.event_category_id = :eventCategoryId) "+
             "AND (:eventType IS NULL OR e.event_type = :eventType) "+
@@ -72,7 +72,7 @@ public interface EventRepository extends JpaRepository<Event,Long> {
             "LEFT JOIN EMPLOYEES e2 ON e2.ID  = ep.EMPLOYEE_ID \n" +
             "JOIN HEALTH_CENTERS hc ON hc.ID = e.CENTER_ID \n" +
             "JOIN EVENT_CATEGORIES ec ON ec.ID  = e.EVENT_CATEGORY_ID \n" +
-            "JOIN LG_VILLAGES lv ON lv.LG_VILLAGE_ID  = e.VILLAGE_LG_VILLAGE_ID " +
+            "LEFT JOIN LG_VILLAGES lv ON lv.LG_VILLAGE_ID  = e.VILLAGE_LG_VILLAGE_ID " +
             "WHERE e.event_category_id = :eventCategoryId",
             countQuery = "SELECT count(*) FROM Events e", nativeQuery = true)
     Page<EventItem> findAllByEventCategory(@Param("eventCategoryId") Integer eventCategoryId, Pageable pageable);
@@ -117,7 +117,7 @@ public interface EventRepository extends JpaRepository<Event,Long> {
             "LEFT JOIN EMPLOYEES e2 ON e2.ID  = ep.EMPLOYEE_ID \n" +
             "JOIN HEALTH_CENTERS hc ON hc.ID = e.CENTER_ID \n" +
             "JOIN EVENT_CATEGORIES ec ON ec.ID  = e.EVENT_CATEGORY_ID \n" +
-            "JOIN LG_VILLAGES lv ON lv.LG_VILLAGE_ID  = e.VILLAGE_LG_VILLAGE_ID",
+            "LEFT JOIN LG_VILLAGES lv ON lv.LG_VILLAGE_ID  = e.VILLAGE_LG_VILLAGE_ID",
     countQuery = "SELECT count(*) FROM Events e",nativeQuery = true)
     Page<EventItem> findAllEvents(Pageable pageable);
 
@@ -127,7 +127,7 @@ public interface EventRepository extends JpaRepository<Event,Long> {
             "LEFT JOIN EMPLOYEES e2 ON e2.ID  = ep.EMPLOYEE_ID " +
             "JOIN HEALTH_CENTERS hc ON hc.ID = e.CENTER_ID " +
             "JOIN EVENT_CATEGORIES ec ON ec.ID  = e.EVENT_CATEGORY_ID " +
-            "JOIN LG_VILLAGES lv ON lv.LG_VILLAGE_ID  = e.VILLAGE_LG_VILLAGE_ID " +
+            "LEFT JOIN LG_VILLAGES lv ON lv.LG_VILLAGE_ID  = e.VILLAGE_LG_VILLAGE_ID " +
             "WHERE e.event_Date BETWEEN :fromDate AND :toDate ",
             countQuery = "SELECT count(*) FROM Events e",nativeQuery = true)
     Page<EventItem> findAllEventsByDateRange(@Param("fromDate") LocalDateTime fromDate,
@@ -179,7 +179,7 @@ public interface EventRepository extends JpaRepository<Event,Long> {
             " JOIN FETCH e.eventPersonnels ep " +
             " LEFT JOIN FETCH ep.employee emp " +
             " JOIN FETCH e.center c " +
-            " JOIN FETCH e.village v " +
+            " LEFT JOIN FETCH e.village v " +
             "WHERE e.id = :id")
     Optional<EventDetail> findEventById(@Param("id") Long id);
 
