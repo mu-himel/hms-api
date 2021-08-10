@@ -18,5 +18,17 @@ public interface MonthlyStatisticalReport {
     Integer getGbNchByParam();
     Integer getNgbChByParam();
     Integer getNgbNchByParam();
+    Integer getSatGbChByDoc();
+    Integer getSatGbNchByDoc();
+    Integer getSatNgbChByDoc();
+    Integer getSatNgbNchByDoc();
+    Integer getSatGbChByDmf();
+    Integer getSatGbNchByDmf();
+    Integer getSatNgbChByDmf();
+    Integer getSatNgbNchByDmf();
+    Integer getSatGbChByParam();
+    Integer getSatGbNchByParam();
+    Integer getSatNgbChByParam();
+    Integer getSatNgbNchByParam();
 
 }
