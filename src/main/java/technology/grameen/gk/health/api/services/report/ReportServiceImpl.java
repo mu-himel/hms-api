@@ -4,11 +4,13 @@ import org.springframework.stereotype.Service;
 import technology.grameen.gk.health.api.entity.HealthCenter;
 import technology.grameen.gk.health.api.exceptions.CustomException;
 import technology.grameen.gk.health.api.projection.MonthWiseReceived;
+import technology.grameen.gk.health.api.projection.MonthlyStatisticalReport;
 import technology.grameen.gk.health.api.projection.ServiceRecord;
 import technology.grameen.gk.health.api.projection.event.schedule.Event;
 import technology.grameen.gk.health.api.projection.event.schedule.EventCategory;
 import technology.grameen.gk.health.api.projection.event.schedule.HCenter;
 import technology.grameen.gk.health.api.repositories.EventRepository;
+import technology.grameen.gk.health.api.repositories.ReportRepository;
 import technology.grameen.gk.health.api.repositories.ServiceRecordRepository;
 import technology.grameen.gk.health.api.requests.ServiceRecordSearch;
 import technology.grameen.gk.health.api.responses.ServiceRecordResponse;
@@ -27,16 +29,19 @@ public class ReportServiceImpl implements ReportService{
     PatientManageService patientManageService;
     HealthCenterService healthCenterService;
     EventService eventService;
+    ReportRepository reportRepository;
 
 
     ReportServiceImpl(ServiceRecordRepository serviceRecordRepository,
                       PatientManageService patientManageService,
                       HealthCenterService healthCenterService,
-                      EventService eventService){
+                      EventService eventService,
+                      ReportRepository reprtRepository){
         this.serviceRecordRepository = serviceRecordRepository;
         this.patientManageService = patientManageService;
         this.healthCenterService = healthCenterService;
         this.eventService = eventService;
+        this.reportRepository = reprtRepository;
     }
 
 
@@ -243,5 +248,10 @@ public class ReportServiceImpl implements ReportService{
             throw new CustomException("Please select Region and Year month");
         }
         return eventService.getSatelliteSchedule(raCode, yearMonth);
+    }
+
+    @Override
+    public List<MonthlyStatisticalReport> getMonthlyStatisticalReport(String regionCode) {
+        return reportRepository.getMonthlyStatisticalReport(regionCode);
     }
 }

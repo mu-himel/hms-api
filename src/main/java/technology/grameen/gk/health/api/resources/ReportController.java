@@ -100,4 +100,15 @@ public class ReportController {
                         yearMonth.orElse(""))
         ), HttpStatus.OK);
     }
+
+    @GetMapping("/monthly-statistical-report")
+    public ResponseEntity<IResponse> getMonthlyDetailReport(@RequestParam Optional<String> regionCode){
+
+        return new ResponseEntity<>(
+                new EntityResponse<>(
+                        HttpStatus.OK.value(),
+                        reportService.getMonthlyStatisticalReport(regionCode.orElse(""))
+                ), HttpStatus.OK
+        );
+    }
 }
