@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface ReportService {
@@ -31,5 +32,5 @@ public interface ReportService {
 
     List<EventRepository.EventSchedule> getSatteliteSchedule(String orElse, String orElse1) throws CustomException;
 
-    List<MonthlyStatisticalReport> getMonthlyStatisticalReport(String regionCode);
+    Map<String, Object> getMonthlyStatisticalReport(String regionCode);
 }

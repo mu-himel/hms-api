@@ -10,6 +10,55 @@ import java.util.List;
 
 public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenterWiseView,Long> {
 
-    @Query(value = "SELECT * FROM MONTHLY_STATISTICAL_CENTER_WISE_VIEW mscwv WHERE thirdLevel = :regionCode",nativeQuery = true)
+    @Query(value = "SELECT * FROM MONTHLY_STATISTICAL_CENTER_WISE_VIEW mscwv WHERE NVL(THIRDLEVEL,0) = :regionCode",nativeQuery = true)
     List<MonthlyStatisticalReport> getMonthlyStatisticalReport(@Param("regionCode") String regionCode);
+
+    interface CampNo{
+        Long getCenterId();
+        Integer getCampNo();
+        Long getEcId();
+        String getEcName();
+    }
+
+    @Query(value = "SELECT hc.id, count(ec.name) AS campNo, ec.id ecId, lower(ec.NAME) ecName FROM HEALTH_CENTERS hc JOIN EVENTS e ON e.CENTER_ID = hc.ID\n" +
+            "JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID=ec.id  AND ec.IS_SATELLITE = 0\n" +
+            "WHERE e.STATUS = 'approved' AND nvl(hc.THIRD_LEVEL,0)=:regionCode GROUP BY hc.id,ec.id, ec.name",nativeQuery = true)
+    List<CampNo> getCampNoCenterWiseEvent(@Param("regionCode") String regionCode);
+
+    interface CampWiseCardMemberCount{
+        Long getCenterId();
+        Integer getCardMemberCount();
+        Long getEcId();
+        String getEcName();
+    }
+    @Query(value = "SELECT centerId, count(patientId) cardMemberCount, ecId,ecName from( " +
+            "SELECT hc.id centerId,pr.id, p.id AS patientId, p.id AS pid,ec.id ecId, lower(ec.NAME) ecName \n" +
+            "FROM HEALTH_CENTERS hc JOIN PATIENT_INVOICES pn ON pn.HEALTH_CENTER_ID = hc.id\n" +
+            "JOIN patients p ON pn.PATIENT_ID = p.id\n" +
+            "LEFT JOIN PATIENT_REGISTRATIONS pr ON pr.PATIENT_ID = p.id\n" +
+            "JOIN EVENTS e ON pn.EVENT_ID = e.ID\n" +
+            "JOIN EVENT_CATEGORIES ec ON ec.id = e.EVENT_CATEGORY_ID\n" +
+            "WHERE e.STATUS = 'approved' AND nvl(hc.THIRD_LEVEL,0)=:regionCode AND pr.id IS NOT NULL AND ec.is_satellite=0\n" +
+            "GROUP BY hc.id,ec.id,ec.name, p.id,pr.id) r\n" +
+            "GROUP BY r.centerId,r.ecName,r.ecId", nativeQuery = true)
+    List<CampWiseCardMemberCount> getCardMemberCenterWiseEvent(@Param("regionCode") String regionCode);
+
+
+    interface CampWiseNonCardMemberCount{
+        Long getCenterId();
+        Integer getCardMemberCount();
+        Long getEcId();
+        String getEcName();
+    }
+    @Query(value = "SELECT centerId, count(patientId) nonCardMember, pid, ecId,ecName from( " +
+            "SELECT hc.id centerId,pr.id, p.id AS patientId, p.id AS pid, ec.id ecId, lower(ec.NAME) ecName \n" +
+            "FROM HEALTH_CENTERS hc JOIN PATIENT_INVOICES pn ON pn.HEALTH_CENTER_ID = hc.id\n" +
+            "JOIN patients p ON pn.PATIENT_ID = p.id\n" +
+            "LEFT JOIN PATIENT_REGISTRATIONS pr ON pr.PATIENT_ID = p.id\n" +
+            "JOIN EVENTS e ON pn.EVENT_ID = e.ID\n" +
+            "JOIN EVENT_CATEGORIES ec ON ec.id = e.EVENT_CATEGORY_ID\n" +
+            "WHERE e.STATUS = 'approved' AND nvl(hc.THIRD_LEVEL,0)=:regionCode AND pr.id IS NULL AND ec.is_satellite=0\n" +
+            "GROUP BY hc.id,ec.id,ec.name, p.id,pr.id) r\n" +
+            "GROUP BY r.centerId,r.ecName,r.ecId, r.pid", nativeQuery = true)
+    List<CampWiseNonCardMemberCount> getNonCardMemberCenterWiseEvent(@Param("regionCode") String regionCode);
 }

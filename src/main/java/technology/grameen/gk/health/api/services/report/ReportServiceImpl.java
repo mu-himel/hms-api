@@ -251,7 +251,12 @@ public class ReportServiceImpl implements ReportService{
     }
 
     @Override
-    public List<MonthlyStatisticalReport> getMonthlyStatisticalReport(String regionCode) {
-        return reportRepository.getMonthlyStatisticalReport(regionCode);
+    public Map<String,Object> getMonthlyStatisticalReport(String regionCode) {
+        Map<String, Object> report = new HashMap<>();
+        report.put("stats",reportRepository.getMonthlyStatisticalReport(regionCode));
+        report.put("campNo",reportRepository.getCampNoCenterWiseEvent(regionCode));
+        report.put("cardMember",reportRepository.getCardMemberCenterWiseEvent(regionCode));
+        report.put("nonCardMember",reportRepository.getNonCardMemberCenterWiseEvent(regionCode));
+        return report;
     }
 }
