@@ -33,5 +33,9 @@ public interface MonthlyStatisticalReport {
     Integer getMalePatientCount();
     Integer getFemalePatientCount();
     Integer getLabTestNo();
+    Integer getGbChHalfYearly();
+    Integer getGbChYearly();
+    Integer getNgbChHalfYearly();
+    Integer getNgbChYearly();
 
 }
