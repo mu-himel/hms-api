@@ -20,7 +20,7 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
         String getEcName();
     }
 
-    @Query(value = "SELECT hc.id, count(ec.name) AS campNo, ec.id ecId, lower(ec.NAME) ecName FROM HEALTH_CENTERS hc JOIN EVENTS e ON e.CENTER_ID = hc.ID\n" +
+    @Query(value = "SELECT hc.id as centerId, count(ec.name) AS campNo, ec.id ecId, lower(ec.NAME) ecName FROM HEALTH_CENTERS hc JOIN EVENTS e ON e.CENTER_ID = hc.ID\n" +
             "JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID=ec.id  AND ec.IS_SATELLITE = 0\n" +
             "WHERE e.STATUS = 'approved' AND nvl(hc.THIRD_LEVEL,0)=:regionCode GROUP BY hc.id,ec.id, ec.name",nativeQuery = true)
     List<CampNo> getCampNoCenterWiseEvent(@Param("regionCode") String regionCode);
@@ -67,7 +67,7 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
         Long getCenterId();
         Integer getCampNo();
     }
-    @Query(value = "SELECT hc.id , count(ltg.NAME) campNo, pr.id reg " +
+    @Query(value = "SELECT hc.id as centerId, count(ltg.NAME) campNo, pr.id reg " +
             "FROM HEALTH_CENTERS hc JOIN PATIENT_INVOICES pn ON pn.HEALTH_CENTER_ID = hc.ID " +
             "LEFT JOIN PATIENT_REGISTRATIONS pr ON pr.PATIENT_ID = pn.PATIENT_ID " +
             "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID = pn.id  " +
