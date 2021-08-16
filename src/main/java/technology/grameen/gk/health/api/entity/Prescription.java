@@ -53,6 +53,7 @@ public class Prescription {
     private Set<RecommendedMedicine> recommendedMedicines;
 
     private Boolean isNew;
+    private Boolean isTeleCall = false;
     private String advice;
 
     @Column(length = 1000)
@@ -136,6 +137,14 @@ public class Prescription {
 
     public void setNew(Boolean aNew) {
         isNew = aNew;
+    }
+
+    public Boolean getTeleCall() {
+        return isTeleCall;
+    }
+
+    public void setTeleCall(Boolean teleCall) {
+        isTeleCall = teleCall;
     }
 
     public String getAdvice() {
