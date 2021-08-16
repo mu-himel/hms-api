@@ -30,6 +30,7 @@ public interface MonthlyStatisticalReport {
     Integer getSatGbNchByParam();
     Integer getSatNgbChByParam();
     Integer getSatNgbNchByParam();
+    Integer getTeleCallNo();
     Integer getMalePatientCount();
     Integer getFemalePatientCount();
     Integer getLabTestNo();
