@@ -76,6 +76,7 @@ public interface PrescriptionDetail {
     @JsonFormat(pattern = "yyyy-MM-dd")
     LocalDateTime getCreatedAt();
     String getFilePath();
+    Boolean getTeleCall();
     GeneralExamination getGeneralExamination();
     FamilyHistory getFamilyHistory();
     PersonalHistory getPersonalHistory();
