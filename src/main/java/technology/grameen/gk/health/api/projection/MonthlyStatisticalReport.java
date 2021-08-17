@@ -1,5 +1,7 @@
 package technology.grameen.gk.health.api.projection;
 
+import java.math.BigDecimal;
+
 public interface MonthlyStatisticalReport {
 
     Long getCenterId();
@@ -34,6 +36,9 @@ public interface MonthlyStatisticalReport {
     Integer getMalePatientCount();
     Integer getFemalePatientCount();
     Integer getLabTestNo();
+    BigDecimal getLabTestIncomeByCenter();
+    BigDecimal getLabTestIncomeByCamp();
+    BigDecimal getLabTestIncomeBySatellite();
     Integer getGbChHalfYearly();
     Integer getGbChYearly();
     Integer getNgbChHalfYearly();
