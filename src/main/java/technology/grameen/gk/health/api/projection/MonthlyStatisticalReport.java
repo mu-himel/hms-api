@@ -35,6 +35,9 @@ public interface MonthlyStatisticalReport {
     Integer getTeleCallNo();
     Integer getMalePatientCount();
     Integer getFemalePatientCount();
+    Integer getEyeCataractSurgery();
+    Integer getMinorSurgery();
+    Integer getCircumcision();
     Integer getLabTestNo();
     BigDecimal getLabTestIncomeByCenter();
     BigDecimal getLabTestIncomeByCamp();
