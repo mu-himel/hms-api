@@ -38,6 +38,7 @@ public interface MonthlyStatisticalReport {
     Integer getEyeCataractSurgery();
     Integer getMinorSurgery();
     Integer getCircumcision();
+    Integer getEyeSurgeryIdentified();
     Integer getLabTestNo();
     BigDecimal getLabTestIncomeByCenter();
     BigDecimal getLabTestIncomeByCamp();
