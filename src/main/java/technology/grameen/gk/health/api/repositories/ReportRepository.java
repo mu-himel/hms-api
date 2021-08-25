@@ -10,8 +10,8 @@ import java.util.List;
 
 public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenterWiseView,Long> {
 
-    @Query(value = "SELECT * FROM MONTHLY_STATISTICAL_CENTER_WISE_VIEW mscwv WHERE NVL(THIRDLEVEL,0) = :regionCode",nativeQuery = true)
-    List<MonthlyStatisticalReport> getMonthlyStatisticalReport(@Param("regionCode") String regionCode);
+    @Query(value = "SELECT * FROM TABLE(MSR.GET_MSR_DETAIL_REPORT(:yearMonth,:regionCode))",nativeQuery = true)
+    List<MonthlyStatisticalReport> getMonthlyStatisticalReport(@Param("yearMonth") String YearMonth, @Param("regionCode") String regionCode);
 
     interface CampNo{
         Long getCenterId();

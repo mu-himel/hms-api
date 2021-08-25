@@ -102,12 +102,13 @@ public class ReportController {
     }
 
     @GetMapping("/monthly-statistical-report")
-    public ResponseEntity<IResponse> getMonthlyDetailReport(@RequestParam Optional<String> regionCode){
+    public ResponseEntity<IResponse> getMonthlyDetailReport(@RequestParam Optional<String> regionCode,
+                                                            @RequestParam Optional<String> month){
 
         return new ResponseEntity<>(
                 new EntityResponse<>(
                         HttpStatus.OK.value(),
-                        reportService.getMonthlyStatisticalReport(regionCode.orElse(""))
+                        reportService.getMonthlyStatisticalReport(month.orElse(""),regionCode.orElse(""))
                 ), HttpStatus.OK
         );
     }
