@@ -32,5 +32,5 @@ public interface ReportService {
 
     List<EventRepository.EventSchedule> getSatteliteSchedule(String orElse, String orElse1) throws CustomException;
 
-    Map<String, Object> getMonthlyStatisticalReport(String regionCode);
+    Map<String, Object> getMonthlyStatisticalReport(String yearMonth,String regionCode);
 }

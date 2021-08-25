@@ -251,9 +251,9 @@ public class ReportServiceImpl implements ReportService{
     }
 
     @Override
-    public Map<String,Object> getMonthlyStatisticalReport(String regionCode) {
+    public Map<String,Object> getMonthlyStatisticalReport(String yearMonth,String regionCode) {
         Map<String, Object> report = new HashMap<>();
-        report.put("stats",reportRepository.getMonthlyStatisticalReport(regionCode));
+        report.put("stats",reportRepository.getMonthlyStatisticalReport(yearMonth,regionCode));
         report.put("campNo",reportRepository.getCampNoCenterWiseEvent(regionCode));
         report.put("cardMember",reportRepository.getCardMemberCenterWiseEvent(regionCode));
         report.put("nonCardMember",reportRepository.getNonCardMemberCenterWiseEvent(regionCode));
