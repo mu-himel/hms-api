@@ -130,8 +130,8 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "JOIN HEALTH_CENTERS hc ON e.CENTER_ID  = hc.ID \n" +
             "JOIN PATIENT_INVOICES pi2 ON e.id = pi2.EVENT_ID AND pi2.HEALTH_CENTER_ID  = hc.ID \n" +
             "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID = pi2.ID \n" +
-            "JOIN SERVICE s ON psd.SERVICE_ID = s.SERVICE_ID AND s.CODE LIKE 'blood%' \n" +
-            "WHERE NVL(hc.THIRD_LEVEL,0)  =  :regionCode AND lower(ec.NAME) LIKE :serviceName||'%' AND to_char(pi2.CREATED_AT,'YYYY-MM') = :yearMonth\n" +
+            "JOIN SERVICE s ON psd.SERVICE_ID = s.SERVICE_ID AND s.CODE LIKE :serviceName||'%' \n" +
+            "WHERE NVL(hc.THIRD_LEVEL,0)  =  :regionCode AND lower(ec.NAME) LIKE 'school%' AND to_char(pi2.CREATED_AT,'YYYY-MM') = :yearMonth\n" +
             "GROUP BY hc.ID ", nativeQuery = true)
     List<SchoolVisitCampStats> getSchoolVisitServiceCount(
             @Param("serviceName") String serviceName,
