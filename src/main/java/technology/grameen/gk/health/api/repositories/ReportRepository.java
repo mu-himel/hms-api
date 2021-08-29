@@ -7,6 +7,7 @@ import technology.grameen.gk.health.api.entity.MonthlyStatisticalCenterWiseView;
 import technology.grameen.gk.health.api.projection.MonthlyStatisticalReport;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenterWiseView,Long> {
 
@@ -106,4 +107,47 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "GROUP BY hc.id,p.id,pr.id) r " +
             "GROUP BY r.centerId",nativeQuery = true)
     List<SingleCardMember> getNonCardMemberCount(@Param("labTestGroup") String usg, @Param("regionCode") String regionCode);
+
+
+    interface SchoolVisitCampStats{
+        Integer getTotal();
+        Long getCenterId();
+    }
+    @Query(value = "SELECT count(e.id) as total, CENTER_ID as centerId FROM EVENTS e \n" +
+            "JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID = ec.ID \n" +
+            "JOIN HEALTH_CENTERS hc ON e.CENTER_ID  = hc.ID \n" +
+            "WHERE NVL(hc.THIRD_LEVEL,0)  =  :regionCode " +
+            "AND lower(ec.NAME) LIKE 'school%' AND to_char(e.EVENT_DATE,'YYYY-MM') = :yearMonth\n" +
+            "GROUP BY e.CENTER_ID ",nativeQuery = true)
+    List<SchoolVisitCampStats> getSchoolVisitCampNo(
+            @Param("regionCode") String regionCode,
+            @Param("yearMonth") String yearMonth);
+
+
+
+    @Query(value = "SELECT count(pi2.PATIENT_ID) AS total, hc.ID AS centerId FROM EVENTS e \n" +
+            "JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID = ec.ID \n" +
+            "JOIN HEALTH_CENTERS hc ON e.CENTER_ID  = hc.ID \n" +
+            "JOIN PATIENT_INVOICES pi2 ON e.id = pi2.EVENT_ID AND pi2.HEALTH_CENTER_ID  = hc.ID \n" +
+            "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID = pi2.ID \n" +
+            "JOIN SERVICE s ON psd.SERVICE_ID = s.SERVICE_ID AND s.CODE LIKE 'blood%' \n" +
+            "WHERE NVL(hc.THIRD_LEVEL,0)  =  :regionCode AND lower(ec.NAME) LIKE :serviceName||'%' AND to_char(pi2.CREATED_AT,'YYYY-MM') = :yearMonth\n" +
+            "GROUP BY hc.ID ", nativeQuery = true)
+    List<SchoolVisitCampStats> getSchoolVisitServiceCount(
+            @Param("serviceName") String serviceName,
+            @Param("regionCode") String regionCode,
+            @Param("yearMonth") String yearMonth
+            );
+
+    @Query(value = "SELECT count(pi2.PATIENT_ID) AS total, hc.id AS centerId FROM EVENTS e \n" +
+            "JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID = ec.ID \n" +
+            "JOIN HEALTH_CENTERS hc ON e.CENTER_ID  = hc.ID\n" +
+            "JOIN PATIENT_INVOICES pi2 ON e.id = pi2.EVENT_ID AND pi2.HEALTH_CENTER_ID  = hc.ID \n" +
+            "WHERE NVL(hc.THIRD_LEVEL,0)  = :regionCode AND lower(ec.NAME) LIKE 'school%' " +
+            "AND to_char(pi2.CREATED_AT,'YYYY-MM') = :yearMonth\n" +
+            "GROUP BY hc.ID",nativeQuery = true)
+    List<SchoolVisitCampStats> getSchoolVisitPatientNo(
+            @Param("regionCode") String regionCode,
+            @Param("yearMonth") String yearMonth);
+
 }

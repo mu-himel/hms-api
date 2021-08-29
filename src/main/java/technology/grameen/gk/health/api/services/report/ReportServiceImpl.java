@@ -30,18 +30,21 @@ public class ReportServiceImpl implements ReportService{
     HealthCenterService healthCenterService;
     EventService eventService;
     ReportRepository reportRepository;
+    SchoolVisitReportService schoolVisitReportService;
 
 
     ReportServiceImpl(ServiceRecordRepository serviceRecordRepository,
                       PatientManageService patientManageService,
                       HealthCenterService healthCenterService,
                       EventService eventService,
-                      ReportRepository reprtRepository){
+                      ReportRepository reportRepository,
+                      SchoolVisitReportService schoolVisitReportService){
         this.serviceRecordRepository = serviceRecordRepository;
         this.patientManageService = patientManageService;
         this.healthCenterService = healthCenterService;
         this.eventService = eventService;
-        this.reportRepository = reprtRepository;
+        this.reportRepository = reportRepository;
+        this.schoolVisitReportService = schoolVisitReportService;
     }
 
 
@@ -263,6 +266,11 @@ public class ReportServiceImpl implements ReportService{
         report.put("xRayCampNo",reportRepository.getCampNo("x-ray",regionCode));
         report.put("xRayCardMember",reportRepository.getCardMemberCount("x-ray",regionCode));
         report.put("xRayNonCardMember",reportRepository.getNonCardMemberCount("x-ray",regionCode));
+
+        report.put("schoolVisitCampNo",schoolVisitReportService.getSchoolVisitCampNo(regionCode,yearMonth));
+        report.put("schoolVisitPatientNo",schoolVisitReportService.getSchoolVisitPatientNo(regionCode,yearMonth));
+        report.put("schoolVisitBloodGrouping",schoolVisitReportService.getSchoolVisitServiceCount("blood",
+                regionCode,yearMonth));
         return report;
     }
 }
