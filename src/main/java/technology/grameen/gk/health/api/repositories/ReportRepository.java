@@ -76,10 +76,13 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             " JOIN LAB_TEST_GROUPS ltg ON ltg.ID = s.LAB_TEST_GROUP_ID " +
             " JOIN EVENTS e ON pi2.EVENT_ID = e.ID " +
             " JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID = ec.ID " +
-            " WHERE hc.THIRD_LEVEL = :regionCode AND pi2.invoice_type='camp' AND lower(ec.NAME) LIKE :labTestGroup||'%' " +
+            " WHERE hc.THIRD_LEVEL = :regionCode AND pi2.invoice_type='camp' " +
+            " AND TO_CHAR(pi2.created_at,'YYYY-MM') LIKE :yearMonth||'%' AND lower(ec.NAME) LIKE :labTestGroup||'%' " +
             " AND lower(ltg.NAME) LIKE :labTestGroup||'%' " +
             "GROUP BY hc.id",nativeQuery = true)
-    List<SingleCampNo> getCampNo(@Param("labTestGroup") String labTestGroup, @Param("regionCode") String regionCode);
+    List<SingleCampNo> getCampNo(@Param("labTestGroup") String labTestGroup,
+                                 @Param("regionCode") String regionCode,
+                                 @Param("yearMonth") String yearMonth);
 
     interface SingleCardMember{
         Long getCenterId();
@@ -95,10 +98,12 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "JOIN SERVICE s ON psd.SERVICE_ID = s.SERVICE_ID " +
             "JOIN LAB_TEST_GROUPS ltg ON ltg.ID = s.LAB_TEST_GROUP_ID " +
             "WHERE hc.THIRD_LEVEL=:regionCode AND pi2.invoice_type='camp' AND pi2.event_id is not null " +
-            "AND lower(ltg.name) LIKE :labTestGroup ||'%' AND  pr.id IS NOT NULL " +
+            "AND to_char(pi2.created_at,'YYYY-MM') LIKE :yearMonth||'%' AND lower(ltg.name) LIKE :labTestGroup ||'%' AND  pr.id IS NOT NULL " +
             "GROUP BY hc.id,p.id,pr.id) r " +
             "GROUP BY r.centerId",nativeQuery = true)
-    List<SingleCardMember> getCardMemberCount(@Param("labTestGroup") String ltg, @Param("regionCode") String regionCode);
+    List<SingleCardMember> getCardMemberCount(@Param("labTestGroup") String ltg,
+                                              @Param("regionCode") String regionCode,
+                                              @Param("yearMonth") String yearMonth);
 
     @Query(value = "SELECT centerId, count(patientId) cardMemberNo from( " +
             "SELECT hc.id centerId, pr.id, p.id AS patientId, p.id AS pid " +
@@ -109,11 +114,14 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID = pn.id " +
             "JOIN SERVICE s ON psd.SERVICE_ID = s.SERVICE_ID " +
             "JOIN LAB_TEST_GROUPS ltg ON ltg.ID = s.LAB_TEST_GROUP_ID " +
-            "WHERE hc.THIRD_LEVEL=:regionCode AND pi2.invoice_type='camp' AND pi2.event_id is not null " +
+            "WHERE hc.THIRD_LEVEL=:regionCode AND to_char(pi2.created_at,'YYYY-MM') LIKE :yearMonth||'%' " +
+            "AND pi2.invoice_type='camp' AND pi2.event_id is not null " +
             "AND lower(ltg.name) LIKE :labTestGroup ||'%' AND pr.id IS NULL " +
             "GROUP BY hc.id,p.id,pr.id) r " +
             "GROUP BY r.centerId",nativeQuery = true)
-    List<SingleCardMember> getNonCardMemberCount(@Param("labTestGroup") String usg, @Param("regionCode") String regionCode);
+    List<SingleCardMember> getNonCardMemberCount(@Param("labTestGroup") String usg,
+                                                 @Param("regionCode") String regionCode,
+                                                @Param("yearMonth") String yearMonth);
 
 
     interface SchoolVisitCampStats{
@@ -162,16 +170,20 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
         String getName();
         String getThirdLevel();
         String getCenterCode();
-        String getCenterChTotal();
-        String getCenterNchTotal();
-        String getSatChTotal();
-        String getSatNchTotal();
+        BigDecimal getCenterChTotal();
+        BigDecimal getCenterNchTotal();
+        BigDecimal getSatChTotal();
+        BigDecimal getSatNchTotal();
+        BigDecimal getGbCardIncome();
+        BigDecimal getNgbCardIncome();
     }
     @Query(value = "SELECT id AS centerId, name, third_level AS thirdLevel, CENTER_CODE AS centerCode,\n" +
             "NVL(MSR_60.CH_BY_CENTER(id,:yearMonth),0) AS centerChTotal,\n" +
             "NVL(MSR_60.NCH_BY_CENTER(id,:yearMonth),0) AS centerNchTotal,\n" +
             "NVL(MSR_60.CH_BY_CENTER_IN_SAT(id,:yearMonth),0) AS satChTotal,\n" +
-            "NVL(MSR_60.NCH_BY_CENTER_IN_SAT(id,:yearMonth),0) AS satNchTotal\n" +
+            "NVL(MSR_60.NCH_BY_CENTER_IN_SAT(id,:yearMonth),0) AS satNchTotal,\n" +
+            "NVL(MSR_60.GB_CARD_INCOME(id, :yearMonth),0) AS gbCardIncome,\n"+
+            "NVL(MSR_60.NGB_CARD_INCOME(id, :yearMonth),0) AS ngbCardIncome "+
             "FROM Health_centers WHERE third_level IS NOT NULL AND NVL(THIRD_LEVEL,'0') = :regionCode",
     nativeQuery = true)
     List<IncomeStats> getCenterAndSatelliteIncomes(@Param("regionCode") String regionCode,

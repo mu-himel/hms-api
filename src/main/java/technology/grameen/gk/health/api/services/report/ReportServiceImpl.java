@@ -260,12 +260,12 @@ public class ReportServiceImpl implements ReportService{
         report.put("campNo",reportRepository.getCampNoCenterWiseEvent(regionCode));
         report.put("cardMember",reportRepository.getCardMemberCenterWiseEvent(regionCode));
         report.put("nonCardMember",reportRepository.getNonCardMemberCenterWiseEvent(regionCode));
-        report.put("usgCampNo",reportRepository.getCampNo("usg",regionCode));
-        report.put("usgCardMember",reportRepository.getCardMemberCount("usg",regionCode));
-        report.put("usgNonCardMember",reportRepository.getNonCardMemberCount("usg",regionCode));
-        report.put("xRayCampNo",reportRepository.getCampNo("x-ray",regionCode));
-        report.put("xRayCardMember",reportRepository.getCardMemberCount("x-ray",regionCode));
-        report.put("xRayNonCardMember",reportRepository.getNonCardMemberCount("x-ray",regionCode));
+        report.put("usgCampNo",reportRepository.getCampNo("usg",regionCode,yearMonth));
+        report.put("usgCardMember",reportRepository.getCardMemberCount("usg",regionCode,yearMonth));
+        report.put("usgNonCardMember",reportRepository.getNonCardMemberCount("usg",regionCode,yearMonth));
+        report.put("xRayCampNo",reportRepository.getCampNo("x-ray",regionCode,yearMonth));
+        report.put("xRayCardMember",reportRepository.getCardMemberCount("x-ray",regionCode,yearMonth));
+        report.put("xRayNonCardMember",reportRepository.getNonCardMemberCount("x-ray",regionCode,yearMonth));
 
         report.put("schoolVisitCampNo",schoolVisitReportService.getSchoolVisitCampNo(regionCode,yearMonth));
         report.put("schoolVisitPatientNo",schoolVisitReportService.getSchoolVisitPatientNo(regionCode,yearMonth));
