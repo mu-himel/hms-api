@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import technology.grameen.gk.health.api.entity.MonthlyStatisticalCenterWiseView;
 import technology.grameen.gk.health.api.projection.MonthlyStatisticalReport;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -149,5 +150,42 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
     List<SchoolVisitCampStats> getSchoolVisitPatientNo(
             @Param("regionCode") String regionCode,
             @Param("yearMonth") String yearMonth);
+
+    interface IncomeStats{
+        Long getCenterId();
+        String getName();
+        String getThirdLevel();
+        String getCenterCode();
+        String getCenterChTotal();
+        String getCenterNchTotal();
+        String getSatChTotal();
+        String getSatNchTotal();
+    }
+    @Query(value = "SELECT id AS centerId, name, third_level AS thirdLevel, CENTER_CODE AS centerCode,\n" +
+            "NVL(MSR_60.CH_BY_CENTER(id,:yearMonth),0) AS centerChTotal,\n" +
+            "NVL(MSR_60.NCH_BY_CENTER(id,:yearMonth),0) AS centerNchTotal,\n" +
+            "NVL(MSR_60.CH_BY_CENTER_IN_SAT(id,:yearMonth),0) AS satChTotal,\n" +
+            "NVL(MSR_60.NCH_BY_CENTER_IN_SAT(id,:yearMonth),0) AS satNchTotal\n" +
+            "FROM Health_centers WHERE third_level IS NOT NULL AND NVL(THIRD_LEVEL,'0') = :regionCode",
+    nativeQuery = true)
+    List<IncomeStats> getCenterAndSatelliteIncomes(@Param("regionCode") String regionCode,
+                                                       @Param("yearMonth") String yearMonth);
+
+    interface EventCategoryWiseIncomeStats {
+        Long getEcId();
+        String getEcName();
+        String getTotalAmount();
+        Long getCenterId();
+    }
+    @Query(value = "SELECT e.EVENT_CATEGORY_ID ecId,ec.NAME ecName,SUM(pi2.PAID_AMOUNT) totalAmount, pi2.HEALTH_CENTER_ID centerId FROM PATIENT_INVOICES pi2 \n" +
+            "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
+            "JOIN events e ON pi2.EVENT_ID  = e.ID \n" +
+            "JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID  = ec.ID \n" +
+            "JOIN HEALTH_CENTERS hc ON hc.ID = pi2.HEALTH_CENTER_ID \n" +
+            "WHERE NVL(hc.THIRD_LEVEL,'0') = :regionCode AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM') LIKE :yearMonth||'%' AND pi2.INVOICE_TYPE = 'camp'\n" +
+            "GROUP BY e.EVENT_CATEGORY_ID,ec.NAME , pi2.HEALTH_CENTER_ID",
+    nativeQuery = true)
+    List<EventCategoryWiseIncomeStats> getCenterCampIncomes(@Param("regionCode") String regionCode,
+                                                            @Param("yearMonth") String yearMonth);
 
 }

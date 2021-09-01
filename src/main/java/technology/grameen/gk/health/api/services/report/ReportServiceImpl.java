@@ -271,6 +271,8 @@ public class ReportServiceImpl implements ReportService{
         report.put("schoolVisitPatientNo",schoolVisitReportService.getSchoolVisitPatientNo(regionCode,yearMonth));
         report.put("schoolVisitBloodGrouping",schoolVisitReportService.getSchoolVisitServiceCount("blood",
                 regionCode,yearMonth));
+        report.put("incomeStats",reportRepository.getCenterAndSatelliteIncomes(regionCode,yearMonth));
+        report.put("campIncomeStats",reportRepository.getCenterCampIncomes(regionCode,yearMonth));
         return report;
     }
 }
