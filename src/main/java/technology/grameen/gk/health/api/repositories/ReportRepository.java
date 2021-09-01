@@ -69,14 +69,16 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
         Long getCenterId();
         Integer getCampNo();
     }
-    @Query(value = "SELECT hc.id as centerId, count(ltg.NAME) campNo, pr.id reg " +
-            "FROM HEALTH_CENTERS hc JOIN PATIENT_INVOICES pn ON pn.HEALTH_CENTER_ID = hc.ID " +
-            "LEFT JOIN PATIENT_REGISTRATIONS pr ON pr.PATIENT_ID = pn.PATIENT_ID " +
-            "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID = pn.id  " +
-            "JOIN SERVICE s ON psd.SERVICE_ID = s.SERVICE_ID " +
-            "JOIN LAB_TEST_GROUPS ltg ON ltg.ID = s.LAB_TEST_GROUP_ID " +
-            "WHERE lower(ltg.name) LIKE :labTestGroup || '%' AND hc.THIRD_LEVEL = :regionCode AND pr.id IS NOT NULL " +
-            "GROUP BY hc.id, pr.id",nativeQuery = true)
+    @Query(value = "SELECT hc.id as centerId, COUNT(s.LAB_TEST_GROUP_ID) campNo FROM PATIENT_INVOICES pi2 " +
+            " JOIN HEALTH_CENTERS hc ON hc.ID = pi2.HEALTH_CENTER_ID " +
+            " JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID = pi2.id " +
+            " JOIN SERVICE s ON s.SERVICE_ID = psd.SERVICE_ID " +
+            " JOIN LAB_TEST_GROUPS ltg ON ltg.ID = s.LAB_TEST_GROUP_ID " +
+            " JOIN EVENTS e ON pi2.EVENT_ID = e.ID " +
+            " JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID = ec.ID " +
+            " WHERE hc.THIRD_LEVEL = :regionCode AND pi2.invoice_type='camp' AND lower(ec.NAME) LIKE :labTestGroup||'%' " +
+            " AND lower(ltg.NAME) LIKE :labTestGroup||'%' " +
+            "GROUP BY hc.id",nativeQuery = true)
     List<SingleCampNo> getCampNo(@Param("labTestGroup") String labTestGroup, @Param("regionCode") String regionCode);
 
     interface SingleCardMember{
@@ -86,25 +88,29 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
     @Query(value = "SELECT centerId, count(patientId) cardMemberNo from( " +
             "SELECT hc.id centerId,pr.id, p.id AS patientId, p.id AS pid " +
             "FROM HEALTH_CENTERS hc JOIN PATIENT_INVOICES pn ON pn.HEALTH_CENTER_ID = hc.id " +
+            "JOIN PATIENT_INVOICES pi2 ON pi2.HEALTH_CENTER_ID = hc.ID " +
             "JOIN patients p ON pn.PATIENT_ID = p.id " +
             "LEFT JOIN PATIENT_REGISTRATIONS pr ON pr.PATIENT_ID = p.id " +
             "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID = pn.id " +
             "JOIN SERVICE s ON psd.SERVICE_ID = s.SERVICE_ID " +
             "JOIN LAB_TEST_GROUPS ltg ON ltg.ID = s.LAB_TEST_GROUP_ID " +
-            "WHERE lower(ltg.name) LIKE :labTestGroup ||'%' AND hc.THIRD_LEVEL=:regionCode AND pr.id IS NOT NULL " +
+            "WHERE hc.THIRD_LEVEL=:regionCode AND pi2.invoice_type='camp' AND pi2.event_id is not null " +
+            "AND lower(ltg.name) LIKE :labTestGroup ||'%' AND  pr.id IS NOT NULL " +
             "GROUP BY hc.id,p.id,pr.id) r " +
             "GROUP BY r.centerId",nativeQuery = true)
     List<SingleCardMember> getCardMemberCount(@Param("labTestGroup") String ltg, @Param("regionCode") String regionCode);
 
     @Query(value = "SELECT centerId, count(patientId) cardMemberNo from( " +
-            "SELECT hc.id centerId,pr.id, p.id AS patientId, p.id AS pid " +
+            "SELECT hc.id centerId, pr.id, p.id AS patientId, p.id AS pid " +
             "FROM HEALTH_CENTERS hc JOIN PATIENT_INVOICES pn ON pn.HEALTH_CENTER_ID = hc.id " +
+            "JOIN PATIENT_INVOICES pi2 ON pi2.HEALTH_CENTER_ID = hc.id " +
             "JOIN patients p ON pn.PATIENT_ID = p.id " +
             "LEFT JOIN PATIENT_REGISTRATIONS pr ON pr.PATIENT_ID = p.id " +
             "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID = pn.id " +
             "JOIN SERVICE s ON psd.SERVICE_ID = s.SERVICE_ID " +
             "JOIN LAB_TEST_GROUPS ltg ON ltg.ID = s.LAB_TEST_GROUP_ID " +
-            "WHERE lower(ltg.name) LIKE :labTestGroup ||'%' AND hc.THIRD_LEVEL=:regionCode AND pr.id IS NULL " +
+            "WHERE hc.THIRD_LEVEL=:regionCode AND pi2.invoice_type='camp' AND pi2.event_id is not null " +
+            "AND lower(ltg.name) LIKE :labTestGroup ||'%' AND pr.id IS NULL " +
             "GROUP BY hc.id,p.id,pr.id) r " +
             "GROUP BY r.centerId",nativeQuery = true)
     List<SingleCardMember> getNonCardMemberCount(@Param("labTestGroup") String usg, @Param("regionCode") String regionCode);
