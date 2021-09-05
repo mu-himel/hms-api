@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -33,6 +34,8 @@ public class Patient {
     private String age;
 
     private Boolean isGB;
+
+    private LocalDate dob;
 
     @ManyToOne
     @JoinColumn(columnDefinition = "center_id",referencedColumnName = "id")
@@ -274,5 +277,13 @@ public class Patient {
 
     public void setLastUpdatedAt(LocalDateTime lastUpdatedAt) {
         this.lastUpdatedAt = lastUpdatedAt;
+    }
+
+    public LocalDate getDob() {
+        return dob;
+    }
+
+    public void setDob(LocalDate dob) {
+        this.dob = dob;
     }
 }
