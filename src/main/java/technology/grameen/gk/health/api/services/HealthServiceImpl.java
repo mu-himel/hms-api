@@ -106,4 +106,9 @@ public class HealthServiceImpl implements HealthServiceInterface {
     public void deleteAttributeById(Long id) {
         labTestAttributeRepository.deleteById(id);
     }
+
+    @Override
+    public List<ServiceRepository.IServiceList> findByServiceCategory(ServiceCategory serviceCategory) {
+        return serviceRepository.findByServiceCategory(serviceCategory);
+    }
 }

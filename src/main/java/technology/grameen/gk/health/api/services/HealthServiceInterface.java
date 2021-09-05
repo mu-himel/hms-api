@@ -2,8 +2,10 @@ package technology.grameen.gk.health.api.services;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import technology.grameen.gk.health.api.entity.ServiceCategory;
 import technology.grameen.gk.health.api.projection.ServiceListItem;
 import technology.grameen.gk.health.api.entity.Service;
+import technology.grameen.gk.health.api.repositories.ServiceRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,4 +26,6 @@ public interface HealthServiceInterface {
     public List<ServiceListItem> getLabServices();
 
     void deleteAttributeById(Long id);
+
+    List<ServiceRepository.IServiceList> findByServiceCategory(ServiceCategory serviceCategory);
 }

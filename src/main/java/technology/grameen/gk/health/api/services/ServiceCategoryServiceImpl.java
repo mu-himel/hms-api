@@ -2,10 +2,8 @@ package technology.grameen.gk.health.api.services;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import technology.grameen.gk.health.api.entity.Medicine;
 import technology.grameen.gk.health.api.entity.ServiceCategory;
 import technology.grameen.gk.health.api.repositories.ServiceCategoryRepository;
 
@@ -44,5 +42,11 @@ public class ServiceCategoryServiceImpl implements ServiceCategoryService {
     @Override
     public Optional<ServiceCategory> findById(Long id) {
         return serviceCategoryRepository.findById(id);
+    }
+
+
+    @Override
+    public Optional<ServiceCategoryRepository.IServiceCategory> findByAlias(String alias) {
+        return serviceCategoryRepository.findByAliasIgnoreCase(alias);
     }
 }

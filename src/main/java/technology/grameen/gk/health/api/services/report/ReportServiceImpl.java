@@ -257,9 +257,11 @@ public class ReportServiceImpl implements ReportService{
     public Map<String,Object> getMonthlyStatisticalReport(String yearMonth,String regionCode) {
         Map<String, Object> report = new HashMap<>();
         report.put("stats",reportRepository.getMonthlyStatisticalReport(yearMonth,regionCode));
+
         report.put("campNo",reportRepository.getCampNoCenterWiseEvent(regionCode));
         report.put("cardMember",reportRepository.getCardMemberCenterWiseEvent(regionCode));
         report.put("nonCardMember",reportRepository.getNonCardMemberCenterWiseEvent(regionCode));
+
         report.put("usgCampNo",reportRepository.getCampNo("usg",regionCode,yearMonth));
         report.put("usgCardMember",reportRepository.getCardMemberCount("usg",regionCode,yearMonth));
         report.put("usgNonCardMember",reportRepository.getNonCardMemberCount("usg",regionCode,yearMonth));

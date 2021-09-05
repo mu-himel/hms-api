@@ -34,6 +34,12 @@ public class ServiceCategory {
     @UpdateTimestamp
     private LocalDateTime lastUpdatedAt;
 
+    public ServiceCategory(){}
+
+    public ServiceCategory(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import technology.grameen.gk.health.api.entity.ServiceCategory;
 import technology.grameen.gk.health.api.projection.ServiceListItem;
 import technology.grameen.gk.health.api.entity.Service;
 
@@ -47,4 +48,11 @@ public interface ServiceRepository extends JpaRepository<Service,Long> {
     @Query("SELECT s FROM Service s JOIN FETCH s.serviceCategory sc" +
             " JOIN FETCH s.labTestGroup ltg WHERE s.isLabTest = :s")
     List<ServiceListItem> findByIsLabTestEquals(@Param("s") Boolean bool);
+
+    interface IServiceList{
+        Long getServiceId();
+        String getName();
+        String getCode();
+    }
+    List<IServiceList> findByServiceCategory(ServiceCategory serviceCategory);
 }

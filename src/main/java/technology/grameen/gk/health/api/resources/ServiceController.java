@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import technology.grameen.gk.health.api.entity.ServiceCategory;
 import technology.grameen.gk.health.api.projection.ServiceListItem;
 import technology.grameen.gk.health.api.entity.Service;
 import technology.grameen.gk.health.api.responses.*;
@@ -85,6 +86,14 @@ public class ServiceController {
     public ResponseEntity< Optional<Service>> findServiceById(@PathVariable("id") Long id){
         Optional<Service> service = healthServiceInterface.findServiceById(id);
         return new ResponseEntity<>(service, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/by-category/{id}")
+    public ResponseEntity<IResponse> findServiceByServiceCategory(@PathVariable("id") Long categoryId){
+        return new ResponseEntity<>(new EntityCollectionResponse<>(
+                HttpStatus.OK.value(),
+                healthServiceInterface.findByServiceCategory(new ServiceCategory(categoryId))
+        ), HttpStatus.OK);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)

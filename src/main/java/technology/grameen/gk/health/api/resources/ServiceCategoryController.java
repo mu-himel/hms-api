@@ -67,6 +67,14 @@ public class ServiceCategoryController {
         return new ResponseEntity<>(new EntityResponse<>(HttpStatus.OK.value(),serviceCategory), HttpStatus.OK);
     }
 
+    @GetMapping("/by-alias/{alias}")
+    public ResponseEntity<IResponse> getServiceCategoryByAlias(@PathVariable("alias") String alias){
+        return new ResponseEntity<>(new EntityResponse<>(
+                HttpStatus.OK.value(),
+                serviceCategoryService.findByAlias(alias)
+        ), HttpStatus.OK);
+    }
+
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ExceptionResponse> handleException(HttpServletRequest req, DataIntegrityViolationException e) {
         return new ResponseEntity<>(new ExceptionResponse(Integer.parseInt(ResponseEnum.SERVICE_CATEGORY_NOT_UNIQUE.getCode()),
