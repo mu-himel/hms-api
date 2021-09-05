@@ -227,4 +227,79 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
                                                    @Param("serviceCategory") String serviceCategory);
 
 
+    interface SafetyNetCount{
+        Integer getTotal();
+        Long getCenterId();
+        Long getServiceId();
+    }
+
+    @Query(value = "SELECT COUNT(pi2.PAID_AMOUNT) as total,pi2.HEALTH_CENTER_ID as centerId,s.SERVICE_ID as serviceId\n" +
+            "FROM patient_invoices pi2\n" +
+            "JOIN HEALTH_CENTERS hc ON pi2.HEALTH_CENTER_ID = hc.ID \n" +
+            "JOIN PATIENTS p ON p.id = pi2.PATIENT_ID \n" +
+            "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID = pi2.id \n" +
+            "JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID \n" +
+            "WHERE NVL(hc.THIRD_LEVEL,0)=:regionCode AND lower(s.NAME) LIKE 'free prescription'||'%'\n" +
+            "AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM') LIKE :yearMonth||'%' AND GET_CURRENT_YEAR(p.CREATED_AT,p.age)>60\n" +
+            "GROUP BY pi2.HEALTH_CENTER_ID , s.SERVICE_ID",nativeQuery = true)
+    List<SafetyNetCount> getSafetyNetCount(@Param("regionCode") String regionCode,
+                                           @Param("yearMonth") String month
+                                           );
+
+    interface DeliveryCount{
+        Integer getTotal();
+        Long getCenterId();
+        Long getServiceId();
+    }
+    @Query(value = "SELECT COUNT(pi2.PAID_AMOUNT) as total,pi2.HEALTH_CENTER_ID as centerId,s.SERVICE_ID as serviceId\n" +
+            "FROM patient_invoices pi2\n" +
+            "JOIN HEALTH_CENTERS hc ON pi2.HEALTH_CENTER_ID = hc.ID \n" +
+            "JOIN PATIENTS p ON p.id = pi2.PATIENT_ID \n" +
+            "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID = pi2.id \n" +
+            "JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID \n" +
+            "WHERE NVL(hc.THIRD_LEVEL,0)=:regionCode AND lower(s.NAME) LIKE 'delivery'||'%'\n" +
+            "AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM') LIKE :yearMonth||'%' \n" +
+            "GROUP BY pi2.HEALTH_CENTER_ID , s.SERVICE_ID",nativeQuery = true)
+    List<DeliveryCount> getCenterWiseDeliveryCount(@Param("regionCode") String regionCode,
+                                                   @Param("yearMonth") String yearMonth);
+
+
+    interface VaccineCount{
+        Integer getTotal();
+        Long getCenterId();
+        Long getServiceId();
+        Integer getAge();
+        String getServiceName();
+    }
+    @Query(value = "SELECT NVL(COUNT(pi2.PAID_AMOUNT),0) as total, p.age,\n" +
+            "    pi2.HEALTH_CENTER_ID as centerId, s.SERVICE_ID as serviceId,s.NAME as serviceName FROM patient_invoices pi2\n" +
+            "    JOIN HEALTH_CENTERS hc ON pi2.HEALTH_CENTER_ID = hc.ID \n" +
+            "    JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID = pi2.id \n" +
+            "    JOIN PATIENTS p ON p.id = pi2.PATIENT_ID \n" +
+            "    JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID \n" +
+            "    JOIN SERVICE_CATEGORIES sc ON sc.ID = s.SERVICE_CATEGORY_ID \n" +
+            "    WHERE NVL(hc.THIRD_LEVEL,0)=:regionCode AND lower(sc.NAME) LIKE '%'||'vaccine'||'%'\n" +
+            "    AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM') LIKE :yearMonth||'%'\n" +
+            "    AND GET_CURRENT_YEAR(p.CREATED_AT,p.age)<18\n" +
+            "    GROUP BY pi2.HEALTH_CENTER_ID , s.SERVICE_ID,s.NAME,p.age",nativeQuery = true)
+    List<VaccineCount> getCenterWiseChildVaccinationCount(@Param("regionCode") String regionCode,
+                                                     @Param("yearMonth") String yearMonth
+                                                     );
+
+    @Query(value = "SELECT NVL(COUNT(pi2.PAID_AMOUNT),0) as total, p.age,\n" +
+            "    pi2.HEALTH_CENTER_ID as centerId, s.SERVICE_ID as serviceId,s.NAME as serviceName FROM patient_invoices pi2\n" +
+            "    JOIN HEALTH_CENTERS hc ON pi2.HEALTH_CENTER_ID = hc.ID \n" +
+            "    JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID = pi2.id \n" +
+            "    JOIN PATIENTS p ON p.id = pi2.PATIENT_ID \n" +
+            "    JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID \n" +
+            "    JOIN SERVICE_CATEGORIES sc ON sc.ID = s.SERVICE_CATEGORY_ID \n" +
+            "    WHERE NVL(hc.THIRD_LEVEL,0)=:regionCode AND lower(sc.NAME) LIKE '%'||'vaccine'||'%'\n" +
+            "    AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM') LIKE :yearMonth||'%'\n" +
+            "    AND GET_CURRENT_YEAR(p.CREATED_AT,p.age)>18\n" +
+            "    GROUP BY pi2.HEALTH_CENTER_ID , s.SERVICE_ID,s.NAME,p.age",nativeQuery = true)
+    List<VaccineCount> getCenterWiseAdultVaccinationCount(@Param("regionCode") String regionCode,
+                                                          @Param("yearMonth") String yearMonth
+    );
+
+
 }

@@ -279,6 +279,10 @@ public class ReportServiceImpl implements ReportService{
         report.put("serviceRentIncomeStats",reportRepository.getIncomeByServiceCategory(regionCode,yearMonth,"rent"));
         report.put("usgIncomeStats",reportRepository.getIncomeByServiceCategory(regionCode,yearMonth,"ultrasonogram"));
         report.put("ecgIncomeStats",reportRepository.getIncomeByServiceCategory(regionCode,yearMonth,"ecg"));
+        report.put("safetyNetStats",reportRepository.getSafetyNetCount(regionCode,yearMonth));
+        report.put("deliveryCountStats",reportRepository.getCenterWiseDeliveryCount(regionCode,yearMonth));
+        report.put("adultVaccineCountStats",reportRepository.getCenterWiseAdultVaccinationCount(regionCode,yearMonth));
+        report.put("childVaccineCountStats",reportRepository.getCenterWiseChildVaccinationCount(regionCode,yearMonth));
         return report;
     }
 }
