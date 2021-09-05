@@ -8,6 +8,7 @@ import technology.grameen.gk.health.api.entity.PatientInvoice;
 
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -116,6 +117,8 @@ public interface PatientSearchResult {
         String getGender();
         String getMobileNumber();
         String getAge();
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        LocalDate getDob();
         CardRegistration getRegistration();
         void addRegistration(CardRegistration cardRegistration);
         Set<PatientInvoice> getPatientInvoices();

@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import technology.grameen.gk.health.api.entity.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
@@ -26,6 +27,7 @@ public class PatientRequest {
     private String maritalStatus;
     private String mobileNumber;
     private Integer age;
+    private LocalDate dob;
 
     private HealthCenter center;
 
@@ -187,5 +189,13 @@ public class PatientRequest {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public LocalDate getDob() {
+        return dob;
+    }
+
+    public void setDob(LocalDate dob) {
+        this.dob = dob;
     }
 }
