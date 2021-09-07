@@ -56,6 +56,18 @@ public interface PrescriptionDetail {
         CardMember getCardMember();
     }
 
+    interface Employee{
+        Long getId();
+        String getFullName();
+    }
+
+    interface HealthCenter{
+        Long getId();
+        String getName();
+        String getThirdLevel();
+        String getCenterCode();
+    }
+
     interface Invoice{
         Long getId();
         String getInvoiceNumber();
@@ -81,5 +93,10 @@ public interface PrescriptionDetail {
     FamilyHistory getFamilyHistory();
     PersonalHistory getPersonalHistory();
     Patient getPrescriptionPatient();
+
+    Boolean getRefer();
+    Employee getCallTo();
+
+    HealthCenter getReferCenter();
     Invoice getPatientInvoice();
 }

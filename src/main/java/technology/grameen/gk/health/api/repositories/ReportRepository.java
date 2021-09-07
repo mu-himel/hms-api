@@ -15,6 +15,18 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
     @Query(value = "SELECT * FROM TABLE(MSR.GET_MSR_DETAIL_REPORT(:yearMonth,:regionCode))",nativeQuery = true)
     List<MonthlyStatisticalReport> getMonthlyStatisticalReport(@Param("yearMonth") String YearMonth, @Param("regionCode") String regionCode);
 
+    interface ReferCenterCount{
+        Long getCenterId();
+        Integer getTotal();
+    }
+    @Query(value = "SELECT count(*) as total, hc.id as centerId FROM PRESCRIPTIONS p \n" +
+            "    JOIN PATIENTS p2 ON p2.ID = p.PRESCRIPTION_PATIENT_ID \n" +
+            "    JOIN HEALTH_CENTERS hc ON hc.ID  = p2.CENTER_ID \n" +
+            "    WHERE NVL(hc.THIRD_LEVEL,0) = :regionCode AND p.IS_REFER = 1 " +
+            "AND TO_CHAR(p.CREATED_AT,'YYYY-MM') LIKE :yearMonth||'%'",nativeQuery = true)
+    List<ReferCenterCount> getReferCenterCount(@Param("regionCode") String regionCode,
+                                               @Param("yearMonth") String yearMonth);
+
     interface CampNo{
         Long getCenterId();
         Integer getCampNo();

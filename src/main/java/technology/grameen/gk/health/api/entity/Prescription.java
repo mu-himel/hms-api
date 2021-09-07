@@ -54,6 +54,14 @@ public class Prescription {
 
     private Boolean isNew;
     private Boolean isTeleCall = false;
+    private Boolean isRefer = false;
+
+    @ManyToOne
+    private Employee callTo;
+
+    @ManyToOne
+    private HealthCenter referCenter;
+
     private String advice;
 
     @Column(length = 1000)
@@ -237,5 +245,29 @@ public class Prescription {
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
+    }
+
+    public Employee getCallTo() {
+        return callTo;
+    }
+
+    public void setCallTo(Employee callTo) {
+        this.callTo = callTo;
+    }
+
+    public Boolean getRefer() {
+        return isRefer;
+    }
+
+    public void setRefer(Boolean refer) {
+        isRefer = refer;
+    }
+
+    public HealthCenter getReferCenter() {
+        return referCenter;
+    }
+
+    public void setReferCenter(HealthCenter referCenter) {
+        this.referCenter = referCenter;
     }
 }

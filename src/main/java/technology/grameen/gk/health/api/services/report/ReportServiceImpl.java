@@ -285,6 +285,7 @@ public class ReportServiceImpl implements ReportService{
         report.put("deliveryCountStats",reportRepository.getCenterWiseDeliveryCount(regionCode,yearMonth));
         report.put("adultVaccineCountStats",reportRepository.getCenterWiseAdultVaccinationCount(regionCode,yearMonth));
         report.put("childVaccineCountStats",reportRepository.getCenterWiseChildVaccinationCount(regionCode,yearMonth));
+        report.put("referCenterCount",reportRepository.getReferCenterCount(regionCode,yearMonth));
         return report;
     }
 }
