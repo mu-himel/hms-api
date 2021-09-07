@@ -23,7 +23,8 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "    JOIN PATIENTS p2 ON p2.ID = p.PRESCRIPTION_PATIENT_ID \n" +
             "    JOIN HEALTH_CENTERS hc ON hc.ID  = p2.CENTER_ID \n" +
             "    WHERE NVL(hc.THIRD_LEVEL,0) = :regionCode AND p.IS_REFER = 1 " +
-            "AND TO_CHAR(p.CREATED_AT,'YYYY-MM') LIKE :yearMonth||'%'",nativeQuery = true)
+            "AND TO_CHAR(p.CREATED_AT,'YYYY-MM') LIKE :yearMonth||'%' " +
+            "GROUP BY hc.id",nativeQuery = true)
     List<ReferCenterCount> getReferCenterCount(@Param("regionCode") String regionCode,
                                                @Param("yearMonth") String yearMonth);
 
