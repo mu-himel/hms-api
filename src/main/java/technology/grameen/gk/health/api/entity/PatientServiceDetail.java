@@ -38,6 +38,9 @@ public class PatientServiceDetail {
 
     private Boolean isReportGenerated;
 
+    @ManyToOne
+    private DiseaseType diseaseType;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 
@@ -135,5 +138,13 @@ public class PatientServiceDetail {
 
     public void setReportGenerated(Boolean reportGenerated) {
         isReportGenerated = reportGenerated;
+    }
+
+    public DiseaseType getDiseaseType() {
+        return diseaseType;
+    }
+
+    public void setDiseaseType(DiseaseType diseaseType) {
+        this.diseaseType = diseaseType;
     }
 }

@@ -1,6 +1,7 @@
 package technology.grameen.gk.health.api.projection;
 
 import technology.grameen.gk.health.api.entity.CardRegistration;
+import technology.grameen.gk.health.api.entity.DiseaseType;
 import technology.grameen.gk.health.api.entity.PatientServiceDetail;
 
 import java.math.BigDecimal;
@@ -79,6 +80,11 @@ public interface PatientInvoiceDetail {
         ServiceCategory getServiceCategory();
     }
 
+    interface DiseaseType{
+        Long getId();
+        String getName();
+        String getAlias();
+    }
     interface PatientServiceDetail{
         Long getId();
         Service getService();
@@ -90,6 +96,7 @@ public interface PatientInvoiceDetail {
         LocalDateTime getCreatedAt();
         LocalDateTime getLastUpdatedAt();
         Boolean getReportGenerated();
+        DiseaseType getDiseaseType();
     }
 
     Patient getPatient();
