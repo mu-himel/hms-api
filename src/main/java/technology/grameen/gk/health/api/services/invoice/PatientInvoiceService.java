@@ -1,12 +1,11 @@
 package technology.grameen.gk.health.api.services.invoice;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
+import technology.grameen.gk.health.api.entity.Patient;
 import technology.grameen.gk.health.api.entity.PatientInvoice;
 import technology.grameen.gk.health.api.entity.PatientServiceDetail;
 import technology.grameen.gk.health.api.entity.Service;
-import technology.grameen.gk.health.api.projection.PatientInvoiceDetail;
-import technology.grameen.gk.health.api.entity.Patient;
 import technology.grameen.gk.health.api.projection.PatientInvoiceAutoComplete;
+import technology.grameen.gk.health.api.projection.PatientInvoiceDetail;
 import technology.grameen.gk.health.api.projection.PrescriptionInvoiceAutoComplete;
 
 import java.math.BigDecimal;
