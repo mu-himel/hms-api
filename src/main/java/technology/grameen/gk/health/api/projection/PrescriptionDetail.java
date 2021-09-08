@@ -54,6 +54,7 @@ public interface PrescriptionDetail {
         Boolean getGB();
         CardRegistration getRegistration();
         CardMember getCardMember();
+        String getPid();
     }
 
     interface Employee{
