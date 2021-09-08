@@ -96,7 +96,6 @@ public class AccountController {
     @GetMapping("/by-module/{moduleName}")
     public ResponseEntity<IResponse> getAlias(@PathVariable("moduleName") String moduleName,
                                               @RequestHeader("Authorization") String token){
-        System.out.println(token);
         EntityCollectionResponse alias =  accountService.getAlias(moduleName,token);
         return new ResponseEntity<>(alias,HttpStatus.OK);
     }

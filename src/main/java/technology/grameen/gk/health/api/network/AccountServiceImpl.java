@@ -1,6 +1,10 @@
 package technology.grameen.gk.health.api.network;
 
 
+import org.keycloak.adapters.springsecurity.client.KeycloakRestTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.http.*;
@@ -23,8 +27,14 @@ import java.time.LocalDateTime;
 @PropertySource(value = "classpath:application.properties")
 public class AccountServiceImpl implements AccountService{
 
+    private final Logger logger = LoggerFactory.getLogger(AccountServiceImpl.class);
+
     private HttpHeaders httpHeaders;
     private RestTemplate restTemplate;
+
+    @Autowired
+    private KeycloakRestTemplate template;
+
     private Environment env;
     private VoucherService voucherService;
     private PatientInvoiceService patientInvoiceService;
@@ -54,7 +64,7 @@ public class AccountServiceImpl implements AccountService{
         HttpEntity<VoucherSendRequest> requestBody = new HttpEntity<>(req,httpHeaders);
         VoucherSendResponse body = null;
         try {
-            response = restTemplate.exchange(accountsUrl, HttpMethod.POST, requestBody, VoucherSendResponse.class);
+            response = template.exchange(accountsUrl, HttpMethod.POST, requestBody, VoucherSendResponse.class);
             body = response.getBody();
 
             updateVoucher(voucher,body);
@@ -101,18 +111,20 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     public EntityCollectionResponse getAlias(String moduleName, String token) {
-        System.out.println("HERE =========================");
+
         String _token = token.replace("Bearer","").trim();
-        System.out.println(_token);
+        logger.info("TOKEN :"+_token);
+        logger.info("MODULE :"+moduleName);
         String accountsUrl = env.getProperty("accounts")+env.getProperty("get-auto-voucher-alias")+moduleName;
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.add("Authorization","Bearer "+_token);
-        HttpEntity<MultiValueMap<String, Object>> requestBody = new HttpEntity<>(httpHeaders);
+//        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+//        httpHeaders.add("Authorization","Bearer "+_token);
+//        HttpEntity<MultiValueMap<String, Object>> requestBody = new HttpEntity<>(httpHeaders);
         ResponseEntity<EntityCollectionResponse> response = null;
         EntityCollectionResponse body = null;
         try {
-            response = restTemplate.exchange(accountsUrl,HttpMethod.GET,  requestBody,EntityCollectionResponse.class);
+            response = template.getForEntity(accountsUrl,EntityCollectionResponse.class);
             body = response.getBody();
+            logger.info(body.toString());
 
 
         }catch (HttpClientErrorException ex){
