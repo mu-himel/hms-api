@@ -26,4 +26,9 @@ public class DiseaseProfileServiceImpl implements DiseaseProfileService{
     public List<DiseaseProfileRepository.DiseaseProfileSimple> getAll(DiseaseType diseaseType) {
         return diseaseProfileRepository.findByDiseaseType(diseaseType);
     }
+
+    @Override
+    public List<DiseaseProfileRepository.DiseaseProfileSimple> getAll() {
+        return diseaseProfileRepository.findAllProfiles();
+    }
 }

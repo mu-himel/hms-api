@@ -21,7 +21,15 @@ public class DiseaseProfileController {
         this.diseaseProfileService = diseaseProfileService;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("")
+    public ResponseEntity<IResponse> getAll(){
+        return new ResponseEntity<>(new EntityCollectionResponse<>(
+                HttpStatus.OK.value(),
+                diseaseProfileService.getAll()
+        ), HttpStatus.OK);
+    }
+
+    @GetMapping("/by-type/{id}")
     public ResponseEntity<IResponse> getAll(@PathVariable("id") Long id){
         return new ResponseEntity<>(new EntityCollectionResponse<>(
                 HttpStatus.OK.value(),

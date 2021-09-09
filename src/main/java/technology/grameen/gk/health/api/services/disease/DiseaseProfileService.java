@@ -11,4 +11,6 @@ public interface DiseaseProfileService {
     DiseaseProfile addDiseaseProfile(DiseaseProfile diseaseProfile);
 
     List<DiseaseProfileRepository.DiseaseProfileSimple> getAll(DiseaseType diseaseType);
+
+    List<DiseaseProfileRepository.DiseaseProfileSimple> getAll();
 }
