@@ -1,5 +1,7 @@
 package technology.grameen.gk.health.api.services.prescription;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class PrescriptionServiceImpl implements PrescriptionService {
+
+    private static final Logger logger = LoggerFactory.getLogger(PrescriptionServiceImpl.class);
 
     private PrescriptionRepository prescriptionRepository;
     private FamilyHistoryRepository familyHistoryRepository;
@@ -50,11 +54,11 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     public Prescription savePrescription(Prescription prescription) {
 
 
-
+        prescription.setpNumber(getPrescriptionNumber(prescription.getCenter()));
 
         Prescription newPrescription = prescriptionRepository.save(prescription);
 
-        newPrescription.setpNumber(getPrescriptionNumber(prescription.getCenter()));
+
         FamilyHistory familyHistory = prescription.getFamilyHistory();
         PersonalHistory personalHistory = prescription.getPersonalHistory();
         GeneralExamination generalExamination = prescription.getGeneralExamination();
@@ -127,14 +131,21 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         return prescriptionRepository.findAllPrescriptions(pNumber, fullName, date, pageable);
     }
 
+    @Transactional
     String getPrescriptionNumber(HealthCenter center){
         Calendar calendar = Calendar.getInstance();
         int year = (calendar.get(Calendar.YEAR));
         int month = (calendar.get(Calendar.MONTH));
         int date = (calendar.get(Calendar.DATE));
-
+        Long maxId = 0L;
+        try {
+            maxId = prescriptionRepository.getMaxId(422L);
+            maxId++;
+        }catch(Exception ex){
+            logger.error(ex.getLocalizedMessage());
+        }
         return center.getCenterCode()+"-"+ year + (((month+1)<10)? "0"+(month+1) :
-                (month+1)) + ((date<10)? "0"+date : date);
+                (month+1)) + ((date<10)? "0"+date : date)+"-"+maxId;
     }
 
     @Override

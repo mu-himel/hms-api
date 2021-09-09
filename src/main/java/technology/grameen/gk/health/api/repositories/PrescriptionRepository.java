@@ -87,5 +87,7 @@ public interface PrescriptionRepository extends JpaRepository<Prescription,Long>
 
     Optional<PrescriptionDetail> findByPrescriptionPatientAndPatientInvoice(Patient patient, PatientInvoice invoice);
 
+    @Query(value = "SELECT MAX(p.id) from prescriptions p WHERE p.center_id=:centerId", nativeQuery = true)
+    Long getMaxId(@Param("centerId") Long centerId);
 
 }
