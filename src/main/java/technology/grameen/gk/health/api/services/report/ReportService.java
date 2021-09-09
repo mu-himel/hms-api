@@ -7,6 +7,7 @@ import technology.grameen.gk.health.api.projection.MonthlyStatisticalReport;
 import technology.grameen.gk.health.api.projection.ServiceRecord;
 import technology.grameen.gk.health.api.projection.event.schedule.HCenter;
 import technology.grameen.gk.health.api.repositories.EventRepository;
+import technology.grameen.gk.health.api.repositories.report.LabTestReportRepository;
 import technology.grameen.gk.health.api.requests.ServiceRecordSearch;
 import technology.grameen.gk.health.api.responses.ServiceRecordResponse;
 import technology.grameen.gk.health.api.services.PatientManageService;
@@ -33,4 +34,6 @@ public interface ReportService {
     List<EventRepository.EventSchedule> getSatteliteSchedule(String orElse, String orElse1) throws CustomException;
 
     Map<String, Object> getMonthlyStatisticalReport(String yearMonth,String regionCode);
+
+    List<LabTestReportRepository.MonthlyLabTestReport> getMonthlyLabTestReport(String regionCode, String yearMonth);
 }

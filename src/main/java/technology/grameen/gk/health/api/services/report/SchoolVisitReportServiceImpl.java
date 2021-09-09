@@ -1,10 +1,9 @@
 package technology.grameen.gk.health.api.services.report;
 
 import org.springframework.stereotype.Service;
-import technology.grameen.gk.health.api.repositories.ReportRepository;
+import technology.grameen.gk.health.api.repositories.report.ReportRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class SchoolVisitReportServiceImpl implements SchoolVisitReportService{

@@ -112,4 +112,19 @@ public class ReportController {
                 ), HttpStatus.OK
         );
     }
+
+    @GetMapping("/monthly-lab-report")
+    public ResponseEntity<IResponse> getMonthlyLabReport(@RequestParam Optional<String> regionCode,
+                                                         @RequestParam Optional<String> month){
+
+        return new ResponseEntity<>(
+                new EntityResponse<>(
+                        HttpStatus.OK.value(),
+                        reportService.getMonthlyLabTestReport(regionCode.orElse(""),
+                                month.orElse(""))
+                ),
+                HttpStatus.OK
+        );
+
+    }
 }

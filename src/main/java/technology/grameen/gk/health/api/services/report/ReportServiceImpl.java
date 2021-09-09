@@ -4,13 +4,13 @@ import org.springframework.stereotype.Service;
 import technology.grameen.gk.health.api.entity.HealthCenter;
 import technology.grameen.gk.health.api.exceptions.CustomException;
 import technology.grameen.gk.health.api.projection.MonthWiseReceived;
-import technology.grameen.gk.health.api.projection.MonthlyStatisticalReport;
 import technology.grameen.gk.health.api.projection.ServiceRecord;
 import technology.grameen.gk.health.api.projection.event.schedule.Event;
 import technology.grameen.gk.health.api.projection.event.schedule.EventCategory;
 import technology.grameen.gk.health.api.projection.event.schedule.HCenter;
 import technology.grameen.gk.health.api.repositories.EventRepository;
-import technology.grameen.gk.health.api.repositories.ReportRepository;
+import technology.grameen.gk.health.api.repositories.report.LabTestReportRepository;
+import technology.grameen.gk.health.api.repositories.report.ReportRepository;
 import technology.grameen.gk.health.api.repositories.ServiceRecordRepository;
 import technology.grameen.gk.health.api.requests.ServiceRecordSearch;
 import technology.grameen.gk.health.api.responses.ServiceRecordResponse;
@@ -18,7 +18,6 @@ import technology.grameen.gk.health.api.services.HealthCenterService;
 import technology.grameen.gk.health.api.services.PatientManageService;
 import technology.grameen.gk.health.api.services.event.EventService;
 
-import java.text.DateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -31,6 +30,7 @@ public class ReportServiceImpl implements ReportService{
     EventService eventService;
     ReportRepository reportRepository;
     SchoolVisitReportService schoolVisitReportService;
+    LabTestReportRepository labTestReportRepository;
 
 
     ReportServiceImpl(ServiceRecordRepository serviceRecordRepository,
@@ -38,13 +38,15 @@ public class ReportServiceImpl implements ReportService{
                       HealthCenterService healthCenterService,
                       EventService eventService,
                       ReportRepository reportRepository,
-                      SchoolVisitReportService schoolVisitReportService){
+                      SchoolVisitReportService schoolVisitReportService,
+                      LabTestReportRepository labTestReportRepository){
         this.serviceRecordRepository = serviceRecordRepository;
         this.patientManageService = patientManageService;
         this.healthCenterService = healthCenterService;
         this.eventService = eventService;
         this.reportRepository = reportRepository;
         this.schoolVisitReportService = schoolVisitReportService;
+        this.labTestReportRepository = labTestReportRepository;
     }
 
 
@@ -287,5 +289,10 @@ public class ReportServiceImpl implements ReportService{
         report.put("childVaccineCountStats",reportRepository.getCenterWiseChildVaccinationCount(regionCode,yearMonth));
         report.put("referCenterCount",reportRepository.getReferCenterCount(regionCode,yearMonth));
         return report;
+    }
+
+    @Override
+    public List<LabTestReportRepository.MonthlyLabTestReport> getMonthlyLabTestReport(String regionCode, String yearMonth) {
+        return labTestReportRepository.getMonthlyLabTestReport(regionCode,yearMonth);
     }
 }

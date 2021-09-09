@@ -1,6 +1,6 @@
 package technology.grameen.gk.health.api.services.report;
 
-import technology.grameen.gk.health.api.repositories.ReportRepository;
+import technology.grameen.gk.health.api.repositories.report.ReportRepository;
 
 import java.util.List;
 
