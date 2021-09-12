@@ -36,6 +36,7 @@ public class Prescription {
     private LocalDateTime nextVisitDate;
 
     private String symptoms;
+    private String diseaseProfile;
 
     @OneToOne(mappedBy = "prescription")
     private FamilyHistory familyHistory;
@@ -269,5 +270,13 @@ public class Prescription {
 
     public void setReferCenter(HealthCenter referCenter) {
         this.referCenter = referCenter;
+    }
+
+    public String getDiseaseProfile() {
+        return diseaseProfile;
+    }
+
+    public void setDiseaseProfile(String diseaseProfile) {
+        this.diseaseProfile = diseaseProfile;
     }
 }

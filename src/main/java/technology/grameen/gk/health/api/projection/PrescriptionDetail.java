@@ -80,6 +80,7 @@ public interface PrescriptionDetail {
     List<RecommendedMedicine> getRecommendedMedicines();
     List<RecommendedTest> getRecommendedTests();
     String getSymptoms();
+    String getDiseaseProfile();
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     LocalDateTime getVisitDate();
