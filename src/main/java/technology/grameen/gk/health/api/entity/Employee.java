@@ -30,6 +30,9 @@ public class Employee {
     @ManyToOne(fetch = FetchType.LAZY)
     private HealthCenter center;
 
+    @OneToOne(mappedBy = "employee")
+    private EmployeeDetail employeeDetail;
+
     @OneToMany(mappedBy = "createdBy")
     @JsonBackReference(value = "patients")
     private Set<Patient> patients;
@@ -200,5 +203,13 @@ public class Employee {
 
     public void setEmployeeCode(String employeeCode) {
         this.employeeCode = employeeCode;
+    }
+
+    public EmployeeDetail getEmployeeDetail() {
+        return employeeDetail;
+    }
+
+    public void setEmployeeDetail(EmployeeDetail employeeDetail) {
+        this.employeeDetail = employeeDetail;
     }
 }

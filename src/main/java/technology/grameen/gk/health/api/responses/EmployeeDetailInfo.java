@@ -1,13 +1,11 @@
 package technology.grameen.gk.health.api.responses;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import technology.grameen.gk.health.api.entity.HealthCenter;
-import technology.grameen.gk.health.api.entity.JobHistory;
 
 import java.time.LocalDate;
 import java.util.Set;
 
-public interface EmployeeDetail {
+public interface EmployeeDetailInfo {
     Long getId();
     String getFullName();
 
@@ -30,6 +28,21 @@ public interface EmployeeDetail {
         @JsonFormat(pattern = "yyyy-MM-dd")
         LocalDate getJoinDate();
     }
+
+    interface Employee{
+        Long getId();
+    }
+
+    interface EmployeeDetail {
+        Long getId();
+        String getBmdcRegNumber();
+        String getAvailableDay();
+        String getSpeciality();
+        String getPrescriptionDegreeInst();
+        Employee getEmployee();
+    }
+
+    EmployeeDetail getEmployeeDetail();
     Set<JobHistory> getJobHistories();
     String getDesignation();
 }

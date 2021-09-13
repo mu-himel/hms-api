@@ -10,6 +10,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import technology.grameen.gk.health.api.entity.Employee;
+import technology.grameen.gk.health.api.entity.EmployeeDetail;
 import technology.grameen.gk.health.api.entity.HealthCenter;
 import technology.grameen.gk.health.api.entity.JobHistory;
 import technology.grameen.gk.health.api.requests.EmployeeSyncRequestForAll;
@@ -77,10 +78,10 @@ public class EmployeeController {
     @RequestMapping("/add")
     public ResponseEntity<IResponse> addEmployee(@RequestBody Employee req,
                                                 @RequestHeader("Authorization") String authorization){
-        if(authorization.isEmpty()){
-            return new ResponseEntity<>(new ExceptionResponse(HttpStatus.UNAUTHORIZED.value(), "Token not exist"),
-                    HttpStatus.UNAUTHORIZED);
-        }
+//        if(authorization.isEmpty()){
+//            return new ResponseEntity<>(new ExceptionResponse(HttpStatus.UNAUTHORIZED.value(), "Token not exist"),
+//                    HttpStatus.UNAUTHORIZED);
+//        }
         Optional<HealthCenter> center = centerService.findById(req.getCenter().getId());
 
         if(!center.isPresent()){
@@ -91,6 +92,14 @@ public class EmployeeController {
 
         return new ResponseEntity<>(new EntityResponse<>(HttpStatus.OK.value(),
                     employeeService.addEmployee(req)),HttpStatus.OK);
+    }
+
+    @PostMapping("/update-detail")
+    public ResponseEntity<IResponse> addEmployeeDetail(@RequestBody EmployeeDetail employeeDetail){
+        return new ResponseEntity<>(new EntityResponse<>(
+                HttpStatus.OK.value(),
+                employeeService.getEmployeeDetailService().save(employeeDetail)
+        ), HttpStatus.OK);
     }
 
     @GetMapping("/api-id/{apiEmployeeId}")

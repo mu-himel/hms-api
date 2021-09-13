@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import technology.grameen.gk.health.api.entity.Employee;
 import technology.grameen.gk.health.api.entity.HealthCenter;
 import technology.grameen.gk.health.api.projection.EmployeeItem;
-import technology.grameen.gk.health.api.repositories.EmployeeRepository;
-import technology.grameen.gk.health.api.responses.EmployeeDetail;
+import technology.grameen.gk.health.api.repositories.employee.EmployeeRepository;
+import technology.grameen.gk.health.api.responses.EmployeeDetailInfo;
 import technology.grameen.gk.health.api.responses.EntityResponse;
 import technology.grameen.gk.health.api.responses.IResponse;
 import technology.grameen.gk.health.api.responses.SimpleResponse;
@@ -22,10 +22,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private EmployeeRepository employeeRepository;
     private JobHistoryService jobHistoryService;
+    private EmployeeDetailService employeeDetailService;
 
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository, JobHistoryService jobHistoryService) {
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository,
+                               JobHistoryService jobHistoryService,
+                               EmployeeDetailService employeeDetailService) {
         this.employeeRepository = employeeRepository;
         this.jobHistoryService = jobHistoryService;
+        this.employeeDetailService = employeeDetailService;
     }
 
     @Override
@@ -41,6 +45,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     public JobHistoryService getJobHistoryService() {
         return jobHistoryService;
+    }
+
+    @Override
+    public EmployeeDetailService getEmployeeDetailService() {
+        return employeeDetailService;
     }
 
     @Override
@@ -89,7 +98,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Optional<EmployeeDetail> getEmployeeById(Long employeeId) {
+    public Optional<EmployeeDetailInfo> getEmployeeById(Long employeeId) {
         return employeeRepository.findByEmployeeId(employeeId);
     }
 }
