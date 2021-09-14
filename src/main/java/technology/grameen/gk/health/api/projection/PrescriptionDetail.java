@@ -14,9 +14,17 @@ public interface PrescriptionDetail {
         String getCenterCode();
     }
 
+    interface EmployeeDetail{
+        Long getId();
+        String getBmdcRegNumber();
+        String getPrescriptionDegreeInst();
+    }
+
     interface Doctor{
         Long getId();
         String getFullName();
+        String getDesignation();
+        EmployeeDetail getEmployeeDetail();
     }
 
     interface Service{
