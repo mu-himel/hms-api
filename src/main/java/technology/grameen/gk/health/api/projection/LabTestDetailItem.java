@@ -111,6 +111,8 @@ public interface LabTestDetailItem {
 
      Employee getCheckBy();
 
+     Employee getCreatedBy();
+
      @JsonFormat(pattern = "yyyy-MM-dd")
      LocalDate getDeliveryDate();
      String getStatus();
