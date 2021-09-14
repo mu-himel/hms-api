@@ -30,6 +30,27 @@ public interface LabTestDetailItem {
         CardMember getCardMember();
     }
 
+    interface EmployeeDetail{
+        Long getId();
+        String getBmdcRegNumber();
+        String getPrescriptionDegreeInst();
+    }
+
+    interface Center{
+        Long getId();
+        String getName();
+        String getAddress();
+        String getCenterCode();
+    }
+
+    interface Employee{
+        Long getId();
+        String getFullName();
+        String getDesignation();
+        EmployeeDetail getEmployeeDetail();
+        Center getCenter();
+    }
+
     interface PatientInvoice{
         Long getId();
         String getInvoiceNumber();
@@ -87,6 +108,8 @@ public interface LabTestDetailItem {
 
      @JsonFormat(pattern = "yyyy-MM-dd")
      LocalDateTime getCreatedAt();
+
+     Employee getCheckBy();
 
      @JsonFormat(pattern = "yyyy-MM-dd")
      LocalDate getDeliveryDate();

@@ -31,7 +31,7 @@ public interface EmployeeRepository extends JpaRepository<Employee,Long> {
     Optional<Employee> findByApiEmployeeId(@Param("id") Long id);
 
     @Query("Select e from Employee e JOIN FETCH e.center c " +
-            "JOIN FETCH e.employeeDetail ed LEFT JOIN FETCH e.jobHistories jh WHERE  e.id=:id")
+            "LEFT JOIN FETCH e.employeeDetail ed LEFT JOIN FETCH e.jobHistories jh WHERE  e.id=:id")
     Optional<EmployeeDetailInfo> findByEmployeeId(@Param("id") Long id);
 
     @Query(value = "SELECT COUNT(e.id) FROM Employee e WHERE e.apiEmployeeId=:id")
