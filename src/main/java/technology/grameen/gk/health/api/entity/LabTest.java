@@ -50,6 +50,9 @@ public class LabTest {
     @JoinColumn(name = "created_by", referencedColumnName = "id")
     private Employee createdBy;
 
+    @ManyToOne
+    private Employee checkBy;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 
@@ -174,5 +177,13 @@ public class LabTest {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Employee getCheckBy() {
+        return checkBy;
+    }
+
+    public void setCheckBy(Employee checkBy) {
+        this.checkBy = checkBy;
     }
 }
