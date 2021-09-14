@@ -181,6 +181,15 @@ public class EmployeeController {
         ), HttpStatus.OK);
     }
 
+    @GetMapping("/{designation}/{centerId}")
+    public ResponseEntity<IResponse> getByDesignation(@PathVariable("designation") String designation,
+                                                      @PathVariable("centerId") Long centerId){
+        return new ResponseEntity<>(new EntityCollectionResponse<>(
+                HttpStatus.OK.value(),
+                employeeService.getEmployeeByDesignationAndCenter(designation, centerId)
+        ), HttpStatus.OK);
+    }
+
     @PostMapping("/assign-job-responsibility")
     public ResponseEntity<IResponse> assignResponsibility(@RequestBody JobHistory jobHistory){
         return new ResponseEntity<>(new EntityResponse<>(

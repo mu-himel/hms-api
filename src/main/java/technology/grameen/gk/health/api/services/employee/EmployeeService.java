@@ -31,4 +31,6 @@ public interface EmployeeService {
     List<EmployeeItem> getEmployeeByDesignation(String designation);
 
     Optional<EmployeeDetailInfo> getEmployeeById(Long employeeId);
+
+    List<EmployeeItem> getEmployeeByDesignationAndCenter(String designation, Long centerId);
 }

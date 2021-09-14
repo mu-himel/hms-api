@@ -61,6 +61,12 @@ public class HealthCenter {
     @UpdateTimestamp
     private LocalDateTime lastUpdatedAt;
 
+    public HealthCenter(){}
+
+    public HealthCenter(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }

@@ -98,6 +98,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public List<EmployeeItem> getEmployeeByDesignationAndCenter(String designation, Long centerId) {
+        return employeeRepository.findAllByDesignationContainingIgnoreCaseAndCenter(designation,
+                                            new HealthCenter(centerId));
+    }
+
+    @Override
     public Optional<EmployeeDetailInfo> getEmployeeById(Long employeeId) {
         return employeeRepository.findByEmployeeId(employeeId);
     }
