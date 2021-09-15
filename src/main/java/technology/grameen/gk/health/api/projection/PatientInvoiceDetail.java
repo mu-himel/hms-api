@@ -76,6 +76,7 @@ public interface PatientInvoiceDetail {
     interface Service{
         Long getServiceId();
         String getName();
+        String getServiceCode();
         Boolean getLabTest();
         ServiceCategory getServiceCategory();
     }

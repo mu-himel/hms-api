@@ -39,6 +39,7 @@ public class Service {
     private String name;
 
     private String code;
+    private String serviceCode;
     private BigDecimal currentCost;
     private BigDecimal currentGbCost;
     private String description;
@@ -227,5 +228,13 @@ public class Service {
             labTest.setService(this);
             this.labTests.add(labTest);
         }
+    }
+
+    public String getServiceCode() {
+        return serviceCode;
+    }
+
+    public void setServiceCode(String serviceCode) {
+        this.serviceCode = serviceCode;
     }
 }
