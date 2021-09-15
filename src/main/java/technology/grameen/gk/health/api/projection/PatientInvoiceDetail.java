@@ -1,5 +1,6 @@
 package technology.grameen.gk.health.api.projection;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import technology.grameen.gk.health.api.entity.CardRegistration;
 import technology.grameen.gk.health.api.entity.DiseaseType;
 import technology.grameen.gk.health.api.entity.PatientServiceDetail;
@@ -14,6 +15,11 @@ public interface PatientInvoiceDetail {
     String getInvoiceNumber();
     BigDecimal getPaidAmount();
     BigDecimal getPayableAmount();
+
+    @JsonFormat(pattern = "YYYY-MM-dd")
+    LocalDateTime getCreatedAt();
+
+
 
     interface CardMemberCardRegistration{
         Long getId();
@@ -101,6 +107,20 @@ public interface PatientInvoiceDetail {
     }
 
     Patient getPatient();
+
+    interface EmployeeDetail{
+        Long getId();
+        String getBmdcRegNumber();
+        String getPrescriptionDegreeInst();
+    }
+
+    interface Employee{
+        Long getId();
+        String getFullName();
+        EmployeeDetail getEmployeeDetail();
+    }
+
+    Employee getCreatedBy();
 
     Set<PatientServiceDetail> getPatientServiceDetails();
 
