@@ -3,7 +3,7 @@ package technology.grameen.gk.health.api.services;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import technology.grameen.gk.health.api.entity.ServiceCategory;
-import technology.grameen.gk.health.api.repositories.ServiceCategoryRepository;
+import technology.grameen.gk.health.api.repositories.lookup.ServiceCategoryRepository;
 
 import java.util.List;
 import java.util.Optional;

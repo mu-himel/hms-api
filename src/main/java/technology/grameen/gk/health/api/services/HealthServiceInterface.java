@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable;
 import technology.grameen.gk.health.api.entity.ServiceCategory;
 import technology.grameen.gk.health.api.projection.ServiceListItem;
 import technology.grameen.gk.health.api.entity.Service;
-import technology.grameen.gk.health.api.repositories.ServiceRepository;
+import technology.grameen.gk.health.api.repositories.lookup.ServiceRepository;
 
 import java.util.List;
 import java.util.Optional;

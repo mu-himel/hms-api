@@ -9,7 +9,7 @@ import technology.grameen.gk.health.api.entity.LabTestUnit;
 import technology.grameen.gk.health.api.entity.Service;
 import technology.grameen.gk.health.api.entity.ServiceCategory;
 import technology.grameen.gk.health.api.repositories.LabTestAttributeRepository;
-import technology.grameen.gk.health.api.repositories.ServiceRepository;
+import technology.grameen.gk.health.api.repositories.lookup.ServiceRepository;
 
 import java.util.List;
 import java.util.Optional;

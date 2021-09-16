@@ -11,6 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class GkHealthApiApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(GkHealthApiApplication.class, args);
 	}
 

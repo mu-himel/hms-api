@@ -5,8 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import technology.grameen.gk.health.api.entity.MedicineGroup;
-import technology.grameen.gk.health.api.repositories.MedicineBrandRepository;
-import technology.grameen.gk.health.api.repositories.MedicineGroupRepository;
+import technology.grameen.gk.health.api.repositories.lookup.MedicineGroupRepository;
 
 import java.util.List;
 import java.util.Optional;

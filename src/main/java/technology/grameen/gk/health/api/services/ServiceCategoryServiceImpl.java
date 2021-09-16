@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import technology.grameen.gk.health.api.entity.ServiceCategory;
-import technology.grameen.gk.health.api.repositories.ServiceCategoryRepository;
+import technology.grameen.gk.health.api.repositories.lookup.ServiceCategoryRepository;
 
 import java.util.List;
 import java.util.Optional;

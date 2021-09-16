@@ -3,7 +3,7 @@ package technology.grameen.gk.health.api.services.disease;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import technology.grameen.gk.health.api.entity.DiseaseType;
-import technology.grameen.gk.health.api.repositories.DiseaseTypeRepository;
+import technology.grameen.gk.health.api.repositories.lookup.DiseaseTypeRepository;
 
 import java.util.List;
 

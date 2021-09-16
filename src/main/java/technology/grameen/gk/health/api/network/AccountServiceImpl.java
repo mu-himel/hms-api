@@ -24,7 +24,7 @@ import technology.grameen.gk.health.api.services.voucher.VoucherService;
 import java.time.LocalDateTime;
 
 @Service
-@PropertySource(value = "classpath:application.properties")
+@PropertySource(value = "classpath:application-dev.properties")
 public class AccountServiceImpl implements AccountService{
 
     private final Logger logger = LoggerFactory.getLogger(AccountServiceImpl.class);

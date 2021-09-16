@@ -1,4 +1,4 @@
-package technology.grameen.gk.health.api.repositories;
+package technology.grameen.gk.health.api.repositories.lookup;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
