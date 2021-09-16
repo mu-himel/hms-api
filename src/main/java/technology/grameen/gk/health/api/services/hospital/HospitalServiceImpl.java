@@ -8,6 +8,7 @@ import technology.grameen.gk.health.api.entity.Hospital;
 import technology.grameen.gk.health.api.repositories.lookup.HospitalRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class HospitalServiceImpl implements HospitalService{
@@ -35,5 +36,10 @@ public class HospitalServiceImpl implements HospitalService{
             return hospitalRepository.findAll(pageable);
         }
         return hospitalRepository.findAllByNameContainingIgnoreCase(name,pageable);
+    }
+
+    @Override
+    public Optional<Hospital> getById(Long id) {
+        return hospitalRepository.findById(id);
     }
 }

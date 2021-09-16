@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import technology.grameen.gk.health.api.entity.Hospital;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface HospitalService {
 
@@ -13,4 +14,6 @@ public interface HospitalService {
     List<Hospital> getHospitals();
 
     Page<Hospital> getHospitals(String name,Pageable pageable);
+
+    Optional<Hospital> getById(Long id);
 }

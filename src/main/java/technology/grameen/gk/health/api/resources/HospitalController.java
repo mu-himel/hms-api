@@ -66,4 +66,12 @@ public class HospitalController {
                 hospitalService.addHospital(hospital)
         ),HttpStatus.OK);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<IResponse> getById(@PathVariable("id") Long id){
+        return new ResponseEntity<>(new EntityResponse<>(
+                HttpStatus.OK.value(),
+                hospitalService.getById(id)
+        ), HttpStatus.OK);
+    }
 }
