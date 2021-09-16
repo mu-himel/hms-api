@@ -59,7 +59,7 @@ public class EmployeeController {
 
         Sort sort = null;
 
-        if(!_sortBy.isEmpty()) {
+        if(_sortBy!=null && !_sortBy.isEmpty()) {
             sort =   (sortDesc.orElse(false)) ? Sort.by(_sortBy).descending()
                     : Sort.by(_sortBy).ascending();
         }
