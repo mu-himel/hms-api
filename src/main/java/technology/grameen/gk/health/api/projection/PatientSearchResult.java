@@ -105,12 +105,18 @@ public interface PatientSearchResult {
 
         }
 
+        interface HealthCenter{
+           Long getId();
+           String getName();
+           String getCenterCode();
+        }
 
 
         Long getId();
         String getPid();
         String getFullName();
         Village getVillage();
+        HealthCenter getCenter();
         String getStreetAddress();
         String getGuardianName();
         String getMotherName();
