@@ -1,5 +1,7 @@
 package technology.grameen.gk.health.api.services.hospital;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import technology.grameen.gk.health.api.entity.Hospital;
@@ -25,5 +27,13 @@ public class HospitalServiceImpl implements HospitalService{
     @Override
     public List<Hospital> getHospitals() {
         return hospitalRepository.findAll();
+    }
+
+    @Override
+    public Page<Hospital> getHospitals(String name,Pageable pageable) {
+        if(name.isEmpty()){
+            return hospitalRepository.findAll(pageable);
+        }
+        return hospitalRepository.findAllByNameContainingIgnoreCase(name,pageable);
     }
 }

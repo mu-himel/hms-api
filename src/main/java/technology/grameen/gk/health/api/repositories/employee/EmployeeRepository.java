@@ -17,8 +17,8 @@ import java.util.Optional;
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee,Long> {
 
-    @Query(value = "SELECT e from Employee e JOIN FETCH e.center c",
-    countQuery = "SELECT count(*) from Employee e")
+    @Query(value = "SELECT e from Employee e JOIN FETCH e.center c LEFT JOIN FETCH e.employeeDetail ed",
+    countQuery = "SELECT count(*) from Employee e JOIN e.center c LEFT JOIN e.employeeDetail ed")
     Page<EmployeeItem> findAllEmployee(Pageable pageable);
 
     Page<EmployeeItem> findAllByCenterId(Long centerId,Pageable pageable);
