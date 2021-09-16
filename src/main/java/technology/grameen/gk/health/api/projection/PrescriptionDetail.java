@@ -107,6 +107,6 @@ public interface PrescriptionDetail {
     Boolean getRefer();
     Employee getCallTo();
 
-    HealthCenter getReferCenter();
+    Hospital getReferHospital();
     Invoice getPatientInvoice();
 }

@@ -61,7 +61,7 @@ public class Prescription {
     private Employee callTo;
 
     @ManyToOne
-    private HealthCenter referCenter;
+    private Hospital referHospital;
 
     private String advice;
 
@@ -264,12 +264,12 @@ public class Prescription {
         isRefer = refer;
     }
 
-    public HealthCenter getReferCenter() {
-        return referCenter;
+    public Hospital getReferHospital() {
+        return referHospital;
     }
 
-    public void setReferCenter(HealthCenter referCenter) {
-        this.referCenter = referCenter;
+    public void setReferHospital(Hospital referHospital) {
+        this.referHospital = referHospital;
     }
 
     public String getDiseaseProfile() {
