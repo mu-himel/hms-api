@@ -28,7 +28,7 @@ public interface EmployeeRepository extends JpaRepository<Employee,Long> {
     Page<EmployeeItem> findAllByEmailContainingIgnoreCase(String email,Pageable pageable);
 
     @Query("Select e from Employee e WHERE  e.apiEmployeeId=:id")
-    Optional<Employee> findByApiEmployeeId(@Param("id") Long id);
+    Optional<EmployeeDetailInfo> findByApiEmployeeId(@Param("id") Long id);
 
     @Query("Select e from Employee e JOIN FETCH e.center c " +
             "LEFT JOIN FETCH e.employeeDetail ed LEFT JOIN FETCH e.jobHistories jh WHERE  e.id=:id")
