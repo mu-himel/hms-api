@@ -28,6 +28,8 @@ public class PatientServiceDetail {
 
     private Integer roomNumber;
 
+    private String referredDoctor;
+
     private Integer serviceQty;
 
     private BigDecimal serviceAmount;
@@ -146,5 +148,13 @@ public class PatientServiceDetail {
 
     public void setDiseaseType(DiseaseType diseaseType) {
         this.diseaseType = diseaseType;
+    }
+
+    public String getReferredDoctor() {
+        return referredDoctor;
+    }
+
+    public void setReferredDoctor(String referredDoctor) {
+        this.referredDoctor = referredDoctor;
     }
 }
