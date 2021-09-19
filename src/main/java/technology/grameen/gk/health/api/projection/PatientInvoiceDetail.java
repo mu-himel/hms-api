@@ -96,6 +96,7 @@ public interface PatientInvoiceDetail {
         Long getId();
         Service getService();
         Integer getRoomNumber();
+        String getReferredDoctor();
         Integer getServiceQty();
         BigDecimal getServiceAmount();
         BigDecimal getDiscountAmount();

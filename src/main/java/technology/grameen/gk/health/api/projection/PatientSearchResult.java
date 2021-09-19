@@ -31,6 +31,7 @@ public interface PatientSearchResult {
                 Service getService();
                 Integer getServiceQty();
                 Integer getRoomNumber();
+                String getReferredDoctor();
                 BigDecimal getServiceAmount();
                 BigDecimal getDiscountAmount();
                 BigDecimal getPayableAmount();
