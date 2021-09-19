@@ -60,6 +60,7 @@ public interface PrescriptionDetail {
         String getAge();
         String getGender();
         Boolean getGB();
+        String getMobileNumber();
         CardRegistration getRegistration();
         CardMember getCardMember();
         String getPid();

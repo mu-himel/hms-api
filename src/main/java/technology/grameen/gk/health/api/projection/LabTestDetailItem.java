@@ -26,6 +26,7 @@ public interface LabTestDetailItem {
         String getAge();
         String getGender();
         Boolean getGB();
+        String getMobileNumber();
         CardRegistration getRegistration();
         CardMember getCardMember();
     }
