@@ -26,7 +26,7 @@ public class GeneralSettingController {
         ), HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/add")
     public ResponseEntity<IResponse> addGeneralSetting(@RequestBody GeneralSetting generalSetting){
         return new ResponseEntity<>(new EntityResponse<>(
                 HttpStatus.OK.value(),
