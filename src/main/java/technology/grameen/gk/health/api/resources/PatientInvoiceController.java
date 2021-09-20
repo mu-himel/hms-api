@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import technology.grameen.gk.health.api.entity.PatientInvoice;
+import technology.grameen.gk.health.api.notification.sms.SmsService;
 import technology.grameen.gk.health.api.projection.PatientInvoiceDetail;
 import technology.grameen.gk.health.api.entity.Patient;
 import technology.grameen.gk.health.api.projection.PatientInvoiceAutoComplete;
@@ -27,6 +29,9 @@ public class PatientInvoiceController {
     @Autowired
     private PatientManageService patientManageService;
 
+    @Autowired
+    private SmsService smsService;
+
     @GetMapping("/invoice-numbers/{invoiceNumber}")
     public ResponseEntity<IResponse> getByInvoiceNumber(@PathVariable("invoiceNumber") String invoiceNumber){
         List<PatientInvoiceAutoComplete> invoiceNumbers = patientInvoiceService.getInvoiceByNumber(invoiceNumber);
@@ -43,9 +48,17 @@ public class PatientInvoiceController {
     public ResponseEntity<IResponse> createInvoice(@RequestBody Patient patient){
         try {
             Optional<PatientSearchResult> patient1 = null;
-            Boolean created = patientInvoiceService.createInvoice(patient);
-            if(created){
+            PatientInvoice created = patientInvoiceService.createInvoice(patient);
+            if(created.getId()!=null){
+
                 patient1 = patientManageService.getPatientByPId(patient.getPid());
+
+                String mobileNumber = patient1.get().getMobileNumber();
+                if(mobileNumber.length()==11){
+                    String patientName = patient1.get().getFullName();
+                    String pid = patient1.get().getPid();
+                    smsService.sent(mobileNumber,patientName+"("+pid+"), You have paid "+created.getPaidAmount()+" BDT. Your InvoiceID: "+created.getInvoiceNumber());
+                }
             }
             return new ResponseEntity<>(new EntityResponse<PatientSearchResult>(HttpStatus.OK.value(),patient1.get()), HttpStatus.OK);
         } catch (Exception e) {

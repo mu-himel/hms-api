@@ -24,6 +24,7 @@ public class CardMember {
     private String occupation;
     private String relationWithPatient;
     private String mobileNumber;
+    private String email;
 
     @OneToOne
     private Patient patient;
@@ -149,5 +150,13 @@ public class CardMember {
 
     public void setMobileNumber(String mobileNumber) {
         this.mobileNumber = mobileNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

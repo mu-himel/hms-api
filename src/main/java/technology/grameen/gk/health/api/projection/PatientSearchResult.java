@@ -123,6 +123,7 @@ public interface PatientSearchResult {
         String getMotherName();
         String getGender();
         String getMobileNumber();
+        String getEmail();
         String getAge();
         @JsonFormat(pattern = "yyyy-MM-dd")
         LocalDate getDob();

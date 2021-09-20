@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebMvc
-@PropertySource("classpath:application-dev.properties")
+@PropertySource("classpath:application.properties")
 public class WebOriginConfig implements WebMvcConfigurer {
 
     @Autowired

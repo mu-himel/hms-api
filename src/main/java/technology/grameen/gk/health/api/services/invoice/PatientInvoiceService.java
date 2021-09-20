@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public interface PatientInvoiceService {
 
-    Boolean createInvoice(Patient patient) throws Exception;
+    PatientInvoice createInvoice(Patient patient) throws Exception;
 
     Optional<PatientInvoiceDetail> getInvoiceById(Long id);
 

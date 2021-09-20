@@ -31,6 +31,7 @@ public class Patient {
     private String gender;
     private String maritalStatus;
     private String mobileNumber;
+    private String email;
     private String age;
 
     private Boolean isGB;
@@ -285,5 +286,13 @@ public class Patient {
 
     public void setDob(LocalDate dob) {
         this.dob = dob;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
