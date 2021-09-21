@@ -55,15 +55,10 @@ public class PatientController {
     }
 
     @PostMapping(value = "/add")
-    public ResponseEntity<IResponse>addPatient(@RequestBody PatientRequest patient){
-        try {
+    public ResponseEntity<IResponse>addPatient(@RequestBody PatientRequest patient) throws Exception {
+
             Patient newPatient = patientManageService.addPatient(patient);
             return new ResponseEntity<>(new PatientCreationResponse(HttpStatus.OK.value(),newPatient), HttpStatus.OK);
-        }catch (Exception ex){
-            return new ResponseEntity<>(new PatientCreationResponse(HttpStatus.UNPROCESSABLE_ENTITY.value(),
-                    ex.getMessage()),HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-
     }
 
     @PostMapping(value = "/add/from-member")

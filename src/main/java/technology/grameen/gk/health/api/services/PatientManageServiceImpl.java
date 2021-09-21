@@ -75,14 +75,23 @@ public class PatientManageServiceImpl implements PatientManageService {
             employee.addPatient(patient);
         }
 
+
         PatientDetail detail = patient.getDetail();
-        if(detail != null) {
+        //for new detail
+
+        if(detail != null && detail.getId()==null) {
             detail.setPatient(patient);
+            detailRepository.save(detail);
         }
 
+        // for existing detail
+        if(detail != null && detail.getId()!=null) {
+            detail.setPatient(patient);
+        }
         patientRepository.save(patient);
 
-        if(detail != null) {
+        // for existing detail
+        if(detail != null && detail.getId()!=null) {
             detail.setPatient(patient);
             detailRepository.save(detail);
         }
