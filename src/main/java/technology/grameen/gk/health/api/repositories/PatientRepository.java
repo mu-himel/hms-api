@@ -29,7 +29,7 @@ public interface PatientRepository extends JpaRepository<Patient,Long> {
             "p.gender, p.maritalStatus," +
             "p.age,p.isGB, c.name,p.guardianName,p.mobileNumber," +
             "p.createdAt, p.lastUpdatedAt) FROM Patient p LEFT JOIN p.center c" +
-            " WHERE c.id=:centerId",
+            " WHERE c.id=:centerId ORDER BY p.pid DESC",
             countQuery = "SELECT count(p) FROM Patient p LEFT JOIN p.center c WHERE c.id=:centerId")
     Page<PatientListItem> findByCenter(@Param("centerId") Long centerId, Pageable pageable);
 
