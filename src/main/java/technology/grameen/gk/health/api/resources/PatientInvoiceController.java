@@ -75,11 +75,15 @@ public class PatientInvoiceController {
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
-    @GetMapping("/prescription-invoice-numbers/{centerId}")
-    public ResponseEntity<IResponse> getPrescriptionInvoice(@PathVariable("centerId") Integer centerId){
+    @GetMapping("/prescription-invoice-numbers/{centerId}/{employeeId}")
+    public ResponseEntity<IResponse> getPrescriptionInvoice(@PathVariable("centerId") Integer centerId,
+                                                            @PathVariable("employeeId") Long employeeId){
+
+
+
         return new ResponseEntity<>(new EntityCollectionResponse<>(
                 HttpStatus.OK.value(),
-                patientInvoiceService.getPrescriptionInvoiceByNumber(centerId)
+                patientInvoiceService.getPrescriptionInvoiceByNumber(centerId,employeeId)
         ),HttpStatus.OK);
     }
 

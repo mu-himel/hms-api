@@ -125,6 +125,12 @@ public interface PatientInvoiceDetail {
 
     Set<PatientServiceDetail> getPatientServiceDetails();
 
+    interface HealthCenter{
+        Long getId();
+        String getName();
+        String getCenterCode();
+    }
+    HealthCenter getCenter();
 
 }
 

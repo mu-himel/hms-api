@@ -127,4 +127,17 @@ public interface PatientInvoiceRepository extends JpaRepository<PatientInvoice,L
             "GROUP BY pi2.ID,pi2.INVOICE_NUMBER,p.full_name,p.pid "+
             "ORDER BY pi2.id ASC ", nativeQuery = true)
     List<PrescriptionInvoiceAutoComplete> getLabTestInvoiceNumbers(@Param("centerId") Integer centerId);
+
+    @Query(value = "SELECT pi2.ID,pi2.event_id as eventId, pi2.INVOICE_TYPE, pi2.INVOICE_NUMBER as invoiceNumber, p.full_name as patientFullName, p.pid as pid, \n" +
+            "pi2.invoice_type as invoiceType FROM PATIENT_INVOICES pi2 JOIN PATIENT_SERVICE_DETAILS psd \n" +
+            "ON pi2.ID  = psd.PATIENT_INVOICE_ID AND psd.IS_REPORT_GENERATED =0\n" +
+            "JOIN PATIENTS p ON p.ID = pi2.PATIENT_ID \n" +
+            "JOIN SERVICE s ON psd.SERVICE_ID = s.SERVICE_ID\n" +
+            "JOIN EVENTS e ON e.ID = pi2.EVENT_ID \n" +
+            "JOIN EVENT_PERSONNEL ep ON ep.EVENT_ID = e.ID \n" +
+            "WHERE ep.EMPLOYEE_ID = :employeeId AND (upper(s.NAME) LIKE upper('%prescription%') OR upper(s.name) LIKE upper('%doctor%')) \n" +
+            "AND pi2.EVENT_ID IS NOT NULL AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM-DD') = to_char(sysdate,'YYYY-MM-DD')\n" +
+            "GROUP BY pi2.ID,pi2.INVOICE_NUMBER,p.full_name,p.pid,pi2.INVOICE_TYPE,pi2.event_id  \n" +
+            "ORDER BY pi2.id ASC", nativeQuery = true)
+    List<PrescriptionInvoiceAutoComplete> getCampPrescriptionInvoiceNumbersByDoctor(Long employeeId);
 }

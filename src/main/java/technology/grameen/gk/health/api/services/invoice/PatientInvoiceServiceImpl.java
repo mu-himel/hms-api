@@ -49,7 +49,18 @@ public class PatientInvoiceServiceImpl implements PatientInvoiceService {
     }
 
     @Override
-    public List<PrescriptionInvoiceAutoComplete> getPrescriptionInvoiceByNumber(Integer centerId) {
+    public List<PrescriptionInvoiceAutoComplete> getPrescriptionInvoiceByNumber(Integer centerId,
+                                                                                Long employeeId) {
+
+
+        List<PrescriptionInvoiceAutoComplete> invoices = null;
+        if(employeeId>0){
+            invoices = invoiceRepository.getCampPrescriptionInvoiceNumbersByDoctor(employeeId);
+        }
+        if(invoices.size()>0) {
+            return invoices;
+        }
+
         return invoiceRepository.getPrescriptionInvoiceNumbers(centerId);
     }
 

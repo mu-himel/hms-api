@@ -19,7 +19,8 @@ public interface PatientInvoiceService {
     Optional<PatientInvoiceDetail> getInvoiceById(Long id);
 
     List<PatientInvoiceAutoComplete> getInvoiceByNumber(String number);
-    List<PrescriptionInvoiceAutoComplete> getPrescriptionInvoiceByNumber(Integer centerId);
+    List<PrescriptionInvoiceAutoComplete> getPrescriptionInvoiceByNumber(Integer centerId,
+                                                                         Long employeeId);
 
     Optional<PatientServiceDetail> getPatientServiceDetailByInvoiceAndService(PatientInvoice patientInvoice,
                                                                               Service service);
