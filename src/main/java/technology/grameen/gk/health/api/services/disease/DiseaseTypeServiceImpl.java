@@ -1,5 +1,6 @@
 package technology.grameen.gk.health.api.services.disease;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import technology.grameen.gk.health.api.entity.DiseaseType;
@@ -24,6 +25,7 @@ public class DiseaseTypeServiceImpl implements DiseaseTypeService{
 
     @Override
     public List<DiseaseType> getAll() {
-        return diseaseTypeRepository.findAll();
+
+        return diseaseTypeRepository.findByOrderByNameAsc();
     }
 }

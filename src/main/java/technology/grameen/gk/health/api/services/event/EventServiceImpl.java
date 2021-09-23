@@ -112,4 +112,9 @@ public class EventServiceImpl implements EventService{
     public Optional<EventRepository.LiveEvent> hasCampEventOnCenterAt(HealthCenter center, LocalDateTime eventDate) {
         return eventRepository.findByCenterAndEventDateAndStatus(center,eventDate,EventService.APPROVED);
     }
+
+    @Override
+    public Optional<EventRepository.EventEventEmployeeByInvoice> getEventByInvoiceId(Long id) {
+        return eventRepository.findByInvoiceId(id);
+    }
 }

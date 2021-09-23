@@ -39,7 +39,8 @@ public class RoleController {
         AdminAcessToken adminAccessToken1 = httpClient.getAdminAccessToken();
         List clientRoles = httpClient.getClientRoles(adminAccessToken1);
         Stream<Object> combineResult = Stream.of(realmRoles,clientRoles).flatMap(Collection::stream);
-        List<Object> combinedCollection = combineResult.collect(Collectors.toList());
+        Set<Object> combinedSet = combineResult.collect(Collectors.toSet());
+        List<Object> combinedCollection = Arrays.asList(combinedSet.toArray());
         return new ResponseEntity<>(new EntityCollectionResponse<>(HttpStatus.OK.value(), combinedCollection),
                 HttpStatus.OK);
     }
