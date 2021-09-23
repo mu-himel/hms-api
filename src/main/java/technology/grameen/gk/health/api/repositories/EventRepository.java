@@ -77,6 +77,16 @@ public interface EventRepository extends JpaRepository<Event,Long> {
             countQuery = "SELECT count(*) FROM Events e", nativeQuery = true)
     Page<EventItem> findAllByEventCategory(@Param("eventCategoryId") Integer eventCategoryId, Pageable pageable);
 
+    interface EventEventEmployeeByInvoice{
+        Long getEventId();
+        Long getEmployeeId();
+    }
+    @Query(value = "SELECT e.ID as eventId,ep.EMPLOYEE_ID as employeeId FROM PATIENT_INVOICES pi2\n" +
+            "JOIN EVENTS e ON e.ID = pi2.EVENT_ID \n" +
+            "JOIN EVENT_PERSONNEL ep ON ep.EVENT_ID = e.ID AND ep.PERSONNEL_TYPE = 'main'\n" +
+            "WHERE pi2.ID =:invoiceId", nativeQuery = true)
+    Optional<EventEventEmployeeByInvoice> findByInvoiceId(@Param("invoiceId") Long id);
+
     interface EventLite{
         Long getId();
         @JsonFormat(pattern = "yyyy-MM-dd")

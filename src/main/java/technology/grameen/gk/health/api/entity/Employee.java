@@ -65,6 +65,13 @@ public class Employee {
     @UpdateTimestamp
     private LocalDateTime lastUpdatedAt;
 
+
+    public Employee() {}
+
+    public Employee(Long employeeId) {
+        this.id = employeeId;
+    }
+
     public Long getId() {
         return id;
     }

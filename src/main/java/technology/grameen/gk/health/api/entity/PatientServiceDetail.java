@@ -41,6 +41,9 @@ public class PatientServiceDetail {
     private Boolean isReportGenerated;
 
     @ManyToOne
+    private Employee treatmentBy;
+
+    @ManyToOne
     private DiseaseType diseaseType;
 
     @CreationTimestamp
@@ -156,5 +159,13 @@ public class PatientServiceDetail {
 
     public void setReferredDoctor(String referredDoctor) {
         this.referredDoctor = referredDoctor;
+    }
+
+    public Employee getTreatmentBy() {
+        return treatmentBy;
+    }
+
+    public void setTreatmentBy(Employee treatmentBy) {
+        this.treatmentBy = treatmentBy;
     }
 }

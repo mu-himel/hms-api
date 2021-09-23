@@ -5,12 +5,15 @@ import technology.grameen.gk.health.api.projection.PatientInvoiceAutoComplete;
 import technology.grameen.gk.health.api.projection.PatientInvoiceDetail;
 import technology.grameen.gk.health.api.entity.*;
 import technology.grameen.gk.health.api.projection.PrescriptionInvoiceAutoComplete;
+import technology.grameen.gk.health.api.repositories.EventRepository;
 import technology.grameen.gk.health.api.repositories.PatientInvoiceRepository;
 import technology.grameen.gk.health.api.repositories.PatientServiceRepository;
 import technology.grameen.gk.health.api.services.card_registration.CardRegistrationService;
+import technology.grameen.gk.health.api.services.event.EventService;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 
@@ -20,16 +23,19 @@ public class PatientInvoiceServiceImpl implements PatientInvoiceService {
     private PatientInvoiceRepository invoiceRepository;
     private PatientServiceRepository patientServiceRepository;
     private CardRegistrationService cardRegistrationService;
+    private EventService eventService;
     private boolean patientNotFound = false;
     private String patientNotFoundMessage = null;
 
     PatientInvoiceServiceImpl(PatientInvoiceRepository invoiceRepository,
                               PatientServiceRepository patientServiceRepository,
-                              CardRegistrationService cardRegistrationService){
+                              CardRegistrationService cardRegistrationService,
+                              EventService eventService){
 
         this.invoiceRepository = invoiceRepository;
         this.patientServiceRepository = patientServiceRepository;
         this.cardRegistrationService = cardRegistrationService;
+        this.eventService = eventService;
     }
 
     @Override
@@ -72,15 +78,27 @@ public class PatientInvoiceServiceImpl implements PatientInvoiceService {
 
         employee.addPatientInvoice(patientInvoice);
 
+
+
+
+
+
         invoiceRepository.save(patientInvoice);
 
         if(patientInvoice.getId()>0){
+
+            EventRepository.EventEventEmployeeByInvoice eventEventEmployeeByInvoice = eventService
+                    .getEventByInvoiceId(patientInvoice.getId()).orElse(null);
 
             Set<PatientServiceDetail> patientServiceDetails = patientInvoice.getPatientServiceDetails();
             patientServiceDetails.stream().forEach(patientServiceDetail->{
 
                 patientServiceDetail.setServiceQty(1);
                 patientServiceDetail.setReportGenerated(false);
+
+                if(eventEventEmployeeByInvoice!=null && patientInvoice.getInvoiceType().toLowerCase(Locale.ROOT).contains("camp")){
+                    patientServiceDetail.setTreatmentBy(new Employee(eventEventEmployeeByInvoice.getEmployeeId()));
+                }
                 Service service = patientServiceDetail.getService();
                 service.addPatientService(patientServiceDetail);
                 patientInvoice.addPatientServiceDetail(patientServiceDetail);
