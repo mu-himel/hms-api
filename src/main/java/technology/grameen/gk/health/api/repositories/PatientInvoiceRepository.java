@@ -97,13 +97,14 @@ public interface PatientInvoiceRepository extends JpaRepository<PatientInvoice,L
     MonthWiseReceived getTotalAmountMonthWiseInCenters(@Param("centerIds") List<Long> centerIds);
 
 
-    @Query(value = "SELECT pi2.ID, pi2.INVOICE_NUMBER as invoiceNumber, p.full_name as patientFullName, p.pid as pid FROM PATIENT_INVOICES pi2 JOIN PATIENT_SERVICE_DETAILS psd " +
+    @Query(value = "SELECT pi2.ID, pi2.INVOICE_NUMBER as invoiceNumber, p.full_name as patientFullName, p.pid as pid, " +
+            "pi2.invoice_type as invoiceType, pi2.event_id as eventId FROM PATIENT_INVOICES pi2 JOIN PATIENT_SERVICE_DETAILS psd " +
             "ON pi2.ID  = psd.PATIENT_INVOICE_ID " +
             "JOIN PATIENTS p ON p.ID = pi2.PATIENT_ID " +
             "JOIN SERVICE s ON psd.SERVICE_ID = s.SERVICE_ID " +
             "WHERE (upper(s.NAME) LIKE upper('%prescription%') OR upper(s.name) LIKE upper('%doctor%')) " +
             "AND psd.IS_REPORT_GENERATED = 0 AND pi2.health_center_id=:centerId " +
-            "GROUP BY pi2.ID,pi2.INVOICE_NUMBER,p.full_name,p.pid "+
+            "GROUP BY pi2.ID,pi2.INVOICE_NUMBER,p.full_name,p.pid,pi2.invoice_type,pi2.event_id "+
             " ORDER BY pi2.id ASC ", nativeQuery = true)
     List<PrescriptionInvoiceAutoComplete> getPrescriptionInvoiceNumbers(@Param("centerId") Integer centerId);
 
