@@ -5,4 +5,6 @@ public interface PrescriptionInvoiceAutoComplete{
     String getInvoiceNumber();
     String getPatientFullName();
     String getPid();
+    String getInvoiceType();
+    Long getEventId();
 }
