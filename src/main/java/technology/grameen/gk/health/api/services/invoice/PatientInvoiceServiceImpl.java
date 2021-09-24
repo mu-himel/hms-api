@@ -107,7 +107,7 @@ public class PatientInvoiceServiceImpl implements PatientInvoiceService {
                 patientServiceDetail.setServiceQty(1);
                 patientServiceDetail.setReportGenerated(false);
 
-                if(eventEventEmployeeByInvoice!=null && patientInvoice.getInvoiceType().toLowerCase(Locale.ROOT).contains("camp")){
+                if(eventEventEmployeeByInvoice!=null && patientInvoice.getInvoiceType().toLowerCase().contains("camp")){
                     patientServiceDetail.setTreatmentBy(new Employee(eventEventEmployeeByInvoice.getEmployeeId()));
                 }
                 Service service = patientServiceDetail.getService();
