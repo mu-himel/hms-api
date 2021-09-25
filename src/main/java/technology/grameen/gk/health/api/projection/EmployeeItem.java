@@ -13,6 +13,7 @@ public interface EmployeeItem {
     Integer getDesignationId();
     String getContactNumber();
     String getEmail();
+    String getRole();
     interface HealthCenter{
         Long getId();
         String getName();

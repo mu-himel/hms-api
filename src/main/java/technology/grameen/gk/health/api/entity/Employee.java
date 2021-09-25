@@ -27,6 +27,16 @@ public class Employee {
     private Boolean isActive;
     private String employeeCode;
 
+    private String role;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     @ManyToOne(fetch = FetchType.LAZY)
     private HealthCenter center;
 

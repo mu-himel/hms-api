@@ -17,6 +17,8 @@ public class EmployeeDetailServiceImpl implements EmployeeDetailService{
     @Override
     @Transactional
     public EmployeeDetail save(EmployeeDetail employeeDetail) {
-        return employeeDetailRepository.save(employeeDetail);
+        EmployeeDetail detail = employeeDetailRepository.save(employeeDetail);
+        detail.setEmployee(null);
+        return detail;
     }
 }

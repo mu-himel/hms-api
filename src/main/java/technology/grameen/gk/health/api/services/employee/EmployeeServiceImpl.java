@@ -36,6 +36,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Transactional
     public Employee addEmployee(Employee employee) {
         HealthCenter center = employee.getCenter();
+        employee.setEmployeeDetail(null);
         if(center != null) {
             center.addEmployee(employee);
             employeeRepository.save(employee);
@@ -94,12 +95,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<EmployeeItem> getEmployeeByDesignation(String designation) {
-        return employeeRepository.findAllByDesignationContainingIgnoreCase(designation);
+        return employeeRepository.findAllByRoleContainingIgnoreCase(designation);
     }
 
     @Override
     public List<EmployeeItem> getEmployeeByDesignationAndCenter(String designation, Long centerId) {
-        return employeeRepository.findAllByDesignationContainingIgnoreCaseAndCenter(designation,
+        return employeeRepository.findAllByRoleContainingIgnoreCaseAndCenter(designation,
                                             new HealthCenter(centerId));
     }
 

@@ -3,6 +3,7 @@ package technology.grameen.gk.health.api.responses;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 public interface EmployeeDetailInfo {
@@ -31,6 +32,7 @@ public interface EmployeeDetailInfo {
 
     interface Employee{
         Long getId();
+        String getRole();
     }
 
     interface EmployeeDetail {
@@ -44,5 +46,14 @@ public interface EmployeeDetailInfo {
 
     EmployeeDetail getEmployeeDetail();
     Set<JobHistory> getJobHistories();
+    Integer getDesignationId();
+    String getContactNumber();
+    String getEmail();
+    Boolean getActive();
+    String getEmployeeCode();
     String getDesignation();
+    String getRole();
+    Long getApiEmployeeId();
+    LocalDateTime getCreatedAt();
+    LocalDateTime getLastUpdatedAt();
 }
