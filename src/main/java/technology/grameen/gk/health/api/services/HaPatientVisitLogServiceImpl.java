@@ -1,5 +1,7 @@
 package technology.grameen.gk.health.api.services;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import technology.grameen.gk.health.api.entity.HaPatientVisitLog;
@@ -18,5 +20,10 @@ public class HaPatientVisitLogServiceImpl implements HaPatientVisitLogService{
     @Transactional
     public HaPatientVisitLog addPatientVisit(HaPatientVisitLog patientVisitLog) {
         return patientVisitLogRepository.save(patientVisitLog);
+    }
+
+    @Override
+    public Page<HaPatientVisitLogRepository.PageVisitLog> getVisitLogs(Pageable pageable) {
+        return patientVisitLogRepository.getAll(pageable);
     }
 }

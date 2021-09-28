@@ -18,8 +18,8 @@ public class HaPatientVisitLog {
     private Integer bpDiastolic;
     private Integer bpSystolic;
 
-    private Integer height;
-    private Integer weight;
+    private String height;
+    private String weight;
     private Integer noOfFamilyMember;
 
     @ManyToOne
@@ -35,7 +35,7 @@ public class HaPatientVisitLog {
     @ManyToOne
     private Employee healthAssistant;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Patient patient;
 
     @CreationTimestamp
@@ -43,4 +43,132 @@ public class HaPatientVisitLog {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Integer getBpDiastolic() {
+        return bpDiastolic;
+    }
+
+    public void setBpDiastolic(Integer bpDiastolic) {
+        this.bpDiastolic = bpDiastolic;
+    }
+
+    public Integer getBpSystolic() {
+        return bpSystolic;
+    }
+
+    public void setBpSystolic(Integer bpSystolic) {
+        this.bpSystolic = bpSystolic;
+    }
+
+    public String getHeight() {
+        return height;
+    }
+
+    public void setHeight(String height) {
+        this.height = height;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
+    }
+
+    public Integer getNoOfFamilyMember() {
+        return noOfFamilyMember;
+    }
+
+    public void setNoOfFamilyMember(Integer noOfFamilyMember) {
+        this.noOfFamilyMember = noOfFamilyMember;
+    }
+
+    public DiseaseProfile getDiseaseProfile() {
+        return diseaseProfile;
+    }
+
+    public void setDiseaseProfile(DiseaseProfile diseaseProfile) {
+        this.diseaseProfile = diseaseProfile;
+    }
+
+    public Boolean getTakingMedicine() {
+        return isTakingMedicine;
+    }
+
+    public void setTakingMedicine(Boolean takingMedicine) {
+        isTakingMedicine = takingMedicine;
+    }
+
+    public Boolean getDoingCounseling() {
+        return isDoingCounseling;
+    }
+
+    public void setDoingCounseling(Boolean doingCounseling) {
+        isDoingCounseling = doingCounseling;
+    }
+
+    public Boolean getAdviceToGoAtHealthCenter() {
+        return adviceToGoAtHealthCenter;
+    }
+
+    public void setAdviceToGoAtHealthCenter(Boolean adviceToGoAtHealthCenter) {
+        this.adviceToGoAtHealthCenter = adviceToGoAtHealthCenter;
+    }
+
+    public Boolean getAdviceToGoAtSatellite() {
+        return adviceToGoAtSatellite;
+    }
+
+    public void setAdviceToGoAtSatellite(Boolean adviceToGoAtSatellite) {
+        this.adviceToGoAtSatellite = adviceToGoAtSatellite;
+    }
+
+    public Boolean getAdviceToGoAtCamp() {
+        return adviceToGoAtCamp;
+    }
+
+    public void setAdviceToGoAtCamp(Boolean adviceToGoAtCamp) {
+        this.adviceToGoAtCamp = adviceToGoAtCamp;
+    }
+
+    public Employee getHealthAssistant() {
+        return healthAssistant;
+    }
+
+    public void setHealthAssistant(Employee healthAssistant) {
+        this.healthAssistant = healthAssistant;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }

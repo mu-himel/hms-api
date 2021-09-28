@@ -10,7 +10,7 @@ public class DiseaseProfile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private DiseaseType diseaseType;
 
     private String name;
