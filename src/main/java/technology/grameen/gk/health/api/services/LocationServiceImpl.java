@@ -131,11 +131,11 @@ public class LocationServiceImpl implements LocationService {
         }
 
         if(!villageCode.isEmpty()){
-            return villageRepository.findAllByVillageCodeContaining(villageCode, pageable);
+            return villageRepository.findAllByVillageCode(villageCode, pageable);
         }
 
         if(!villageName.isEmpty()){
-            return villageRepository.findAllByVillageNameContaining(villageName, pageable);
+            return villageRepository.findAllByVillageName(villageName, pageable);
         }
 
         return villageRepository.findAllVillage(pageable);

@@ -22,8 +22,52 @@ public interface VillageRepository extends JpaRepository<Village, Long> {
     List<Village> findByCenter(@Param("center") HealthCenter center);
 
     Page<VillageListItem> findAllByDivisionId(Long divisionId, Pageable pageable);
-    Page<VillageListItem> findAllByVillageCodeContaining(String villageCode, Pageable pageable);
-    Page<VillageListItem> findAllByVillageNameContaining(String villageName, Pageable pageable);
+
+    @Query(value = "select lg_village_Id as lgVillageId,village_code as villageCode, \n" +
+            "village_name as villageName,\n" +
+            "lu.UNION_NAME AS unionName,\n" +
+            "lt.THANA_NAME AS upozillaName,\n" +
+            "ld.DISTRICT_NAME AS districtName,\n" +
+            "ld2.DIVISION_NAME AS divisionName,\n" +
+            "hc.NAME AS center\n" +
+            "from lg_villages lv \n" +
+            "INNER JOIN LG_UNIONS lu \n" +
+            "ON lv.UNION_ID = lu.UNION_ID \n" +
+            "INNER JOIN LG_THANAS lt \n" +
+            "ON lv.THANA_ID = lt.THANA_ID \n" +
+            "inner JOIN LG_DISTRICTS ld \n" +
+            "ON lv.DISTRICT_ID = ld.DISTRICT_ID \n" +
+            "INNER JOIN LG_DIVISIONS ld2 \n" +
+            "ON lv.DIVISION_ID = ld2.DIVISION_ID \n" +
+            "LEFT JOIN HEALTH_CENTERS hc \n" +
+            "ON lv.CENTER_ID = hc.ID " +
+            "WHERE lower(lv.village_code) LIKE '%'||:villageCode||'%'",nativeQuery = true,
+            countQuery = "select count(*) from lg_villages lv WHERE lower(lv.village_code) LIKE '%'||:villageCode||'%'"
+    )
+    Page<VillageListItem> findAllByVillageCode(@Param("villageCode") String villageCode, Pageable pageable);
+
+    @Query(value = "select lg_village_Id as lgVillageId,village_code as villageCode, \n" +
+            "village_name as villageName,\n" +
+            "lu.UNION_NAME AS unionName,\n" +
+            "lt.THANA_NAME AS upozillaName,\n" +
+            "ld.DISTRICT_NAME AS districtName,\n" +
+            "ld2.DIVISION_NAME AS divisionName,\n" +
+            "hc.NAME AS center\n" +
+            "from lg_villages lv \n" +
+            "INNER JOIN LG_UNIONS lu \n" +
+            "ON lv.UNION_ID = lu.UNION_ID \n" +
+            "INNER JOIN LG_THANAS lt \n" +
+            "ON lv.THANA_ID = lt.THANA_ID \n" +
+            "inner JOIN LG_DISTRICTS ld \n" +
+            "ON lv.DISTRICT_ID = ld.DISTRICT_ID \n" +
+            "INNER JOIN LG_DIVISIONS ld2 \n" +
+            "ON lv.DIVISION_ID = ld2.DIVISION_ID \n" +
+            "LEFT JOIN HEALTH_CENTERS hc \n" +
+            "ON lv.CENTER_ID = hc.ID " +
+            "WHERE lower(lv.village_name) LIKE '%'||:villageName||'%'",nativeQuery = true,
+            countQuery = "select count(*) from lg_villages lv WHERE lower(lv.village_name) LIKE '%'||:villageName||'%'"
+    )
+    Page<VillageListItem> findAllByVillageName(@Param("villageName") String villageName, Pageable pageable);
 
     @Query(value = "select lg_village_Id as lgVillageId,village_code as villageCode, \n" +
             "village_name as villageName,\n" +
