@@ -15,7 +15,9 @@ import java.util.List;
 
 @Repository
 public interface VillageRepository extends JpaRepository<Village, Long> {
-    List<Village> findByUnionId(Long unionId);
+
+    @Query(value = "select v from Village v join fetch v.center c where v.unionId=:unionId")
+    List<Village> findByUnionId(@Param("unionId") Long unionId);
 
     @Query(value = "select v from Village v join fetch v.center c where c=:center")
     List<Village> findByCenter(@Param("center") HealthCenter center);
