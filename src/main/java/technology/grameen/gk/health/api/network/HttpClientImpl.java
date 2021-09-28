@@ -23,7 +23,7 @@ public class HttpClientImpl implements HttpClient {
     private String authServerUrl="http://103.26.136.30:8080";
     private String adminAccessTokenUrl = authServerUrl+"/auth/realms/master/protocol/openid-connect/token";
     private String realmRolesUrl = authServerUrl+"/auth/admin/realms/GK_HEALTH/roles";
-    private String clientRolesUrl = authServerUrl+"/auth/admin/realms/GK_HEALTH/clients/a8fc037b-25fe-4055-a273-880db120a4ec/roles";
+    private String clientRolesUrl = authServerUrl+"/auth/admin/realms/GK_HEALTH/clients/3cefb971-7e37-445a-902a-318ec3cf4fd2/roles";
 
     public HttpClientImpl(){
         httpHeaders = new HttpHeaders();
