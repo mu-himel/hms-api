@@ -43,6 +43,8 @@ public interface PrescriptionDetail {
         Integer getDuration();
         String getDurationUnit();
         Integer getRule();
+        String getDose();
+        String getMedicineType();
     }
 
     interface CardRegistration{

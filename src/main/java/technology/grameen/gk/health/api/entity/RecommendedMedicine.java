@@ -18,6 +18,11 @@ public class RecommendedMedicine {
     @ManyToOne
     private Medicine medicine;
 
+
+    private String medicineType;
+
+    private String dose;
+
     private Integer duration;
 
     private String durationUnit;
@@ -71,5 +76,21 @@ public class RecommendedMedicine {
 
     public void setRule(Integer rule) {
         this.rule = rule;
+    }
+
+    public String getMedicineType() {
+        return medicineType;
+    }
+
+    public void setMedicineType(String medicineType) {
+        this.medicineType = medicineType;
+    }
+
+    public String getDose() {
+        return dose;
+    }
+
+    public void setDose(String dose) {
+        this.dose = dose;
     }
 }
