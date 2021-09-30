@@ -97,9 +97,13 @@ public interface PrescriptionDetail {
     LocalDateTime getVisitDate();
     Boolean getNew();
     String getAdvice();
+    String getAdditionalTests();
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     LocalDateTime getCreatedAt();
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    LocalDateTime getLastFreeVisitDate();
     String getFilePath();
     Boolean getTeleCall();
     GeneralExamination getGeneralExamination();

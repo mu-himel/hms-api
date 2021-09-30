@@ -34,6 +34,7 @@ public class Prescription {
     private String pNumber;
     private LocalDateTime visitDate;
     private LocalDateTime nextVisitDate;
+    private LocalDateTime lastFreeVisitDate;
 
     private String symptoms;
     private String diseaseProfile;
@@ -63,6 +64,10 @@ public class Prescription {
     @ManyToOne
     private Hospital referHospital;
 
+    @Column(length = 1000)
+    private String additionalTests;
+
+    @Column(length = 500)
     private String advice;
 
     @Column(length = 1000)
@@ -130,6 +135,14 @@ public class Prescription {
 
     public void setNextVisitDate(LocalDateTime nextVisitDate) {
         this.nextVisitDate = nextVisitDate;
+    }
+
+    public LocalDateTime getLastFreeVisitDate() {
+        return lastFreeVisitDate;
+    }
+
+    public void setLastFreeVisitDate(LocalDateTime lastFreeVisitDate) {
+        this.lastFreeVisitDate = lastFreeVisitDate;
     }
 
     public String getSymptoms() {
@@ -278,5 +291,13 @@ public class Prescription {
 
     public void setDiseaseProfile(String diseaseProfile) {
         this.diseaseProfile = diseaseProfile;
+    }
+
+    public String getAdditionalTests() {
+        return additionalTests;
+    }
+
+    public void setAdditionalTests(String additionalTests) {
+        this.additionalTests = additionalTests;
     }
 }

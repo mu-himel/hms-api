@@ -13,6 +13,7 @@ import technology.grameen.gk.health.api.projection.PrescriptionListItem;
 import technology.grameen.gk.health.api.repositories.*;
 import technology.grameen.gk.health.api.services.invoice.PatientInvoiceService;
 
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -55,7 +56,11 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
 
         prescription.setpNumber(getPrescriptionNumber(prescription.getCenter()));
-
+        LocalDateTime localDateTime = LocalDateTime.now();
+        if(prescription.getId()==null){
+            localDateTime = localDateTime.plusDays(7);
+        }
+        prescription.setLastFreeVisitDate(localDateTime);
         Prescription newPrescription = prescriptionRepository.save(prescription);
 
 
