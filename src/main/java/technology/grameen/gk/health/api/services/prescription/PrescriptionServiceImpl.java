@@ -54,22 +54,32 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     @Transactional
     public Prescription savePrescription(Prescription prescription) {
 
-
-        prescription.setpNumber(getPrescriptionNumber(prescription.getCenter()));
-        LocalDateTime localDateTime = LocalDateTime.now();
-        if(prescription.getId()==null){
-            localDateTime = localDateTime.plusDays(7);
+        if(prescription.getId()==null) {
+            prescription.setpNumber(getPrescriptionNumber(prescription.getCenter()));
+            LocalDateTime localDateTime = LocalDateTime.now();
+            if (prescription.getId() == null) {
+                localDateTime = localDateTime.plusDays(7);
+            }
+            prescription.setLastFreeVisitDate(localDateTime);
         }
-        prescription.setLastFreeVisitDate(localDateTime);
-        Prescription newPrescription = prescriptionRepository.save(prescription);
-
 
         FamilyHistory familyHistory = prescription.getFamilyHistory();
         PersonalHistory personalHistory = prescription.getPersonalHistory();
         GeneralExamination generalExamination = prescription.getGeneralExamination();
-        familyHistory.setPrescription(prescription);
-        personalHistory.setPrescription(prescription);
-        generalExamination.setPrescription(prescription);
+
+        if(prescription.getId()>0){
+            familyHistory.setPrescription(prescription);
+            personalHistory.setPrescription(prescription);
+            generalExamination.setPrescription(prescription);
+        }
+        Prescription newPrescription = prescriptionRepository.save(prescription);
+
+
+        if(prescription.getId()==null) {
+            familyHistory.setPrescription(newPrescription);
+            personalHistory.setPrescription(newPrescription);
+            generalExamination.setPrescription(newPrescription);
+        }
 
         if(newPrescription.getId()>0) {
 

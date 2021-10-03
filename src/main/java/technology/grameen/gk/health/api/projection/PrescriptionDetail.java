@@ -110,7 +110,7 @@ public interface PrescriptionDetail {
     FamilyHistory getFamilyHistory();
     PersonalHistory getPersonalHistory();
     Patient getPrescriptionPatient();
-
+    Long getId();
     Boolean getRefer();
     Employee getCallTo();
 

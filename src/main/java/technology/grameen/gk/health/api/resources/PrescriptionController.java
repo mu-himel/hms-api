@@ -13,6 +13,7 @@ import technology.grameen.gk.health.api.responses.EntityResponse;
 import technology.grameen.gk.health.api.responses.IResponse;
 import technology.grameen.gk.health.api.services.prescription.PrescriptionService;
 
+import java.util.HashSet;
 import java.util.Optional;
 
 @RestController
@@ -30,6 +31,12 @@ public class PrescriptionController {
     @PostMapping("/add")
     public ResponseEntity<IResponse> addPrescription(@RequestBody Prescription prescription){
         Prescription newPrescription = prescriptionService.savePrescription(prescription);
+
+        if(prescription.getId()>0){
+            return new ResponseEntity<>(new EntityResponse<>(
+                    HttpStatus.OK.value(),
+                    prescriptionService.getPrescriptionById(prescription.getId())),HttpStatus.OK);
+        }
         return new ResponseEntity<>(new EntityResponse<>(HttpStatus.OK.value(),newPrescription), HttpStatus.OK);
     }
 
