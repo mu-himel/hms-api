@@ -292,7 +292,16 @@ public class ReportServiceImpl implements ReportService{
     }
 
     @Override
-    public List<LabTestReportRepository.MonthlyLabTestReport> getMonthlyLabTestReport(String regionCode, String yearMonth) {
-        return labTestReportRepository.getMonthlyLabTestReport(regionCode,yearMonth);
+    public List<LabTestReportRepository.MonthlyLabTestReport> getLabTestReport(String regionCode, String type,
+                                                                               String dateTime) {
+        if(type.equalsIgnoreCase("monthly")) {
+            return labTestReportRepository.getMonthlyLabTestReport(regionCode, dateTime);
+        }else if(type.equalsIgnoreCase("daily")){
+            return labTestReportRepository.getDailyLabTestReport(regionCode, dateTime);
+        }else if(type.equalsIgnoreCase("center-wise-daily")){
+            return labTestReportRepository.getCenterWiseDailyLabTestReport(regionCode, dateTime);
+        }
+
+        return new ArrayList<>();
     }
 }

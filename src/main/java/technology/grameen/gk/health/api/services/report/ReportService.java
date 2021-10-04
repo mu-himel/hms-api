@@ -35,5 +35,6 @@ public interface ReportService {
 
     Map<String, Object> getMonthlyStatisticalReport(String yearMonth,String regionCode);
 
-    List<LabTestReportRepository.MonthlyLabTestReport> getMonthlyLabTestReport(String regionCode, String yearMonth);
+    List<LabTestReportRepository.MonthlyLabTestReport> getLabTestReport(String regionCode, String yearMonth,
+                                                                        String dateTime);
 }
