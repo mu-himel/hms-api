@@ -11,6 +11,9 @@ public interface PrescriptionListItem {
     String getpNumber();
 
     @JsonFormat(pattern = "yyyy-MM-dd")
+    LocalDateTime getLastFreeVisitDate();
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
     LocalDateTime getCreatedAt();
     String getFullName();
 }

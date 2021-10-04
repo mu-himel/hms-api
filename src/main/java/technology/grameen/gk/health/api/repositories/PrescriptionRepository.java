@@ -20,7 +20,8 @@ public interface PrescriptionRepository extends JpaRepository<Prescription,Long>
 
 
 
-    @Query(value = "SELECT pr.id as prescriptionId, pr.p_number as pNumber, pr.created_at as createdAt, p.id,p.full_name as fullName " +
+    @Query(value = "SELECT pr.id as prescriptionId, pr.p_number as pNumber, pr.created_at as createdAt, " +
+            "p.id,p.full_name as fullName, last_free_visit_date as lastFreeVisitDate " +
             " from prescriptions pr" +
             " INNER JOIN patients p ON p.id = pr.prescription_patient_id" +
             " ORDER BY pr.created_at DESC",nativeQuery = true,
@@ -28,7 +29,8 @@ public interface PrescriptionRepository extends JpaRepository<Prescription,Long>
                     " from prescriptions pr INNER JOIN patients p ON p.id=pr.prescription_patient_id")
     Page<PrescriptionListItem> findAllPrescriptions(Pageable pageable);
 
-    @Query(value = "SELECT pr.id as prescriptionId, pr.p_number as pNumber, pr.created_at as createdAt, p.id,p.full_name as fullName " +
+    @Query(value = "SELECT pr.id as prescriptionId, pr.p_number as pNumber, pr.created_at as createdAt, " +
+            "p.id,p.full_name as fullName, last_free_visit_date as lastFreeVisitDate " +
             " from prescriptions pr" +
             " INNER JOIN patients p ON p.id = pr.prescription_patient_id" +
             " WHERE upper(pr.p_number) LIKE upper('%'||:pNumber||'%') " +
@@ -45,7 +47,8 @@ public interface PrescriptionRepository extends JpaRepository<Prescription,Long>
                                                     @Param("fullName") String fullName,
                                                     @Param("date") String date, Pageable pageable);
 
-    @Query(value = "SELECT pr.id as prescriptionId, pr.p_number as pNumber, pr.created_at as createdAt, p.id,p.full_name as fullName " +
+    @Query(value = "SELECT pr.id as prescriptionId, pr.p_number as pNumber, " +
+            "pr.created_at as createdAt, p.id,p.full_name as fullName, last_free_visit_date as lastFreeVisitDate " +
             " from prescriptions pr" +
             " INNER JOIN patients p ON p.id = pr.prescription_patient_id" +
             " WHERE upper(pr.p_number) LIKE upper('%'||:pNumber||'%') " +
@@ -58,7 +61,8 @@ public interface PrescriptionRepository extends JpaRepository<Prescription,Long>
     Page<PrescriptionListItem> findAllPrescriptionsByPNumber(@Param("pNumber") String pNumber,
                                                      Pageable pageable);
 
-    @Query(value = "SELECT pr.id as prescriptionId, pr.p_number as pNumber, pr.created_at as createdAt, p.id,p.full_name as fullName " +
+    @Query(value = "SELECT pr.id as prescriptionId, pr.p_number as pNumber, pr.created_at as createdAt, " +
+            "p.id,p.full_name as fullName, last_free_visit_date as lastFreeVisitDate " +
             " from prescriptions pr" +
             " INNER JOIN patients p ON p.id = pr.prescription_patient_id" +
             " WHERE upper(p.full_name) LIKE upper('%'||:fullName||'%')"+
@@ -71,7 +75,8 @@ public interface PrescriptionRepository extends JpaRepository<Prescription,Long>
                                                     @Param("fullName") String fullName,
                                                      Pageable pageable);
 
-    @Query(value = "SELECT pr.id as prescriptionId, pr.p_number as pNumber, pr.created_at as createdAt, p.id,p.full_name as fullName " +
+    @Query(value = "SELECT pr.id as prescriptionId, pr.p_number as pNumber, pr.created_at as createdAt, " +
+            "p.id,p.full_name as fullName,last_free_visit_date as lastFreeVisitDate " +
             " from prescriptions pr" +
             " INNER JOIN patients p ON p.id = pr.prescription_patient_id" +
             " WHERE TO_CHAR(pr.created_at,'YYYY-MM-DD') = :date"+
