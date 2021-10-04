@@ -5,6 +5,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -17,6 +18,7 @@ public class CardMember {
 
     private String fullName;
     private Integer age;
+    private LocalDate dob;
     private String gender;
     private String bloodGroup;
     private String nationality;
@@ -158,5 +160,13 @@ public class CardMember {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public LocalDate getDob() {
+        return dob;
+    }
+
+    public void setDob(LocalDate dob) {
+        this.dob = dob;
     }
 }
