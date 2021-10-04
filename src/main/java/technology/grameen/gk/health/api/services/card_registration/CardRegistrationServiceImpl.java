@@ -65,14 +65,15 @@ public class CardRegistrationServiceImpl  implements  CardRegistrationService{
             cardRegistrationRepository.save(cardRegistration);
 
             if (cardRegistration.getId() > 0) {
-                cardRegistration.getMembers()
-                        .stream()
-                        .map(cardMember -> {
-                            cardMember.setCardRegistration(cardRegistration);
-
-                            return cardMember;
-                        }).collect(Collectors.toSet());
-                cardMemberRepository.saveAll(cardRegistration.getMembers());
+//                cardRegistration.getMembers()
+//                        .stream()
+//                        .map(cardMember -> {
+//                            cardMember.setCardRegistration(cardRegistration);
+//
+//                            return cardMember;
+//                        }).collect(Collectors.toSet());
+//                cardMemberRepository.saveAll(cardRegistration.getMembers());
+                this.addCardMembers(cardRegistration);
                 return true;
             }
 
@@ -99,5 +100,18 @@ public class CardRegistrationServiceImpl  implements  CardRegistrationService{
         calendar.add(Calendar.MONTH,duration);
         ZoneId zoneId = calendar.getTimeZone().toZoneId();
         return LocalDateTime.ofInstant(calendar.toInstant(),zoneId);
+    }
+
+    @Override
+    public Boolean addCardMembers(CardRegistration cardRegistration) {
+        cardRegistration.getMembers()
+                .stream()
+                .map(cardMember -> {
+                    cardMember.setCardRegistration(cardRegistration);
+
+                    return cardMember;
+                }).collect(Collectors.toSet());
+        cardMemberRepository.saveAll(cardRegistration.getMembers());
+        return true;
     }
 }

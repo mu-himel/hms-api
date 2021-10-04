@@ -8,4 +8,6 @@ public interface CardRegistrationService {
     Boolean register(Patient patient) throws Exception;
 
     CardRegistration getNewCardRegistrationRequest(Patient patient);
+
+    Boolean addCardMembers(CardRegistration cardRegistration);
 }
