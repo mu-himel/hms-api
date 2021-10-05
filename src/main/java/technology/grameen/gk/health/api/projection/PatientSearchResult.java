@@ -60,6 +60,7 @@ public interface PatientSearchResult {
                 String getFullName();
                 String getPid();
                 Boolean getGB();
+                Long getId();
         }
 
         interface CardRegistration{

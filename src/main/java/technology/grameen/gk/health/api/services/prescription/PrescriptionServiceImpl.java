@@ -67,7 +67,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         PersonalHistory personalHistory = prescription.getPersonalHistory();
         GeneralExamination generalExamination = prescription.getGeneralExamination();
 
-        if(prescription.getId()>0){
+        if(prescription.getId()!=null){
             familyHistory.setPrescription(prescription);
             personalHistory.setPrescription(prescription);
             generalExamination.setPrescription(prescription);
@@ -75,15 +75,21 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         Prescription newPrescription = prescriptionRepository.save(prescription);
 
 
-        if(prescription.getId()==null) {
-            familyHistory.setPrescription(newPrescription);
-            personalHistory.setPrescription(newPrescription);
-            generalExamination.setPrescription(newPrescription);
-        }
+
 
         if(newPrescription.getId()>0) {
 
+            if(familyHistory.getId()==null) {
+                familyHistory.setPrescription(newPrescription);
+            }
 
+            if(personalHistory.getId() == null){
+                personalHistory.setPrescription(newPrescription);
+            }
+
+            if(generalExamination.getId()==null){
+                generalExamination.setPrescription(newPrescription);
+            }
 
             familyHistoryRepository.save(familyHistory);
             personalHistoryRepository.save(personalHistory);
