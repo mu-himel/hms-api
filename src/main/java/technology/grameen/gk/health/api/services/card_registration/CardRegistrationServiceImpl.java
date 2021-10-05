@@ -11,6 +11,7 @@ import technology.grameen.gk.health.api.repositories.PatientInvoiceRepository;
 import technology.grameen.gk.health.api.repositories.PatientRepository;
 import technology.grameen.gk.health.api.services.PatientManageService;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Calendar;
@@ -57,6 +58,7 @@ public class CardRegistrationServiceImpl  implements  CardRegistrationService{
 
             HealthCenter center = patient.getCenter();
             cardRegistration.setCardNumber(getCardNumber(center));
+            cardRegistration.setCreatedAt(LocalDateTime.now());
             cardRegistration.setStartDate(getRegistrationStartDate());
             cardRegistration.setExpiredDate(getRegistrationExpireDate(cardRegistration.getValidityDuration()));
             cardRegistration.setTotalServiceTaken(0);
