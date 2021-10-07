@@ -32,6 +32,9 @@ public class HaPatientVisitLog {
     private Boolean adviceToGoAtCamp;
 
     @ManyToOne
+    private HealthCenter center;
+
+    @ManyToOne
     private Employee healthAssistant;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -169,5 +172,13 @@ public class HaPatientVisitLog {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public HealthCenter getCenter() {
+        return center;
+    }
+
+    public void setCenter(HealthCenter center) {
+        this.center = center;
     }
 }
