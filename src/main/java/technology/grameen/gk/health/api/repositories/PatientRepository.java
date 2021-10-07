@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import technology.grameen.gk.health.api.entity.CardRegistration;
 import technology.grameen.gk.health.api.entity.HealthCenter;
 import technology.grameen.gk.health.api.entity.Patient;
 import technology.grameen.gk.health.api.projection.PatientNumberAutoComplete;
@@ -207,5 +208,16 @@ public interface PatientRepository extends JpaRepository<Patient,Long> {
 
     List<PatientNumberAutoComplete> findByMobileNumberContainingIgnoreCaseAndCenter(String pid, HealthCenter center);
 
+
+
+
+    @Query(value = "SELECT r from CardRegistration r JOIN FETCH r.patient p " +
+            "WHERE r.cardNumber LIKE CONCAT('%'||:cardNumber||'%') AND p.center = :center")
+    List<PatientNumberAutoComplete> findByCardNumberAndCenter(@Param("cardNumber") String pid, @Param("center") HealthCenter center);
+
     List<PatientNumberAutoComplete> findByFullNameContainingIgnoreCaseAndCenter(String pid, HealthCenter center);
+
+
+    List<PatientNumberAutoComplete> findByCenterAndRegistration_idIn(@Param("center") HealthCenter center,
+                                                                  @Param("registration") List<Long> cards);
 }

@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -115,5 +116,10 @@ public class CardRegistrationServiceImpl  implements  CardRegistrationService{
                 }).collect(Collectors.toSet());
         cardMemberRepository.saveAll(cardRegistration.getMembers());
         return true;
+    }
+
+    @Override
+    public List<CardRegistration> getCardRegistrationsByNumber(String number) {
+        return cardRegistrationRepository.findByCardNumberContaining(number);
     }
 }

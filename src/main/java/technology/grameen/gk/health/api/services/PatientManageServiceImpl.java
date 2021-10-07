@@ -215,6 +215,13 @@ public class PatientManageServiceImpl implements PatientManageService {
             return patientRepository.findByMobileNumberContainingIgnoreCaseAndCenter(pid,center);
         }else if(type.equalsIgnoreCase("name")){
             return patientRepository.findByFullNameContainingIgnoreCaseAndCenter(pid,center);
+        }else if(type.equalsIgnoreCase("card")){
+            List<CardRegistration> cards = cardRegistrationRepository.findByCardNumberContaining(pid);
+            List<Long> cardIds = new ArrayList<>();
+            cards.forEach(c->{
+                cardIds.add(c.getId());
+            });
+            return patientRepository.findByCenterAndRegistration_idIn(center,cardIds);
         }
         return null;
     }
