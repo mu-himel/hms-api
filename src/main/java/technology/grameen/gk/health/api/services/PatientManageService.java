@@ -7,6 +7,7 @@ import technology.grameen.gk.health.api.entity.Patient;
 import technology.grameen.gk.health.api.projection.PatientSearchResult;
 import technology.grameen.gk.health.api.projection.PatientNumberAutoComplete;
 import technology.grameen.gk.health.api.repositories.PatientInvoiceRepository;
+import technology.grameen.gk.health.api.requests.ExistingPatientRequest;
 import technology.grameen.gk.health.api.requests.PatientRequest;
 import technology.grameen.gk.health.api.requests.PatientSearch;
 import technology.grameen.gk.health.api.responses.PatientListItem;
@@ -53,5 +54,5 @@ public interface PatientManageService {
 
    PatientInvoiceRepository getInvoiceRepository();
 
-
+   Patient addPatient(ExistingPatientRequest patient) throws Exception;
 }

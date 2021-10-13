@@ -84,6 +84,33 @@ public class CardRegistrationServiceImpl  implements  CardRegistrationService{
         return false;
     }
 
+    @Override
+    @Transactional
+    public Boolean register(Patient patient, Boolean existingPatient) throws Exception {
+
+        CardRegistration cardRegistration = patient.getRegistration();
+        if(cardRegistration != null) {
+            Patient _patient = patientService.getReference(patient.getId());
+
+
+            if (_patient == null) {
+                throw new Exception("Patient Not found");
+            }
+
+            cardRegistration.setCreatedAt(LocalDateTime.now());
+            cardRegistration.setTotalServiceTaken(0);
+            patient.addRegistration(cardRegistration);
+            cardRegistration.setActive(true);
+            cardRegistrationRepository.save(cardRegistration);
+
+            if (cardRegistration.getId() > 0) {
+                this.addCardMembers(cardRegistration);
+                return true;
+            }
+        }
+        return false;
+    }
+
     String getCardNumber(HealthCenter center){
         Calendar calendar = Calendar.getInstance();
         int year = (calendar.get(Calendar.YEAR));

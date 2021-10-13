@@ -9,8 +9,10 @@ import technology.grameen.gk.health.api.projection.PatientNumberAutoComplete;
 import technology.grameen.gk.health.api.projection.PatientSearchResult;
 import technology.grameen.gk.health.api.repositories.*;
 import technology.grameen.gk.health.api.repositories.lookup.ServiceRepository;
+import technology.grameen.gk.health.api.requests.ExistingPatientRequest;
 import technology.grameen.gk.health.api.requests.PatientRequest;
 import technology.grameen.gk.health.api.responses.PatientListItem;
+import technology.grameen.gk.health.api.services.card_registration.CardRegistrationService;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -36,7 +38,6 @@ public class PatientManageServiceImpl implements PatientManageService {
     private PatientServiceRepository patientServiceRepository;
 
     private ServiceRepository serviceRepository;
-
 
     PatientManageServiceImpl(PatientRepository patientRepository,
                              PatientDetailRepository detailRepository,
@@ -392,5 +393,23 @@ public class PatientManageServiceImpl implements PatientManageService {
 
         centerIds.add(center.getId());
         return patientRepository.getAllGbPatientStatsByCenters(centerIds,  toDate);
+    }
+
+    @Override
+    public Patient addPatient(ExistingPatientRequest exPatient) throws Exception {
+        Patient patient = new Patient();
+        Optional<HealthCenter> center = this.centerService.findById(exPatient.getCenter().getId());
+        if(center.isPresent() == false){
+            throw new Exception("Center not found");
+        }
+        patient.setCenter(center.get());
+        patient.setFullName(exPatient.getFullName());
+        patient.setGender(exPatient.getGender());
+        patient.setGB(exPatient.getGb());
+        patient.setAge(String.valueOf(exPatient.getAge()));
+        patient.setDob(exPatient.getDob());
+        Patient p = patientRepository.save(patient);
+
+        return p;
     }
 }
