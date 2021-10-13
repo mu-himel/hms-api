@@ -3,6 +3,7 @@ package technology.grameen.gk.health.api.requests;
 import technology.grameen.gk.health.api.entity.CardRegistration;
 import technology.grameen.gk.health.api.entity.Employee;
 import technology.grameen.gk.health.api.entity.HealthCenter;
+import technology.grameen.gk.health.api.entity.Village;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -11,6 +12,7 @@ public class ExistingPatientRequest {
 
     private Integer age;
     private HealthCenter center;
+    private Village village;
     private LocalDate dob;
     private String fullName;
     private Boolean gb;
@@ -105,5 +107,13 @@ public class ExistingPatientRequest {
 
     public void setCreatedBy(Employee createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public Village getVillage() {
+        return village;
+    }
+
+    public void setVillage(Village village) {
+        this.village = village;
     }
 }

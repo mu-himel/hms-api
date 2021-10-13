@@ -402,12 +402,15 @@ public class PatientManageServiceImpl implements PatientManageService {
         if(center.isPresent() == false){
             throw new Exception("Center not found");
         }
+        patient.setPid(getPid(center.get()));
         patient.setCenter(center.get());
         patient.setFullName(exPatient.getFullName());
         patient.setGender(exPatient.getGender());
         patient.setGB(exPatient.getGb());
         patient.setAge(String.valueOf(exPatient.getAge()));
         patient.setDob(exPatient.getDob());
+        patient.setCreatedBy(exPatient.getCreatedBy());
+        patient.setVillage(exPatient.getVillage());
         Patient p = patientRepository.save(patient);
 
         return p;
