@@ -148,11 +148,11 @@ public class PatientManageServiceImpl implements PatientManageService {
         }
 
         patient.setCenter(center.get());
-        patient.setFullName(req.getFullName());
-        patient.setGuardianName(req.getGuardianName());
-        patient.setMotherName(req.getMotherName());
-        patient.setMobileNumber(req.getMobileNumber());
-        patient.setEmail(req.getEmail());
+        patient.setFullName(req.getFullName().trim());
+        patient.setGuardianName(req.getGuardianName().trim());
+        patient.setMotherName(req.getMotherName().trim());
+        patient.setMobileNumber(req.getMobileNumber().trim());
+        patient.setEmail(req.getEmail().trim());
         patient.setMaritalStatus(req.getMaritalStatus());
         patient.setGender(req.getGender());
         patient.setAge(String.valueOf(req.getAge()));
@@ -404,7 +404,7 @@ public class PatientManageServiceImpl implements PatientManageService {
         }
         patient.setPid(getPid(center.get()));
         patient.setCenter(center.get());
-        patient.setFullName(exPatient.getFullName());
+        patient.setFullName(exPatient.getFullName().trim());
         patient.setGender(exPatient.getGender());
         patient.setGB(exPatient.getGb());
         patient.setAge(String.valueOf(exPatient.getAge()));
@@ -414,5 +414,15 @@ public class PatientManageServiceImpl implements PatientManageService {
         Patient p = patientRepository.save(patient);
 
         return p;
+    }
+
+    @Override
+    public Optional<Integer> hasPatient(String fullName, String guardianName, String villageId) {
+        Village village = null;
+        if(villageId!=null && villageId !=""){
+            village = new Village();
+            village.setLgVillageId(Long.parseLong(villageId));
+        }
+        return patientRepository.findByFullNameAndGuardianNameVillage(fullName,guardianName,village);
     }
 }

@@ -135,6 +135,17 @@ public class PatientController {
         }
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<IResponse> hasPatient(@RequestParam String fullName,
+                                                @RequestParam String guardianName,
+                                                @RequestParam String villageId
+                                                ){
+        return new ResponseEntity<>(new EntityResponse<>(
+                HttpStatus.OK.value(),
+                patientManageService.hasPatient(fullName,guardianName,villageId)
+        ), HttpStatus.OK);
+    }
+
     @GetMapping("/operations")
     public ResponseEntity<IResponse> getPatientOperations(@RequestParam Optional<Integer> page,
                                                           @RequestParam Optional<Integer> size,

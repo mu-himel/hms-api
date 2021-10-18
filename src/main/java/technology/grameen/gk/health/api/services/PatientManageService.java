@@ -55,4 +55,6 @@ public interface PatientManageService {
    PatientInvoiceRepository getInvoiceRepository();
 
    Patient addPatient(ExistingPatientRequest patient) throws Exception;
+
+   Optional<Integer> hasPatient(String fullName, String guardianName, String villageId);
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import technology.grameen.gk.health.api.entity.CardRegistration;
 import technology.grameen.gk.health.api.entity.HealthCenter;
 import technology.grameen.gk.health.api.entity.Patient;
+import technology.grameen.gk.health.api.entity.Village;
 import technology.grameen.gk.health.api.projection.PatientNumberAutoComplete;
 import technology.grameen.gk.health.api.projection.PatientSearchResult;
 import technology.grameen.gk.health.api.responses.PatientListItem;
@@ -220,4 +221,11 @@ public interface PatientRepository extends JpaRepository<Patient,Long> {
 
     List<PatientNumberAutoComplete> findByCenterAndRegistration_idIn(@Param("center") HealthCenter center,
                                                                   @Param("registration") List<Long> cards);
+
+    @Query(value = "SELECT count(p) from Patient p" +
+            " WHERE p.fullName = :fullName AND p.guardianName = :gName AND " +
+            " (p.village = :village or :village IS NULL)")
+    Optional<Integer> findByFullNameAndGuardianNameVillage(@Param("fullName") String fullName,
+                                                           @Param("gName") String gName,
+                                                           @Param("village") Village village);
 }
