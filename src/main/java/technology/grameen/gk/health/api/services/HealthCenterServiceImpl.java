@@ -124,4 +124,14 @@ public class HealthCenterServiceImpl implements HealthCenterService {
     public List<String> getCenterIds(String thirdLevelCode) {
         return healthCenterRepository.getAllIds(thirdLevelCode);
     }
+
+    @Override
+    public List<Long> getCenterIdByThirdLevel(String thirdLevelCode) {
+        return healthCenterRepository.getAllIdByThirdLevel(thirdLevelCode);
+    }
+
+    @Override
+    public Optional<HealthCenter> getCenterByCenterCode(String code) {
+        return healthCenterRepository.findByCenterCode(code);
+    }
 }

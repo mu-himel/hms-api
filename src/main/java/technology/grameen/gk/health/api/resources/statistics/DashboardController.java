@@ -1,2 +1,56 @@
-package technology.grameen.gk.health.api.resources.statistics;public class DashboardController {
+package technology.grameen.gk.health.api.resources.statistics;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import technology.grameen.gk.health.api.responses.EntityResponse;
+import technology.grameen.gk.health.api.responses.IResponse;
+import technology.grameen.gk.health.api.services.report.statistics.DashboardStatisticService;
+
+
+@RestController
+@RequestMapping("/api/v1/dashboard")
+public class DashboardController {
+
+    DashboardStatisticService statisticService;
+
+    public DashboardController(DashboardStatisticService statisticService) {
+        this.statisticService = statisticService;
+    }
+
+    @GetMapping("/patient-reg")
+    public ResponseEntity<IResponse> getPatientRegStatistics(@RequestParam String regionCode,
+                                                               @RequestParam String centerCode,
+                                                               @RequestParam String type,
+                                                               @RequestParam String fromDate,
+                                                               @RequestParam String toDate){
+        return new ResponseEntity<>(new EntityResponse<>(
+                HttpStatus.OK.value(),
+                statisticService.getPatientRegistrationStats(regionCode,centerCode,type,fromDate,toDate)
+        ), HttpStatus.OK);
+    }
+
+    @GetMapping("/patient-visit")
+    public ResponseEntity<IResponse> getPatientVisitStatistics(@RequestParam String regionCode,
+                                                               @RequestParam String centerCode,
+                                                               @RequestParam String type,
+                                                               @RequestParam String fromDate,
+                                                               @RequestParam String toDate){
+
+        return new ResponseEntity<>(new EntityResponse<>(
+                HttpStatus.OK.value(),
+                statisticService.getPatientVisitStats(regionCode,centerCode,type,fromDate,toDate)
+        ), HttpStatus.OK);
+    }
+
+    @GetMapping("/service-stats")
+    public ResponseEntity<IResponse> getServiceStatistics(){
+        return new ResponseEntity<>(new EntityResponse<>(
+                HttpStatus.OK.value(),
+                null
+        ), HttpStatus.OK);
+    }
 }

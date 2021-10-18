@@ -24,6 +24,7 @@ public interface HealthCenterService {
     Optional<HealthCenter> findById(Long id);
 
     Optional<HealthCenter> getCenterByApiCenterId(Long apiCenterId);
+    Optional<HealthCenter> getCenterByCenterCode(String code);
 
     List<HealthCenter> getCentersByKeyword(String keyword);
 
@@ -37,4 +38,6 @@ public interface HealthCenterService {
 
     List<String> getCenterIds();
     List<String> getCenterIds(String thirdLevelCode);
+
+    List<Long> getCenterIdByThirdLevel(String thirdLevelCode);
 }

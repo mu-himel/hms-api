@@ -104,6 +104,7 @@ public interface PatientSearchResult {
                 Patient getPatient();
                 String getGender();
                 String getAge();
+                String getRelationWithPatient();
 
         }
 

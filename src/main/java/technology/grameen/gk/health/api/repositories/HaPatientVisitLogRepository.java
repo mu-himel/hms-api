@@ -26,8 +26,12 @@ public interface HaPatientVisitLogRepository extends JpaRepository<HaPatientVisi
             " hplog.no_of_family_member noOfFamilyMember, e.full_name as heathAssistantName, p.full_name as patientName, " +
             " dp.name diseaseProfile FROM ha_patient_visit_logs hplog" +
             " JOIN employees e ON e.id = hplog.health_assistant_id" +
-            " join patients p on p.id=hplog.patient_id " +
-            " join disease_profiles dp on dp.id = hplog.disease_profile_id",
+            " JOIN patients p on p.id=hplog.patient_id " +
+            " JOIN disease_profiles dp on dp.id = hplog.disease_profile_id",
+            countQuery = "select count(hplog.id) FROM ha_patient_visit_logs hplog" +
+                    " JOIN employees e ON e.id = hplog.health_assistant_id" +
+                    " JOIN patients p on p.id = hplog.patient_id " +
+                    " JOIN disease_profiles dp on dp.id = hplog.disease_profile_id",
             nativeQuery = true)
     Page<PageVisitLog> getAll(Pageable pageable);
 }
