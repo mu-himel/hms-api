@@ -15,4 +15,28 @@ public class HaHome {
 
     @ManyToOne
     private  Employee healthAssistant;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Village getVillage() {
+        return village;
+    }
+
+    public void setVillage(Village village) {
+        this.village = village;
+    }
+
+    public Employee getHealthAssistant() {
+        return healthAssistant;
+    }
+
+    public void setHealthAssistant(Employee healthAssistant) {
+        this.healthAssistant = healthAssistant;
+    }
 }

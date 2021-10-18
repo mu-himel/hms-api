@@ -39,6 +39,9 @@ public class Patient {
     private LocalDate dob;
 
     @ManyToOne
+    private HaHome home;
+
+    @ManyToOne
     @JoinColumn(columnDefinition = "center_id",referencedColumnName = "id")
     private HealthCenter center;
 
@@ -294,5 +297,45 @@ public class Patient {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public HaHome getHome() {
+        return home;
+    }
+
+    public void setHome(HaHome home) {
+        this.home = home;
+    }
+
+    public void setRegistration(CardRegistration registration) {
+        this.registration = registration;
+    }
+
+    public Set<CardRegistrationLog> getRegistrationLogs() {
+        return registrationLogs;
+    }
+
+    public void setRegistrationLogs(Set<CardRegistrationLog> registrationLogs) {
+        this.registrationLogs = registrationLogs;
+    }
+
+    public void setPatientInvoices(Set<PatientInvoice> patientInvoices) {
+        this.patientInvoices = patientInvoices;
+    }
+
+    public Set<LabTest> getLabTests() {
+        return labTests;
+    }
+
+    public void setLabTests(Set<LabTest> labTests) {
+        this.labTests = labTests;
+    }
+
+    public CardMember getCardMember() {
+        return cardMember;
+    }
+
+    public void setCardMember(CardMember cardMember) {
+        this.cardMember = cardMember;
     }
 }
