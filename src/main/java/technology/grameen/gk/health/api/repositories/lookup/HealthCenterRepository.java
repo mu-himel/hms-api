@@ -51,4 +51,9 @@ public interface HealthCenterRepository extends JpaRepository<HealthCenter,Long>
 
     @Query(value = "SELECT LISTAGG(id,',') from health_centers WHERE THIRD_LEVEL=:thirdLevelCode",nativeQuery = true)
     List<String> getAllIds(@Param("thirdLevelCode") String thirdLevelCode);
+
+    @Query(value = "SELECT id from health_centers WHERE THIRD_LEVEL=:thirdLevelCode",nativeQuery = true)
+    List<Long> getAllIdByThirdLevel(@Param("thirdLevelCode") String thirdLevelCode);
+
+    Optional<HealthCenter> findByCenterCode(String code);
 }
