@@ -16,6 +16,9 @@ public class HaVillage {
     @ManyToOne
     private HealthCenter center;
 
+    @ManyToOne
+    private Employee healthAssistant;
+
     public HealthCenter getCenter() {
         return center;
     }
@@ -38,5 +41,13 @@ public class HaVillage {
 
     public void setCenter(HealthCenter center) {
         this.center = center;
+    }
+
+    public Employee getHealthAssistant() {
+        return healthAssistant;
+    }
+
+    public void setHealthAssistant(Employee healthAssistant) {
+        this.healthAssistant = healthAssistant;
     }
 }

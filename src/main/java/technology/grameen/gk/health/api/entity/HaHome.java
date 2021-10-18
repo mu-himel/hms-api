@@ -10,6 +10,8 @@ public class HaHome {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String homeName;
+
     @ManyToOne
     private Village village;
 
@@ -38,5 +40,13 @@ public class HaHome {
 
     public void setHealthAssistant(Employee healthAssistant) {
         this.healthAssistant = healthAssistant;
+    }
+
+    public String getHomeName() {
+        return homeName;
+    }
+
+    public void setHomeName(String homeName) {
+        this.homeName = homeName;
     }
 }

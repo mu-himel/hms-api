@@ -2,11 +2,9 @@ package technology.grameen.gk.health.api.resources;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import technology.grameen.gk.health.api.entity.HaVillage;
+import technology.grameen.gk.health.api.responses.EntityCollectionResponse;
 import technology.grameen.gk.health.api.responses.EntityResponse;
 import technology.grameen.gk.health.api.responses.IResponse;
 import technology.grameen.gk.health.api.services.HaService;
@@ -28,6 +26,15 @@ public class HealthAssistantController {
             haService.mapHaVillage(haVillage)
         ), HttpStatus.OK);
 
+    }
+
+    @GetMapping("")
+    public ResponseEntity<IResponse> getHaList(@RequestParam String centerId,
+                                               @RequestParam String villageId){
+        return new ResponseEntity<>(new EntityCollectionResponse<>(
+                HttpStatus.OK.value(),
+                haService.getHaVillageBy(centerId,villageId)
+        ), HttpStatus.OK);
     }
 
 
