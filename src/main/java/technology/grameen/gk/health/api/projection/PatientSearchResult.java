@@ -1,10 +1,7 @@
 package technology.grameen.gk.health.api.projection;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import technology.grameen.gk.health.api.entity.CardRegistration;
-import technology.grameen.gk.health.api.entity.HealthCenter;
-import technology.grameen.gk.health.api.entity.PatientDetail;
-import technology.grameen.gk.health.api.entity.PatientInvoice;
+import technology.grameen.gk.health.api.entity.*;
 
 
 import java.math.BigDecimal;
@@ -135,6 +132,7 @@ public interface PatientSearchResult {
         CardMember getCardMember();
         String getMaritalStatus();
         PatientDetail getDetail();
+        HaHome getHome();
         Boolean getGB();
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         LocalDateTime getCreatedAt();
