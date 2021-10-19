@@ -25,7 +25,7 @@ public class HaHomeServiceImpl implements HaHomeService{
     }
 
     @Override
-    public List<HaHome> getHomes(String villageId) {
+    public List<HaHomeRepository.HaHomeItem> getHomes(String villageId) {
         if(villageId!=""){
             Village village = new Village();
             village.setLgVillageId(Long.parseLong(villageId));
