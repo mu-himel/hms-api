@@ -148,6 +148,7 @@ public class PatientManageServiceImpl implements PatientManageService {
         }
 
         patient.setCenter(center.get());
+        patient.setHome(req.getHome());
         patient.setFullName(req.getFullName().trim());
         patient.setGuardianName(req.getGuardianName().trim());
         patient.setMotherName(req.getMotherName().trim());

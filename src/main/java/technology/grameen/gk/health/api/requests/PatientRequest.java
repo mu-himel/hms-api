@@ -38,6 +38,8 @@ public class PatientRequest {
 
     private CardRegistration cardRegistration;
 
+    private HaHome home;
+
     private Boolean gb;
 
     private LocalDateTime createdAt;
@@ -206,5 +208,13 @@ public class PatientRequest {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public HaHome getHome() {
+        return home;
+    }
+
+    public void setHome(HaHome home) {
+        this.home = home;
     }
 }
