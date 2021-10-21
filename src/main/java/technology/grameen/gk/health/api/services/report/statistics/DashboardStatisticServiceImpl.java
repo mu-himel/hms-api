@@ -37,6 +37,12 @@ public class DashboardStatisticServiceImpl implements DashboardStatisticService{
             if(center!=null){
                 centers.add(center.getId());
             }
+        }else if(regionCode !="" && centerCode!=""){
+            HealthCenter center = healthCenterService.getCenterByCenterCode(centerCode).get();
+            if(center!=null){
+                centers.add(center.getId());
+            }
+
         }else{
             centers = new ArrayList<>();
         }
