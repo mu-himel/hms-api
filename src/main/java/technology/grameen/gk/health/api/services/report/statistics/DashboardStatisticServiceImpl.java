@@ -113,6 +113,7 @@ public class DashboardStatisticServiceImpl implements DashboardStatisticService{
         Map<String,Object> map = new HashMap<>();
         if(type.equalsIgnoreCase("daily")){
             if(centers.size()==0){
+
                 map.put("chGbReg",reportRepository.getPatientCHCount(true, fromDate));
                 map.put("chNGbReg",reportRepository.getPatientCHCount(false, fromDate));
                 map.put("nchGbReg",reportRepository.getPatientNCHCount(true, fromDate));
@@ -152,6 +153,11 @@ public class DashboardStatisticServiceImpl implements DashboardStatisticService{
             }
         }
 
+        if(centers.size()==0){
+            map.put("total",reportRepository.getTotalPatientRegistrationCount());
+        }else{
+            map.put("total",reportRepository.getTotalPatientRegistrationCount(centers));
+        }
         return map;
     }
 

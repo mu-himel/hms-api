@@ -73,4 +73,12 @@ public interface PatientRegStatsRepository extends ReportRepository{
     Optional<Integer> getRangePatientNCHCount(@Param("gb") Boolean b,
                                               @Param("fromDate") LocalDateTime fromDate,
                                               @Param("toDate") LocalDateTime toDate);
+
+    @Query(value = "SELECT count(p.id) total\n" +
+            "FROM PATIENTS p",nativeQuery = true)
+    Optional<Integer> getTotalPatientRegistrationCount();
+
+    @Query(value = "SELECT count(p.id) total\n" +
+            "FROM PATIENTS p WHERE p.CENTER_ID IN :centers",nativeQuery = true)
+    Optional<Integer> getTotalPatientRegistrationCount(@Param("centers") List<Long> centers);
 }
