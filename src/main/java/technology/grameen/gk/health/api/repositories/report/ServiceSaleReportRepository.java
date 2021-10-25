@@ -132,7 +132,7 @@ public interface ServiceSaleReportRepository extends ReportRepository{
             "FROM PATIENT_INVOICES pi2 JOIN PATIENT_SERVICE_DETAILS psd \n" +
             "ON psd.PATIENT_INVOICE_ID  = pi2.ID\n" +
             "JOIN SERVICE s ON s.SERVICE_ID = psd.SERVICE_ID \n" +
-            "WHERE pi2.HEALTH_CENTER_ID IN :centers s.IS_LAB_TEST =1 AND lower(s.CODE) LIKE '%ultra%'\n" +
+            "WHERE pi2.HEALTH_CENTER_ID IN :centers AND s.IS_LAB_TEST =1 AND lower(s.CODE) LIKE '%ultra%'\n" +
             " AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM-DD') = :fromDate",nativeQuery = true)
     List<ServiceSaleStates> getUltraSonoStats(@Param("centers") List<Long> centers, @Param("fromDate") String fromDate);
 
