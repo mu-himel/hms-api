@@ -47,10 +47,14 @@ public class DashboardController {
     }
 
     @GetMapping("/service-stats")
-    public ResponseEntity<IResponse> getServiceStatistics(){
+    public ResponseEntity<IResponse> getServiceStatistics(@RequestParam String regionCode,
+                                                          @RequestParam String centerCode,
+                                                          @RequestParam String type,
+                                                          @RequestParam String fromDate,
+                                                          @RequestParam String toDate){
         return new ResponseEntity<>(new EntityResponse<>(
                 HttpStatus.OK.value(),
-                null
+                statisticService.getServiceSaleStats(regionCode,centerCode,type,fromDate,toDate)
         ), HttpStatus.OK);
     }
 }

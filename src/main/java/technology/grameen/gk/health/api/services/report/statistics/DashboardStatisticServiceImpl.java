@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import technology.grameen.gk.health.api.entity.HealthCenter;
 import technology.grameen.gk.health.api.repositories.report.PatientRegStatsRepository;
 import technology.grameen.gk.health.api.repositories.report.PatientVisitStatsRepository;
+import technology.grameen.gk.health.api.repositories.report.ServiceSaleReportRepository;
 import technology.grameen.gk.health.api.services.HealthCenterService;
 
 import java.time.LocalDateTime;
@@ -16,13 +17,16 @@ import java.util.Map;
 public class DashboardStatisticServiceImpl implements DashboardStatisticService{
 
     PatientRegStatsRepository reportRepository;
+    ServiceSaleReportRepository ssReportRepository;
     PatientVisitStatsRepository pvsReportRepository;
     HealthCenterService healthCenterService;
 
     public DashboardStatisticServiceImpl(PatientRegStatsRepository reportRepository,
+                                         ServiceSaleReportRepository ssReportRepository,
                                          HealthCenterService healthCenterService,
                                          PatientVisitStatsRepository pvsReportRepository) {
         this.reportRepository = reportRepository;
+        this.ssReportRepository = ssReportRepository;
         this.healthCenterService = healthCenterService;
         this.pvsReportRepository = pvsReportRepository;
     }
@@ -152,21 +156,52 @@ public class DashboardStatisticServiceImpl implements DashboardStatisticService{
     }
 
 
-
     @Override
-    public Map<String, ?> getDailyServiceSale(String regionCode, String centerCode) {
-        return null;
+    public Map<String, ?> getServiceSaleStats(String regionCode, String centerCode, String type, String fromDate,
+                                              String toDate) {
+        List<Long> centers = getCenters(regionCode,centerCode);
+
+        Map<String,Object> map = new HashMap<>();
+        if(type.equalsIgnoreCase("daily")){
+            if(centers.size()==0){
+                map.put("prescription",ssReportRepository.getPrescriptionStats(fromDate));
+                map.put("labtest",ssReportRepository.getLabTestStats(fromDate));
+                map.put("ultrasono",ssReportRepository.getUltraSonoStats(fromDate));
+
+            }else{
+                map.put("prescription",ssReportRepository.getPrescriptionStats(centers,  fromDate));
+                map.put("labtest",ssReportRepository.getLabTestStats(centers,  fromDate));
+                map.put("ultrasono",ssReportRepository.getUltraSonoStats(centers, fromDate));
+
+            }
+
+        }else if(type.equalsIgnoreCase("monthly")){
+            if(centers.size()==0) {
+                map.put("prescription", ssReportRepository.getPrescriptionMonthlyStats(fromDate));
+                map.put("labtest", ssReportRepository.getLabTestMonthlyStats(fromDate));
+                map.put("ultrasono", ssReportRepository.getUltraSonoMonthlyStats(fromDate));
+
+            }else{
+                map.put("prescription", ssReportRepository.getPrescriptionMonthlyStats(centers, fromDate));
+                map.put("labtest", ssReportRepository.getLabTestMonthlyStats(centers,fromDate));
+                map.put("ultrasono", ssReportRepository.getUltraSonoMonthlyStats(centers, fromDate));
+
+            }
+        }else if(type.equalsIgnoreCase("range")){
+            LocalDateTime fromDateLDT = LocalDateTime.parse(fromDate);
+            LocalDateTime toDateLDT = LocalDateTime.parse(toDate);
+            if(centers.size()==0) {
+                map.put("prescription", ssReportRepository.getPrescriptionStats(fromDateLDT, toDateLDT));
+                map.put("labtest", ssReportRepository.getLabTestStats(fromDateLDT, toDateLDT));
+                map.put("ultrasono", ssReportRepository.getUltraSonoStats(fromDateLDT, toDateLDT));
+
+            }else {
+                map.put("prescription", ssReportRepository.getPrescriptionStats(centers, fromDateLDT, toDateLDT));
+                map.put("labtest", ssReportRepository.getLabTestStats(centers, fromDateLDT, toDateLDT));
+                map.put("ultrasono", ssReportRepository.getUltraSonoStats(centers,fromDateLDT, toDateLDT));
+
+            }
+        }
+        return map;
     }
-
-    @Override
-    public Map<String, ?> getMonthlyServiceSale(String regionCode, String centerCode, String monthYear) {
-        return null;
-    }
-
-    @Override
-    public Map<String, ?> getRangeServiceSale(String regionCode, String centerCode, String fromDate, String toDate) {
-        return null;
-    }
-
-
 }
