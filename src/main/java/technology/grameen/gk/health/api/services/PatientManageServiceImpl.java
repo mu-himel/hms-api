@@ -411,7 +411,11 @@ public class PatientManageServiceImpl implements PatientManageService {
         patient.setCenter(center.get());
         patient.setFullName(exPatient.getFullName().trim());
         patient.setGender(exPatient.getGender());
-        patient.setGB(exPatient.getGb());
+        if(exPatient.getGb() != null) {
+            patient.setGB(exPatient.getGb());
+        }else{
+            patient.setGB(false);
+        }
         patient.setAge(String.valueOf(exPatient.getAge()));
         patient.setDob(exPatient.getDob());
         patient.setCreatedBy(exPatient.getCreatedBy());
