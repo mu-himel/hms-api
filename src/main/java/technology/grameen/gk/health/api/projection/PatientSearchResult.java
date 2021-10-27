@@ -119,6 +119,7 @@ public interface PatientSearchResult {
         HealthCenter getCenter();
         String getStreetAddress();
         String getGuardianName();
+        String getSpouseName();
         String getMotherName();
         String getGender();
         String getMobileNumber();

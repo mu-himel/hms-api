@@ -151,6 +151,9 @@ public class PatientManageServiceImpl implements PatientManageService {
         patient.setHome(req.getHome());
         patient.setFullName(req.getFullName().trim());
         patient.setGuardianName(req.getGuardianName().trim());
+        if(req.getSpouseName()!=null){
+            patient.setSpouseName(req.getSpouseName());
+        }
         patient.setMotherName(req.getMotherName().trim());
         if(req.getMobileNumber()!=null) {
             patient.setMobileNumber(req.getMobileNumber().trim());
