@@ -137,12 +137,12 @@ public class PatientController {
 
     @GetMapping("/search")
     public ResponseEntity<IResponse> hasPatient(@RequestParam String fullName,
-                                                @RequestParam String guardianName,
+                                                @RequestParam String motherName,
                                                 @RequestParam String villageId
                                                 ){
         return new ResponseEntity<>(new EntityResponse<>(
                 HttpStatus.OK.value(),
-                patientManageService.hasPatient(fullName,guardianName,villageId)
+                patientManageService.hasPatient(fullName,motherName,villageId)
         ), HttpStatus.OK);
     }
 

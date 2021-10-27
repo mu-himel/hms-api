@@ -56,5 +56,5 @@ public interface PatientManageService {
 
    Patient addPatient(ExistingPatientRequest patient) throws Exception;
 
-   Optional<Integer> hasPatient(String fullName, String guardianName, String villageId);
+   Optional<Integer> hasPatient(String fullName, String motherName, String villageId);
 }

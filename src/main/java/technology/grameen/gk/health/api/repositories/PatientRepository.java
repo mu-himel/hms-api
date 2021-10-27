@@ -223,9 +223,9 @@ public interface PatientRepository extends JpaRepository<Patient,Long> {
                                                                   @Param("registration") List<Long> cards);
 
     @Query(value = "SELECT count(p) from Patient p" +
-            " WHERE p.fullName = :fullName AND p.guardianName = :gName AND " +
+            " WHERE p.fullName = :fullName AND p.motherName = :mName AND " +
             " (p.village = :village or :village IS NULL)")
-    Optional<Integer> findByFullNameAndGuardianNameVillage(@Param("fullName") String fullName,
-                                                           @Param("gName") String gName,
+    Optional<Integer> findByFullNameAndMotherNameVillage(@Param("fullName") String fullName,
+                                                           @Param("mName") String mName,
                                                            @Param("village") Village village);
 }

@@ -426,12 +426,12 @@ public class PatientManageServiceImpl implements PatientManageService {
     }
 
     @Override
-    public Optional<Integer> hasPatient(String fullName, String guardianName, String villageId) {
+    public Optional<Integer> hasPatient(String fullName, String motherName, String villageId) {
         Village village = null;
         if(villageId!=null && villageId !=""){
             village = new Village();
             village.setLgVillageId(Long.parseLong(villageId));
         }
-        return patientRepository.findByFullNameAndGuardianNameVillage(fullName,guardianName,village);
+        return patientRepository.findByFullNameAndMotherNameVillage(fullName,motherName,village);
     }
 }
