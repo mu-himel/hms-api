@@ -27,6 +27,7 @@ public class Patient {
     private String pid;
     private String fullName;
     private String guardianName;
+    private String spouseName;
     private String motherName;
     private String gender;
     private String maritalStatus;
@@ -146,6 +147,14 @@ public class Patient {
 
     public void setGuardianName(String guardianName) {
         this.guardianName = guardianName;
+    }
+
+    public String getSpouseName() {
+        return spouseName;
+    }
+
+    public void setSpouseName(String spouseName) {
+        this.spouseName = spouseName;
     }
 
     public String getMotherName() {
