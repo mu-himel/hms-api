@@ -46,6 +46,8 @@ public class Service {
     private Boolean isActive;
     private Boolean isLabTest;
     private Boolean isPrescription;
+    private Boolean fieldSaleable;
+    private BigDecimal fieldCost;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -236,5 +238,21 @@ public class Service {
 
     public void setServiceCode(String serviceCode) {
         this.serviceCode = serviceCode;
+    }
+
+    public Boolean getFieldSaleable() {
+        return fieldSaleable;
+    }
+
+    public void setFieldSaleable(Boolean fieldSaleable) {
+        this.fieldSaleable = fieldSaleable;
+    }
+
+    public BigDecimal getFieldCost() {
+        return fieldCost;
+    }
+
+    public void setFieldCost(BigDecimal fieldCost) {
+        this.fieldCost = fieldCost;
     }
 }

@@ -57,14 +57,15 @@ public class PatientInvoiceController {
             if(created.getId()!=null){
 
                 patient1 = patientManageService.getPatientByPId(patient.getPid());
-
-                String mobileNumber = patient1.get().getMobileNumber();
-                GeneralSetting generalSetting = generalSettingService.getSetting().get();
-                if(generalSetting!=null && generalSetting.getEnableSmsNotification()) {
-                    if (mobileNumber.length() == 11) {
-                        String patientName = patient1.get().getFullName();
-                        String pid = patient1.get().getPid();
-                        smsService.sent(mobileNumber, patientName + "(" + pid + "), You have paid " + created.getPaidAmount() + " BDT. Your InvoiceID: " + created.getInvoiceNumber());
+                if(patient1.isPresent()) {
+                    String mobileNumber = patient1.get().getMobileNumber();
+                    GeneralSetting generalSetting = generalSettingService.getSetting().get();
+                    if (generalSetting != null && generalSetting.getEnableSmsNotification()) {
+                        if (mobileNumber.length() == 11) {
+                            String patientName = patient1.get().getFullName();
+                            String pid = patient1.get().getPid();
+                            smsService.sent(mobileNumber, patientName + "(" + pid + "), You have paid " + created.getPaidAmount() + " BDT. Your InvoiceID: " + created.getInvoiceNumber());
+                        }
                     }
                 }
             }

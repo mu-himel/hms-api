@@ -28,4 +28,6 @@ public interface HealthServiceInterface {
     void deleteAttributeById(Long id);
 
     List<ServiceRepository.IServiceList> findByServiceCategory(ServiceCategory serviceCategory);
+
+    List<ServiceListItem> getFieldServices();
 }

@@ -17,6 +17,8 @@ public interface ServiceListItem {
     LabTestGroup getLabTestGroup();
     BigDecimal getCurrentGbCost();
     BigDecimal getCurrentCost();
+    BigDecimal getFieldCost();
+    Boolean getFieldSaleable();
     Boolean getActive();
     Boolean getLabTest();
 }

@@ -21,6 +21,7 @@ public interface PatientSearchResult {
                 String getName();
                 Boolean getLabTest();
                 Boolean getPrescription();
+                Boolean getFieldSaleable();
         }
 
         interface PatientServiceDetail{

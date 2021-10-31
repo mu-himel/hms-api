@@ -82,6 +82,12 @@ public class ServiceController {
         return new ResponseEntity<>(services,HttpStatus.OK);
     }
 
+    @GetMapping("/field-services")
+    public ResponseEntity<List<ServiceListItem>> fieldServices(){
+        List<ServiceListItem> services = healthServiceInterface.getFieldServices();
+        return new ResponseEntity<>(services,HttpStatus.OK);
+    }
+
     @GetMapping(value = "/{id}")
     public ResponseEntity< Optional<Service>> findServiceById(@PathVariable("id") Long id){
         Optional<Service> service = healthServiceInterface.findServiceById(id);

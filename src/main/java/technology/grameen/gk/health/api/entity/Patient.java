@@ -39,7 +39,7 @@ public class Patient {
 
     private LocalDate dob;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private HaHome home;
 
     @ManyToOne

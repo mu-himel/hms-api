@@ -77,6 +77,11 @@ public class HealthServiceImpl implements HealthServiceInterface {
     }
 
     @Override
+    public List<ServiceListItem> getFieldServices() {
+        return serviceRepository.findByFieldSaleableEquals(true);
+    }
+
+    @Override
     @Transactional
     public Service addServiceAttributes(Service s) throws Exception {
         Optional<Service> serviceOptional = findServiceById(s.getServiceId());

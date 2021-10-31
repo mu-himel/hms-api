@@ -49,6 +49,10 @@ public interface ServiceRepository extends JpaRepository<Service,Long> {
             " JOIN FETCH s.labTestGroup ltg WHERE s.isLabTest = :s")
     List<ServiceListItem> findByIsLabTestEquals(@Param("s") Boolean bool);
 
+    @Query("SELECT s FROM Service s JOIN FETCH s.serviceCategory sc " +
+            "WHERE s.fieldSaleable = :b")
+    List<ServiceListItem> findByFieldSaleableEquals(@Param("b") Boolean b);
+
     interface IServiceList{
         Long getServiceId();
         String getName();
