@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import technology.grameen.gk.health.api.entity.HaPatientVisitLog;
 import technology.grameen.gk.health.api.repositories.HaPatientVisitLogRepository;
 
+import java.util.Optional;
+
 @Service
 public class HaPatientVisitLogServiceImpl implements HaPatientVisitLogService{
 
@@ -25,5 +27,11 @@ public class HaPatientVisitLogServiceImpl implements HaPatientVisitLogService{
     @Override
     public Page<HaPatientVisitLogRepository.PageVisitLog> getVisitLogs(Pageable pageable) {
         return patientVisitLogRepository.getAll(pageable);
+    }
+
+    @Override
+    public Optional<?> getPatientVisitLogByPatientAndDate(Long centerId,Long pid, String dt) {
+
+        return patientVisitLogRepository.findVisitLogByPatientAndDate(centerId,pid,dt);
     }
 }

@@ -70,4 +70,15 @@ public class HaPatientVisitController {
         ), HttpStatus.OK);
 
     }
+
+    @GetMapping("/patient/{pid}/{dt}")
+    public ResponseEntity<IResponse> getPatientVisitLogService(@PathVariable("pid") Long pid,
+                                                               @PathVariable("dt") String dt,
+                                                               @RequestParam("centerId") Long centerId){
+        return new ResponseEntity<>(new EntityResponse<>(
+                HttpStatus.OK.value(),
+                patientVisitLogService.getPatientVisitLogByPatientAndDate(centerId,pid,dt)
+
+        ), HttpStatus.OK);
+    }
 }

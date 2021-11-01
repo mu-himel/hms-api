@@ -5,9 +5,13 @@ import org.springframework.data.domain.Pageable;
 import technology.grameen.gk.health.api.entity.HaPatientVisitLog;
 import technology.grameen.gk.health.api.repositories.HaPatientVisitLogRepository;
 
+import java.util.Optional;
+
 public interface HaPatientVisitLogService {
 
     HaPatientVisitLog addPatientVisit(HaPatientVisitLog patientVisitLog);
 
     Page<HaPatientVisitLogRepository.PageVisitLog> getVisitLogs(Pageable pageable);
+
+    Optional<?> getPatientVisitLogByPatientAndDate(Long centerId,Long pid, String dt);
 }
