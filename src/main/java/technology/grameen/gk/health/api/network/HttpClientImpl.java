@@ -20,10 +20,11 @@ public class HttpClientImpl implements HttpClient {
     private HttpHeaders httpHeaders;
     private RestTemplate restTemplate;
 
-    private String authServerUrl="http://103.26.136.30:8080";
-    private String adminAccessTokenUrl = authServerUrl+"/auth/realms/master/protocol/openid-connect/token";
-    private String realmRolesUrl = authServerUrl+"/auth/admin/realms/GK_HEALTH/roles";
-    private String clientRolesUrl = authServerUrl+"/auth/admin/realms/GK_HEALTH/clients/3cefb971-7e37-445a-902a-318ec3cf4fd2/roles";
+    private static final String REALM = "GK_HEALTH";
+    private static final String authServerUrl="http://103.26.136.30:8080";
+    private static final String adminAccessTokenUrl = authServerUrl+"/auth/realms/master/protocol/openid-connect/token";
+    private static final String realmRolesUrl = authServerUrl+"/auth/admin/realms/"+REALM+"/roles";
+    private static final String clientRolesUrl = authServerUrl+"/auth/admin/realms/"+REALM+"/clients/3cefb971-7e37-445a-902a-318ec3cf4fd2/roles";
 
     public HttpClientImpl(){
         httpHeaders = new HttpHeaders();
