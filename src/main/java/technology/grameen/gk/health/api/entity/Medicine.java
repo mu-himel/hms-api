@@ -10,6 +10,8 @@ public class Medicine {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long inventoryId;
+
     private String name;
 
     private Boolean isActive;
@@ -58,5 +60,13 @@ public class Medicine {
 
     public void setActive(Boolean active) {
         isActive = active;
+    }
+
+    public Long getInventoryId() {
+        return inventoryId;
+    }
+
+    public void setInventoryId(Long inventoryId) {
+        this.inventoryId = inventoryId;
     }
 }

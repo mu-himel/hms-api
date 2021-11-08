@@ -10,6 +10,8 @@ public class MedicineGroup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long inventoryId;
+
     private String name;
 
     private Boolean status;
@@ -36,5 +38,13 @@ public class MedicineGroup {
 
     public void setStatus(Boolean status) {
         this.status = status;
+    }
+
+    public Long getInventoryId() {
+        return inventoryId;
+    }
+
+    public void setInventoryId(Long inventoryId) {
+        this.inventoryId = inventoryId;
     }
 }
