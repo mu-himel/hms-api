@@ -7,16 +7,12 @@ import technology.grameen.gk.health.api.entity.HealthCenter;
 import technology.grameen.gk.health.api.entity.Patient;
 import technology.grameen.gk.health.api.repositories.CardMemberRepository;
 import technology.grameen.gk.health.api.repositories.CardRegistrationRepository;
-import technology.grameen.gk.health.api.repositories.PatientInvoiceRepository;
-import technology.grameen.gk.health.api.repositories.PatientRepository;
-import technology.grameen.gk.health.api.services.PatientManageService;
+import technology.grameen.gk.health.api.services.patient.PatientManageService;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

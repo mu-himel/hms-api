@@ -15,7 +15,7 @@ import technology.grameen.gk.health.api.repositories.ServiceRecordRepository;
 import technology.grameen.gk.health.api.requests.ServiceRecordSearch;
 import technology.grameen.gk.health.api.responses.ServiceRecordResponse;
 import technology.grameen.gk.health.api.services.HealthCenterService;
-import technology.grameen.gk.health.api.services.PatientManageService;
+import technology.grameen.gk.health.api.services.patient.PatientManageService;
 import technology.grameen.gk.health.api.services.event.EventService;
 
 import java.time.format.DateTimeFormatter;

@@ -10,7 +10,7 @@ import technology.grameen.gk.health.api.entity.Patient;
 import technology.grameen.gk.health.api.requests.ExistingPatientRequest;
 import technology.grameen.gk.health.api.responses.EntityResponse;
 import technology.grameen.gk.health.api.responses.IResponse;
-import technology.grameen.gk.health.api.services.PatientManageService;
+import technology.grameen.gk.health.api.services.patient.PatientManageService;
 import technology.grameen.gk.health.api.services.card_registration.CardRegistrationService;
 
 @RestController

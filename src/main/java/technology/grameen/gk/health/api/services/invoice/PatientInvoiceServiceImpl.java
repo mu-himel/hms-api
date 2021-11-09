@@ -7,13 +7,12 @@ import technology.grameen.gk.health.api.entity.*;
 import technology.grameen.gk.health.api.projection.PrescriptionInvoiceAutoComplete;
 import technology.grameen.gk.health.api.repositories.EventRepository;
 import technology.grameen.gk.health.api.repositories.PatientInvoiceRepository;
-import technology.grameen.gk.health.api.repositories.PatientServiceRepository;
+import technology.grameen.gk.health.api.repositories.patient.PatientServiceRepository;
 import technology.grameen.gk.health.api.services.card_registration.CardRegistrationService;
 import technology.grameen.gk.health.api.services.event.EventService;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 

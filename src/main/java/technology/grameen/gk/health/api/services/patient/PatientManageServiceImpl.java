@@ -1,4 +1,4 @@
-package technology.grameen.gk.health.api.services;
+package technology.grameen.gk.health.api.services.patient;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,10 +9,13 @@ import technology.grameen.gk.health.api.projection.PatientNumberAutoComplete;
 import technology.grameen.gk.health.api.projection.PatientSearchResult;
 import technology.grameen.gk.health.api.repositories.*;
 import technology.grameen.gk.health.api.repositories.lookup.ServiceRepository;
+import technology.grameen.gk.health.api.repositories.patient.PatientDetailRepository;
+import technology.grameen.gk.health.api.repositories.patient.PatientRepository;
+import technology.grameen.gk.health.api.repositories.patient.PatientServiceRepository;
 import technology.grameen.gk.health.api.requests.ExistingPatientRequest;
 import technology.grameen.gk.health.api.requests.PatientRequest;
 import technology.grameen.gk.health.api.responses.PatientListItem;
-import technology.grameen.gk.health.api.services.card_registration.CardRegistrationService;
+import technology.grameen.gk.health.api.services.HealthCenterService;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

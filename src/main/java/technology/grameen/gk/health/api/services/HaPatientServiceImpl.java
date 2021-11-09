@@ -1,18 +1,13 @@
 package technology.grameen.gk.health.api.services;
 
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import technology.grameen.gk.health.api.entity.HaPatientService;
-import technology.grameen.gk.health.api.entity.Patient;
 import technology.grameen.gk.health.api.entity.PatientInvoice;
-import technology.grameen.gk.health.api.repositories.HaPatientServiceRepository;
+import technology.grameen.gk.health.api.repositories.healthassistant.HaPatientServiceRepository;
 import technology.grameen.gk.health.api.requests.HaPatientServiceSell;
 import technology.grameen.gk.health.api.services.invoice.PatientInvoiceService;
 
 import javax.transaction.Transactional;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service

@@ -3,7 +3,7 @@ package technology.grameen.gk.health.api.services;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import technology.grameen.gk.health.api.entity.HaPatientVisitLog;
-import technology.grameen.gk.health.api.repositories.HaPatientVisitLogRepository;
+import technology.grameen.gk.health.api.repositories.healthassistant.HaPatientVisitLogRepository;
 
 import java.util.Optional;
 

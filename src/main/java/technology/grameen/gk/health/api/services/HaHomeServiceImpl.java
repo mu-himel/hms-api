@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import technology.grameen.gk.health.api.entity.HaHome;
 import technology.grameen.gk.health.api.entity.Village;
-import technology.grameen.gk.health.api.repositories.HaHomeRepository;
+import technology.grameen.gk.health.api.repositories.healthassistant.HaHomeRepository;
 
 import java.util.ArrayList;
 import java.util.List;

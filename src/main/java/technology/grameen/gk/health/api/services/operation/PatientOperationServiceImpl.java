@@ -4,7 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import technology.grameen.gk.health.api.entity.PatientOperation;
-import technology.grameen.gk.health.api.repositories.PatientOperationRepository;
+import technology.grameen.gk.health.api.repositories.patient.PatientOperationRepository;
 
 @Service
 public class PatientOperationServiceImpl implements PatientOperationService{

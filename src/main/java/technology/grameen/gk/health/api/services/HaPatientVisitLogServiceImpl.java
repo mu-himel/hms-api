@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import technology.grameen.gk.health.api.entity.HaPatientVisitLog;
-import technology.grameen.gk.health.api.repositories.HaPatientVisitLogRepository;
+import technology.grameen.gk.health.api.repositories.healthassistant.HaPatientVisitLogRepository;
 
 import java.util.Optional;
 

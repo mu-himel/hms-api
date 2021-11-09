@@ -1,7 +1,7 @@
 package technology.grameen.gk.health.api.services;
 
 import technology.grameen.gk.health.api.entity.HaHome;
-import technology.grameen.gk.health.api.repositories.HaHomeRepository;
+import technology.grameen.gk.health.api.repositories.healthassistant.HaHomeRepository;
 
 import java.util.List;
 

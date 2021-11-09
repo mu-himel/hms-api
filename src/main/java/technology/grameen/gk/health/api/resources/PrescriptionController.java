@@ -7,10 +7,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import technology.grameen.gk.health.api.entity.Patient;
+import technology.grameen.gk.health.api.entity.PatientDiseaseProfile;
 import technology.grameen.gk.health.api.entity.PatientInvoice;
 import technology.grameen.gk.health.api.entity.Prescription;
+import technology.grameen.gk.health.api.requests.PrescriptionCreateRequest;
 import technology.grameen.gk.health.api.responses.EntityResponse;
 import technology.grameen.gk.health.api.responses.IResponse;
+import technology.grameen.gk.health.api.services.patient.PatientDiseaseProfileService;
 import technology.grameen.gk.health.api.services.prescription.PrescriptionService;
 
 import java.util.HashSet;

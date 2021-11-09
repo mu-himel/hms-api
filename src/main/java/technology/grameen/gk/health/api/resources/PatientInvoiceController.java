@@ -14,7 +14,7 @@ import technology.grameen.gk.health.api.projection.PatientSearchResult;
 import technology.grameen.gk.health.api.responses.EntityCollectionResponse;
 import technology.grameen.gk.health.api.responses.EntityResponse;
 import technology.grameen.gk.health.api.responses.IResponse;
-import technology.grameen.gk.health.api.services.PatientManageService;
+import technology.grameen.gk.health.api.services.patient.PatientManageService;
 import technology.grameen.gk.health.api.services.invoice.PatientInvoiceService;
 import technology.grameen.gk.health.api.services.settings.GeneralSettingService;
 

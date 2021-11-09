@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import technology.grameen.gk.health.api.entity.HaVillage;
 import technology.grameen.gk.health.api.entity.HealthCenter;
 import technology.grameen.gk.health.api.entity.Village;
-import technology.grameen.gk.health.api.repositories.HaVillageRepository;
+import technology.grameen.gk.health.api.repositories.healthassistant.HaVillageRepository;
 
 import java.util.List;
 

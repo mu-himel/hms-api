@@ -2,15 +2,12 @@ package technology.grameen.gk.health.api.resources;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import technology.grameen.gk.health.api.entity.CardMember;
 import technology.grameen.gk.health.api.entity.Patient;
 import technology.grameen.gk.health.api.entity.PatientOperation;
@@ -18,9 +15,8 @@ import technology.grameen.gk.health.api.exceptions.CustomException;
 import technology.grameen.gk.health.api.projection.PatientSearchResult;
 import technology.grameen.gk.health.api.projection.PatientNumberAutoComplete;
 import technology.grameen.gk.health.api.requests.PatientRequest;
-import technology.grameen.gk.health.api.requests.PatientSearch;
 import technology.grameen.gk.health.api.responses.*;
-import technology.grameen.gk.health.api.services.PatientManageService;
+import technology.grameen.gk.health.api.services.patient.PatientManageService;
 import technology.grameen.gk.health.api.services.card_registration.CardMemberService;
 import technology.grameen.gk.health.api.services.operation.PatientOperationService;
 

@@ -1,4 +1,4 @@
-package technology.grameen.gk.health.api.services;
+package technology.grameen.gk.health.api.services.patient;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

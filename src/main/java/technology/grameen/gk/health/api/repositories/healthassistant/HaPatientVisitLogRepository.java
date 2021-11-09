@@ -1,4 +1,4 @@
-package technology.grameen.gk.health.api.repositories;
+package technology.grameen.gk.health.api.repositories.healthassistant;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

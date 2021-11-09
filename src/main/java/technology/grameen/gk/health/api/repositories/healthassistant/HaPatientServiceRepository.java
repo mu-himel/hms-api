@@ -1,4 +1,4 @@
-package technology.grameen.gk.health.api.repositories;
+package technology.grameen.gk.health.api.repositories.healthassistant;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.jpa.repository.JpaRepository;
