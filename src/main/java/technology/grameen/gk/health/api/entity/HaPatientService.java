@@ -15,6 +15,9 @@ public class HaPatientService {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private HaHome home;
+
     @ManyToOne
     private Employee healthAssistant;
 
@@ -87,5 +90,13 @@ public class HaPatientService {
 
     public void setUpdateAt(LocalDateTime updateAt) {
         this.updateAt = updateAt;
+    }
+
+    public HaHome getHome() {
+        return home;
+    }
+
+    public void setHome(HaHome home) {
+        this.home = home;
     }
 }

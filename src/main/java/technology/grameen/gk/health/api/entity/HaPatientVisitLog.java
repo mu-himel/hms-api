@@ -31,6 +31,9 @@ public class HaPatientVisitLog {
     private Boolean adviceToGoAtSatellite;
     private Boolean adviceToGoAtCamp;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private HaHome home;
+
     @ManyToOne
     private HealthCenter center;
 
@@ -180,5 +183,13 @@ public class HaPatientVisitLog {
 
     public void setCenter(HealthCenter center) {
         this.center = center;
+    }
+
+    public HaHome getHome() {
+        return home;
+    }
+
+    public void setHome(HaHome home) {
+        this.home = home;
     }
 }
