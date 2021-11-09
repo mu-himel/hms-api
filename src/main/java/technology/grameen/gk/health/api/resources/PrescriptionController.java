@@ -40,7 +40,7 @@ public class PrescriptionController {
         PatientDiseaseProfile patientDiseaseProfile = createRequest.getPatientDiseaseProfile();
         Prescription newPrescription = prescriptionService.savePrescription(createRequest.getPrescription());
 
-        if(newPrescription.getId()!=null){
+        if(patientDiseaseProfile!=null){
             patientDiseaseProfileService.addDiseaseProfile(patientDiseaseProfile);
         }
         if(prescription.getId()>0){
