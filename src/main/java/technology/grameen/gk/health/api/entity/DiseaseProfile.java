@@ -16,6 +16,8 @@ public class DiseaseProfile {
     private String name;
     private String alias;
 
+    private Boolean isFollowUp;
+
     public Long getId() {
         return id;
     }
@@ -46,5 +48,13 @@ public class DiseaseProfile {
 
     public void setAlias(String alias) {
         this.alias = alias;
+    }
+
+    public Boolean getFollowUp() {
+        return isFollowUp;
+    }
+
+    public void setFollowUp(Boolean isFollowUp) {
+        this.isFollowUp = isFollowUp;
     }
 }

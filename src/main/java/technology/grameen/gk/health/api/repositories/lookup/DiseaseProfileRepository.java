@@ -11,13 +11,14 @@ import java.util.List;
 @Repository
 public interface DiseaseProfileRepository extends JpaRepository<DiseaseProfile,Long> {
 
-    @Query(value = "SELECT dp from DiseaseProfile dp")
+    @Query(value = "SELECT dp from DiseaseProfile dp JOIN FETCH dp.diseaseType dt")
     List<DiseaseProfileSimple> findAllProfiles();
 
     interface DiseaseProfileSimple{
         Long getId();
         String getName();
         String getAlias();
+        Boolean getIsFollowUp();
     }
     List<DiseaseProfileSimple> findByDiseaseType(DiseaseType diseaseType);
 
