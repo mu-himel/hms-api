@@ -26,15 +26,23 @@ public class PrescriptionController {
     private final Integer PAGE_SIZE = 10;
 
     private PrescriptionService prescriptionService;
+    private PatientDiseaseProfileService patientDiseaseProfileService;
 
-    PrescriptionController(PrescriptionService prescriptionService){
+    public PrescriptionController(PrescriptionService prescriptionService,
+                                  PatientDiseaseProfileService patientDiseaseProfileService) {
         this.prescriptionService = prescriptionService;
+        this.patientDiseaseProfileService = patientDiseaseProfileService;
     }
 
     @PostMapping("/add")
-    public ResponseEntity<IResponse> addPrescription(@RequestBody Prescription prescription){
-        Prescription newPrescription = prescriptionService.savePrescription(prescription);
+    public ResponseEntity<IResponse> addPrescription(@RequestBody PrescriptionCreateRequest createRequest){
+        Prescription prescription = createRequest.getPrescription();
+        PatientDiseaseProfile patientDiseaseProfile = createRequest.getPatientDiseaseProfile();
+        Prescription newPrescription = prescriptionService.savePrescription(createRequest.getPrescription());
 
+        if(newPrescription.getId()!=null){
+            patientDiseaseProfileService.addDiseaseProfile(patientDiseaseProfile);
+        }
         if(prescription.getId()>0){
             return new ResponseEntity<>(new EntityResponse<>(
                     HttpStatus.OK.value(),
