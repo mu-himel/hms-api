@@ -27,6 +27,14 @@ public class MedicineGroupServiceImpl implements MedicineGroupService{
     @Override
     @Transactional
     public MedicineGroup addMedicineGroup(MedicineGroup medicineGroup) {
+        if(medicineGroup.getId()!=null){
+            Optional<MedicineGroup> optMedicineGroup = medicineGroupRepository.findById(medicineGroup.getId());
+            if(optMedicineGroup.isPresent()){
+                return medicineGroupRepository.save(medicineGroup);
+            }else{
+                return null;
+            }
+        }
         return medicineGroupRepository.save(medicineGroup);
     }
 

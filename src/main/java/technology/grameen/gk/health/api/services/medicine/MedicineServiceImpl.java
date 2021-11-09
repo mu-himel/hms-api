@@ -22,6 +22,14 @@ public class MedicineServiceImpl implements MedicineService{
     @Override
     @Transactional
     public Medicine addMedicine(Medicine medicine) {
+        if(medicine.getId()!=null){
+            Optional<Medicine> optMedicine = medicineRepository.findById(medicine.getId());
+            if(optMedicine.isPresent()){
+                return medicineRepository.save(medicine);
+            }else{
+                return null;
+            }
+        }
         medicineRepository.save(medicine);
         return medicine;
     }
