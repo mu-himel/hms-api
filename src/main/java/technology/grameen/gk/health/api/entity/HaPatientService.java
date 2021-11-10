@@ -15,6 +15,9 @@ public class HaPatientService {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    private HealthCenter center;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private HaHome home;
 
@@ -98,5 +101,13 @@ public class HaPatientService {
 
     public void setHome(HaHome home) {
         this.home = home;
+    }
+
+    public HealthCenter getCenter() {
+        return center;
+    }
+
+    public void setCenter(HealthCenter center) {
+        this.center = center;
     }
 }
