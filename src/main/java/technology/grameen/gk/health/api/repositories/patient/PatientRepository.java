@@ -124,7 +124,9 @@ public interface PatientRepository extends JpaRepository<Patient,Long> {
     @Query(value = "SELECT Max(r.id) FROM Patient p JOIN p.registration r")
     Integer getMaxCardRegId();
 
-    @Query(value = "SELECT p FROM Patient p LEFT JOIN FETCH p.registration r LEFT JOIN FETCH p.patientInvoices pi WHERE p.pid = :number")
+    @Query(value = "SELECT p FROM Patient p LEFT JOIN FETCH p.registration r " +
+            "LEFT JOIN FETCH p.home h " +
+            "LEFT JOIN FETCH p.patientInvoices pi WHERE p.pid = :number")
     Optional<PatientSearchResult> findByPid(@Param("number") String id);
 
     @Query(value = "SELECT p FROM Patient p LEFT JOIN FETCH p.registration r " +
