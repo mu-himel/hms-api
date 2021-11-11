@@ -268,9 +268,9 @@ public class ReportServiceImpl implements ReportService{
 
         report.put("stats",reportRepository.getMonthlyStatisticalReport(yearMonth,regionCode));
 
-        report.put("campNo",reportRepository.getCampNoCenterWiseEvent(regionCode));
-        report.put("cardMember",reportRepository.getCardMemberCenterWiseEvent(regionCode));
-        report.put("nonCardMember",reportRepository.getNonCardMemberCenterWiseEvent(regionCode));
+        report.put("campNo",reportRepository.getCampNoCenterWiseEvent(yearMonth,regionCode));
+        report.put("cardMember",reportRepository.getCardMemberCenterWiseEvent(yearMonth,regionCode));
+        report.put("nonCardMember",reportRepository.getNonCardMemberCenterWiseEvent(yearMonth,regionCode));
 
         report.put("usgCampNo",reportRepository.getCampNo("usg",regionCode,yearMonth));
         report.put("usgCardMember",reportRepository.getCardMemberCount("usg",regionCode,yearMonth));

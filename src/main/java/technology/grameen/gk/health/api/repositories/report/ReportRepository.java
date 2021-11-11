@@ -34,10 +34,14 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
         String getEcName();
     }
 
-    @Query(value = "SELECT hc.id as centerId, count(ec.name) AS campNo, ec.id ecId, lower(ec.NAME) ecName FROM HEALTH_CENTERS hc JOIN EVENTS e ON e.CENTER_ID = hc.ID\n" +
-            "JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID=ec.id  AND ec.IS_SATELLITE = 0\n" +
-            "WHERE e.STATUS = 'approved' AND nvl(hc.THIRD_LEVEL,0)=:regionCode GROUP BY hc.id,ec.id, ec.name",nativeQuery = true)
-    List<CampNo> getCampNoCenterWiseEvent(@Param("regionCode") String regionCode);
+    @Query(value = "SELECT hc.id as centerId, count(ec.name) AS campNo, ec.id ecId, lower(ec.NAME) ecName " +
+            " FROM HEALTH_CENTERS hc " +
+            " JOIN EVENTS e ON e.CENTER_ID = hc.ID\n" +
+            " JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID=ec.id  AND ec.IS_SATELLITE = 0\n" +
+            "WHERE e.STATUS = 'approved' AND nvl(hc.THIRD_LEVEL,0) = :regionCode" +
+            " AND TO_CHAR(e.event_date,'YYYY-MM') = :yearMonth GROUP BY hc.id,ec.id, ec.name",nativeQuery = true)
+    List<CampNo> getCampNoCenterWiseEvent(@Param("yearMonth") String yearMonth,
+                                          @Param("regionCode") String regionCode);
 
     interface CampWiseCardMemberCount{
         Long getCenterId();
@@ -52,10 +56,12 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "LEFT JOIN PATIENT_REGISTRATIONS pr ON pr.PATIENT_ID = p.id\n" +
             "JOIN EVENTS e ON pn.EVENT_ID = e.ID\n" +
             "JOIN EVENT_CATEGORIES ec ON ec.id = e.EVENT_CATEGORY_ID\n" +
-            "WHERE e.STATUS = 'approved' AND nvl(hc.THIRD_LEVEL,0)=:regionCode AND pr.id IS NOT NULL AND ec.is_satellite=0\n" +
+            "WHERE e.STATUS = 'approved' AND" +
+            " TO_CHAR(e.event_date,'YYYY-MM-DD') = :yearMonth AND nvl(hc.THIRD_LEVEL,0)=:regionCode AND pr.id IS NOT NULL AND ec.is_satellite=0\n" +
             "GROUP BY hc.id,ec.id,ec.name, p.id,pr.id) r\n" +
             "GROUP BY r.centerId,r.ecName,r.ecId", nativeQuery = true)
-    List<CampWiseCardMemberCount> getCardMemberCenterWiseEvent(@Param("regionCode") String regionCode);
+    List<CampWiseCardMemberCount> getCardMemberCenterWiseEvent(@Param("yearMonth") String yearMonth,
+                                                               @Param("regionCode") String regionCode);
 
 
     interface CampWiseNonCardMemberCount{
@@ -71,10 +77,12 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "LEFT JOIN PATIENT_REGISTRATIONS pr ON pr.PATIENT_ID = p.id\n" +
             "JOIN EVENTS e ON pn.EVENT_ID = e.ID\n" +
             "JOIN EVENT_CATEGORIES ec ON ec.id = e.EVENT_CATEGORY_ID\n" +
-            "WHERE e.STATUS = 'approved' AND nvl(hc.THIRD_LEVEL,0)=:regionCode AND pr.id IS NULL AND ec.is_satellite=0\n" +
+            "WHERE e.STATUS = 'approved' AND" +
+            " TO_CHAR(e.event_date,'YYYY-MM-DD') = :yearMonth AND nvl(hc.THIRD_LEVEL,0)=:regionCode AND pr.id IS NULL AND ec.is_satellite=0\n" +
             "GROUP BY hc.id,ec.id,ec.name, p.id,pr.id) r\n" +
             "GROUP BY r.centerId,r.ecName,r.ecId, r.pid", nativeQuery = true)
-    List<CampWiseNonCardMemberCount> getNonCardMemberCenterWiseEvent(@Param("regionCode") String regionCode);
+    List<CampWiseNonCardMemberCount> getNonCardMemberCenterWiseEvent(@Param("yearMonth") String yearMonth,
+                                                                     @Param("regionCode") String regionCode);
 
 
     interface SingleCampNo{
