@@ -56,8 +56,8 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "LEFT JOIN PATIENT_REGISTRATIONS pr ON pr.PATIENT_ID = p.id\n" +
             "JOIN EVENTS e ON pn.EVENT_ID = e.ID\n" +
             "JOIN EVENT_CATEGORIES ec ON ec.id = e.EVENT_CATEGORY_ID\n" +
-            "WHERE e.STATUS = 'approved' AND" +
-            " TO_CHAR(e.event_date,'YYYY-MM-DD') = :yearMonth AND nvl(hc.THIRD_LEVEL,0)=:regionCode AND pr.id IS NOT NULL AND ec.is_satellite=0\n" +
+            "WHERE (e.STATUS = 'approved' OR e.STATUS = 'completed') AND" +
+            " TO_CHAR(e.event_date,'YYYY-MM') = :yearMonth AND nvl(hc.THIRD_LEVEL,0)=:regionCode AND pr.id IS NOT NULL AND ec.is_satellite=0\n" +
             "GROUP BY hc.id,ec.id,ec.name, p.id,pr.id) r\n" +
             "GROUP BY r.centerId,r.ecName,r.ecId", nativeQuery = true)
     List<CampWiseCardMemberCount> getCardMemberCenterWiseEvent(@Param("yearMonth") String yearMonth,
@@ -77,8 +77,8 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "LEFT JOIN PATIENT_REGISTRATIONS pr ON pr.PATIENT_ID = p.id\n" +
             "JOIN EVENTS e ON pn.EVENT_ID = e.ID\n" +
             "JOIN EVENT_CATEGORIES ec ON ec.id = e.EVENT_CATEGORY_ID\n" +
-            "WHERE e.STATUS = 'approved' AND" +
-            " TO_CHAR(e.event_date,'YYYY-MM-DD') = :yearMonth AND nvl(hc.THIRD_LEVEL,0)=:regionCode AND pr.id IS NULL AND ec.is_satellite=0\n" +
+            "WHERE (e.STATUS = 'approved' OR e.STATUS = 'completed') AND" +
+            " TO_CHAR(e.event_date,'YYYY-MM') = :yearMonth AND nvl(hc.THIRD_LEVEL,0)=:regionCode AND pr.id IS NULL AND ec.is_satellite=0\n" +
             "GROUP BY hc.id,ec.id,ec.name, p.id,pr.id) r\n" +
             "GROUP BY r.centerId,r.ecName,r.ecId, r.pid", nativeQuery = true)
     List<CampWiseNonCardMemberCount> getNonCardMemberCenterWiseEvent(@Param("yearMonth") String yearMonth,
