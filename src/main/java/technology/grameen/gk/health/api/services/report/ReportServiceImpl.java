@@ -9,6 +9,7 @@ import technology.grameen.gk.health.api.projection.event.schedule.Event;
 import technology.grameen.gk.health.api.projection.event.schedule.EventCategory;
 import technology.grameen.gk.health.api.projection.event.schedule.HCenter;
 import technology.grameen.gk.health.api.repositories.EventRepository;
+import technology.grameen.gk.health.api.repositories.report.HaReportRepository;
 import technology.grameen.gk.health.api.repositories.report.LabTestReportRepository;
 import technology.grameen.gk.health.api.repositories.report.ReportRepository;
 import technology.grameen.gk.health.api.repositories.ServiceRecordRepository;
@@ -31,6 +32,7 @@ public class ReportServiceImpl implements ReportService{
     ReportRepository reportRepository;
     SchoolVisitReportService schoolVisitReportService;
     LabTestReportRepository labTestReportRepository;
+    HaReportRepository haReportRepository;
 
 
     ReportServiceImpl(ServiceRecordRepository serviceRecordRepository,
@@ -39,7 +41,8 @@ public class ReportServiceImpl implements ReportService{
                       EventService eventService,
                       ReportRepository reportRepository,
                       SchoolVisitReportService schoolVisitReportService,
-                      LabTestReportRepository labTestReportRepository){
+                      LabTestReportRepository labTestReportRepository,
+                      HaReportRepository haReportRepository){
         this.serviceRecordRepository = serviceRecordRepository;
         this.patientManageService = patientManageService;
         this.healthCenterService = healthCenterService;
@@ -47,6 +50,7 @@ public class ReportServiceImpl implements ReportService{
         this.reportRepository = reportRepository;
         this.schoolVisitReportService = schoolVisitReportService;
         this.labTestReportRepository = labTestReportRepository;
+        this.haReportRepository = haReportRepository;
     }
 
 
@@ -258,6 +262,10 @@ public class ReportServiceImpl implements ReportService{
     @Override
     public Map<String,Object> getMonthlyStatisticalReport(String yearMonth,String regionCode) {
         Map<String, Object> report = new HashMap<>();
+        report.put("homeVisitCount",haReportRepository.getMonthWiseHomeVisitCount(yearMonth,regionCode));
+        report.put("personCheckupCount",haReportRepository.getMonthWisePersonCheckupCount(yearMonth,regionCode));
+        report.put("DiabeticVisitCount",haReportRepository.getMonthWiseDiabeticVisitCount(yearMonth,regionCode));
+
         report.put("stats",reportRepository.getMonthlyStatisticalReport(yearMonth,regionCode));
 
         report.put("campNo",reportRepository.getCampNoCenterWiseEvent(regionCode));
