@@ -64,7 +64,7 @@ public interface HaPatientVisitLogRepository extends JpaRepository<HaPatientVisi
             " dp.name diseaseProfile FROM ha_patient_visit_logs hplog" +
             " JOIN employees e ON e.id = hplog.health_assistant_id" +
             " JOIN patients p on p.id=hplog.patient_id " +
-            " JOIN disease_profiles dp on dp.id = hplog.disease_profile_id",
+            " LEFT JOIN disease_profiles dp on dp.id = hplog.disease_profile_id",
             countQuery = "select count(hplog.id) FROM ha_patient_visit_logs hplog" +
                     " JOIN employees e ON e.id = hplog.health_assistant_id" +
                     " JOIN patients p on p.id = hplog.patient_id " +
