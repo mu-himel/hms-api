@@ -8,7 +8,6 @@ import technology.grameen.gk.health.api.projection.MonthlyStatisticalReport;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenterWiseView,Long> {
 
@@ -275,6 +274,19 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "GROUP BY pi2.HEALTH_CENTER_ID , s.SERVICE_ID",nativeQuery = true)
     List<DeliveryCount> getCenterWiseDeliveryCount(@Param("regionCode") String regionCode,
                                                    @Param("yearMonth") String yearMonth);
+
+    interface PregnantRegistered {
+        Long getTotal();
+        Long getCenterId();
+    }
+    @Query(value = "SELECT count(*) total, pdp.CENTER_ID centerId FROM PATIENT_DISEASE_PROFILES pdp \n" +
+            "JOIN DISEASE_PROFILES dp ON dp.ID = pdp.DISEASE_PROFILE_ID \n" +
+            "JOIN HEALTH_CENTERS hc ON hc.ID = pdp.CENTER_ID \n" +
+            "WHERE NVL(hc.THIRD_LEVEL,0)=:regionCode AND dp.ALIAS = 'pregnant' " +
+            "AND TO_CHAR(pdp.CREATED_AT,'YYYY-MM') = :yearMonth \n" +
+            "GROUP BY pdp.CENTER_ID ",nativeQuery = true)
+    List<PregnantRegistered> getMonthWisePregnantRegistered(@Param("yearMonth") String yearMonth,
+                                                            @Param("regionCode") String regionCode);
 
 
     interface VaccineCount{
