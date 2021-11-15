@@ -1,6 +1,7 @@
 package technology.grameen.gk.health.api.services.rolepermission;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import technology.grameen.gk.health.api.repositories.MenuPermissionRepository;
 import technology.grameen.gk.health.api.requests.RolePermission;
 
@@ -14,6 +15,7 @@ public class RolePermissionServiceImpl implements RolePermissionService{
     }
 
     @Override
+    @Transactional
     public Boolean saveRolePermission(RolePermission rolePermission) {
         try {
             this.menuPermissionRepository.saveAll(rolePermission.getPermissions());
