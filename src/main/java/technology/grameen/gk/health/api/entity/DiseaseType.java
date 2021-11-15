@@ -14,6 +14,8 @@ public class DiseaseType {
     private String name;
     private String alias;
 
+    private String category;
+
     public DiseaseType(){}
 
     public DiseaseType(Long id) {
@@ -45,5 +47,13 @@ public class DiseaseType {
 
     public void setAlias(String alias) {
         this.alias = alias;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }
