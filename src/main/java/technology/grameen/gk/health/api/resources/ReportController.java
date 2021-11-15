@@ -13,6 +13,7 @@ import technology.grameen.gk.health.api.responses.EntityResponse;
 import technology.grameen.gk.health.api.responses.IResponse;
 import technology.grameen.gk.health.api.responses.StatsResponse;
 import technology.grameen.gk.health.api.services.report.ReportService;
+import technology.grameen.gk.health.api.services.report.statistics.SummaryReportService;
 
 import javax.swing.text.html.Option;
 import java.math.BigDecimal;
@@ -23,9 +24,12 @@ import java.util.Optional;
 public class ReportController {
 
     private  ReportService reportService;
+    private SummaryReportService summaryReportService;
 
-    ReportController(ReportService reportService){
+    ReportController(ReportService reportService,
+                     SummaryReportService summaryReportService){
         this.reportService = reportService;
+        this.summaryReportService = summaryReportService;
     }
     @GetMapping("/service-records")
     public ResponseEntity<IResponse> getServiceRecords(){
@@ -127,6 +131,20 @@ public class ReportController {
                 ),
                 HttpStatus.OK
         );
+
+    }
+
+    @GetMapping("/summary-stats")
+    public ResponseEntity<IResponse> getSummaryStates(@RequestParam Optional<String> type,
+                                                      @RequestParam Optional<String> startDate,
+                                                      @RequestParam Optional<String> endDate,
+                                                      @RequestParam Optional<String> regionCode){
+
+        return new ResponseEntity<>(new EntityResponse<>(
+                HttpStatus.OK.value(),
+                reportService.getSummaryReportStats(type.orElse(null),startDate.orElse(""),
+                        endDate.orElse(""),regionCode.orElse(""))
+        ), HttpStatus.OK);
 
     }
 }

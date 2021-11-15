@@ -13,11 +13,13 @@ import technology.grameen.gk.health.api.repositories.report.HaReportRepository;
 import technology.grameen.gk.health.api.repositories.report.LabTestReportRepository;
 import technology.grameen.gk.health.api.repositories.report.ReportRepository;
 import technology.grameen.gk.health.api.repositories.ServiceRecordRepository;
+import technology.grameen.gk.health.api.repositories.report.SummaryReportRepository;
 import technology.grameen.gk.health.api.requests.ServiceRecordSearch;
 import technology.grameen.gk.health.api.responses.ServiceRecordResponse;
 import technology.grameen.gk.health.api.services.HealthCenterService;
 import technology.grameen.gk.health.api.services.patient.PatientManageService;
 import technology.grameen.gk.health.api.services.event.EventService;
+import technology.grameen.gk.health.api.services.report.statistics.SummaryReportService;
 
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -25,18 +27,20 @@ import java.util.*;
 @Service
 public class ReportServiceImpl implements ReportService{
 
-    ServiceRecordRepository serviceRecordRepository;
-    PatientManageService patientManageService;
-    HealthCenterService healthCenterService;
-    EventService eventService;
-    ReportRepository reportRepository;
-    SchoolVisitReportService schoolVisitReportService;
-    LabTestReportRepository labTestReportRepository;
-    HaReportRepository haReportRepository;
+    private ServiceRecordRepository serviceRecordRepository;
+    private SummaryReportService summaryReportService;
+    private PatientManageService patientManageService;
+    private HealthCenterService healthCenterService;
+    private EventService eventService;
+    private ReportRepository reportRepository;
+    private SchoolVisitReportService schoolVisitReportService;
+    private LabTestReportRepository labTestReportRepository;
+    private HaReportRepository haReportRepository;
 
 
     ReportServiceImpl(ServiceRecordRepository serviceRecordRepository,
                       PatientManageService patientManageService,
+                      SummaryReportService summaryReportService,
                       HealthCenterService healthCenterService,
                       EventService eventService,
                       ReportRepository reportRepository,
@@ -44,6 +48,7 @@ public class ReportServiceImpl implements ReportService{
                       LabTestReportRepository labTestReportRepository,
                       HaReportRepository haReportRepository){
         this.serviceRecordRepository = serviceRecordRepository;
+        this.summaryReportService = summaryReportService;
         this.patientManageService = patientManageService;
         this.healthCenterService = healthCenterService;
         this.eventService = eventService;
@@ -312,5 +317,31 @@ public class ReportServiceImpl implements ReportService{
         }
 
         return new ArrayList<>();
+    }
+
+    @Override
+    public Map<?,?> getSummaryReportStats(String type, String startDate, String endDate, String regionCode) {
+
+        Map<String,Optional<?>> result = new HashMap<>();
+
+        result.put("campOrganized",summaryReportService
+                    .getSummaryCampOrganizedStats(type,startDate, endDate,regionCode));
+
+        result.put("vaccineCount",summaryReportService
+                    .getSummaryVaccineStats(type,startDate,endDate,regionCode));
+
+        result.put("surgeryCount",summaryReportService
+                .getSummarySurgeryStats(type,startDate,endDate,regionCode));
+
+        result.put("ultrasonoCount",summaryReportService
+                .getSummaryUltrasonoStats(type,startDate,endDate,regionCode));
+
+        result.put("ecg",summaryReportService
+                .getSummaryEcgStats(type,startDate,endDate,regionCode));
+
+        result.put("x-ray",summaryReportService
+                .getSummaryXrayStats(type,startDate,endDate,regionCode));
+
+        return result;
     }
 }

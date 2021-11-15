@@ -31,4 +31,6 @@ public interface ReportService {
 
     List<LabTestReportRepository.MonthlyLabTestReport> getLabTestReport(String regionCode, String yearMonth,
                                                                         String dateTime);
+
+    Map<?,?> getSummaryReportStats(String type, String startDate ,String endDate, String regionCode);
 }
