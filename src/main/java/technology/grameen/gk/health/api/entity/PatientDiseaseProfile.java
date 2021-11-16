@@ -29,6 +29,8 @@ public class PatientDiseaseProfile {
 
     private Boolean isActive;
 
+    private Integer followup;
+
     @CreationTimestamp
     private LocalDate createdAt;
 
@@ -106,5 +108,13 @@ public class PatientDiseaseProfile {
 
     public void setUpdatedAt(LocalDate updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Integer getFollowup() {
+        return followup;
+    }
+
+    public void setFollowup(Integer followup) {
+        this.followup = followup;
     }
 }
