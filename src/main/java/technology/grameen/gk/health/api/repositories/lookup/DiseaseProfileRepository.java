@@ -17,7 +17,7 @@ public interface DiseaseProfileRepository extends JpaRepository<DiseaseProfile,L
     List<DiseaseProfileSimple> findAllProfiles();
 
     @Query(value = "SELECT dp FROM DiseaseProfile dp JOIN FETCH dp.diseaseType dt",
-    countQuery = "SELECT COUNT(dp) FROM DiseaseProfile dp JOIN FETCH dp.diseaseType dt")
+    countQuery = "SELECT COUNT(dp) FROM DiseaseProfile dp JOIN dp.diseaseType dt")
     Page<DiseaseProfileSimple> findAllProfiles(Pageable pageable);
 
     interface DiseaseProfileSimple{
