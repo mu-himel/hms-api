@@ -10,12 +10,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import technology.grameen.gk.health.api.entity.CardMember;
 import technology.grameen.gk.health.api.entity.Patient;
+import technology.grameen.gk.health.api.entity.PatientDiseaseProfile;
 import technology.grameen.gk.health.api.entity.PatientOperation;
 import technology.grameen.gk.health.api.exceptions.CustomException;
 import technology.grameen.gk.health.api.projection.PatientSearchResult;
 import technology.grameen.gk.health.api.projection.PatientNumberAutoComplete;
 import technology.grameen.gk.health.api.requests.PatientRequest;
 import technology.grameen.gk.health.api.responses.*;
+import technology.grameen.gk.health.api.services.patient.PatientDiseaseProfileService;
 import technology.grameen.gk.health.api.services.patient.PatientManageService;
 import technology.grameen.gk.health.api.services.card_registration.CardMemberService;
 import technology.grameen.gk.health.api.services.operation.PatientOperationService;
@@ -31,13 +33,16 @@ public class PatientController {
     private static final Integer PAGE_SIZE = 10;
 
     private PatientManageService patientManageService;
+    private PatientDiseaseProfileService patientDiseaseProfileService;
     private PatientOperationService patientOperationService;
     private CardMemberService cardMemberService;
 
     PatientController(PatientManageService patientManageService,
+                      PatientDiseaseProfileService patientDiseaseProfileService,
                       CardMemberService cardMemberService,
                       PatientOperationService patientOperationService){
        this.patientManageService = patientManageService;
+       this.patientDiseaseProfileService = patientDiseaseProfileService;
        this.cardMemberService = cardMemberService;
        this.patientOperationService = patientOperationService;
     }
@@ -82,11 +87,20 @@ public class PatientController {
                 pids),HttpStatus.OK);
     }
 
+    @GetMapping("/disease-profile/{id}")
+    public ResponseEntity<IResponse> getDiseaseProfileByPatientId(@PathVariable("id") Long id){
+        return new ResponseEntity<>(new EntityResponse<>(
+                HttpStatus.OK.value(),
+                patientDiseaseProfileService.getDiseaseProfileByPatient(id)
+        ),HttpStatus.OK);
+    }
+
     @GetMapping(value = "/by-pid/{pid}")
     public ResponseEntity<IResponse> getPatientByPID(@PathVariable("pid") String pid){
         Optional<PatientSearchResult> patient = patientManageService.getPatientByPId(pid);
 
         if(patient.isPresent()){
+
             return new ResponseEntity<>(new PatientCreationResponse(HttpStatus.OK.value(),patient.get()), HttpStatus.OK);
         }
         return new ResponseEntity<>(new ExceptionResponse(422,"No Patient found"), HttpStatus.OK);
