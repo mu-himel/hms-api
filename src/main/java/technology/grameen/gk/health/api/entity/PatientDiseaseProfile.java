@@ -1,6 +1,7 @@
 package technology.grameen.gk.health.api.entity;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -26,8 +27,13 @@ public class PatientDiseaseProfile {
 
     private LocalDate endDate;
 
+    private Boolean isActive;
+
     @CreationTimestamp
     private LocalDate createdAt;
+
+    @UpdateTimestamp
+    private LocalDate updatedAt;
 
 
     public Long getId() {
@@ -84,5 +90,21 @@ public class PatientDiseaseProfile {
 
     public void setCenter(HealthCenter center) {
         this.center = center;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
+    public LocalDate getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDate updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
