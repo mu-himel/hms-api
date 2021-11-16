@@ -1,5 +1,7 @@
 package technology.grameen.gk.health.api.repositories.lookup;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -13,6 +15,10 @@ public interface DiseaseProfileRepository extends JpaRepository<DiseaseProfile,L
 
     @Query(value = "SELECT dp from DiseaseProfile dp JOIN FETCH dp.diseaseType dt")
     List<DiseaseProfileSimple> findAllProfiles();
+
+    @Query(value = "SELECT dp FROM DiseaseProfile dp JOIN FETCH dp.diseaseType dt",
+    countQuery = "SELECT COUNT(dp) FROM DiseaseProfile dp JOIN FETCH dp.diseaseType dt")
+    Page<DiseaseProfileSimple> findAllProfiles(Pageable pageable);
 
     interface DiseaseProfileSimple{
         Long getId();
