@@ -17,6 +17,7 @@ import technology.grameen.gk.health.api.services.patient.PatientDiseaseProfileSe
 import technology.grameen.gk.health.api.services.prescription.PrescriptionService;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -37,11 +38,11 @@ public class PrescriptionController {
     @PostMapping("/add")
     public ResponseEntity<IResponse> addPrescription(@RequestBody PrescriptionCreateRequest createRequest){
         Prescription prescription = createRequest.getPrescription();
-        PatientDiseaseProfile patientDiseaseProfile = createRequest.getPatientDiseaseProfile();
+        List<PatientDiseaseProfile> patientDiseaseProfile = createRequest.getPatientDiseaseProfile();
         Prescription newPrescription = prescriptionService.savePrescription(createRequest.getPrescription());
 
         if(patientDiseaseProfile!=null){
-            patientDiseaseProfileService.addDiseaseProfile(patientDiseaseProfile);
+            patientDiseaseProfileService.addDiseaseProfiles(patientDiseaseProfile);
         }
         if(prescription.getId()>0){
             return new ResponseEntity<>(new EntityResponse<>(

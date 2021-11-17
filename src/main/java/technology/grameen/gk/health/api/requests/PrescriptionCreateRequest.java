@@ -3,10 +3,12 @@ package technology.grameen.gk.health.api.requests;
 import technology.grameen.gk.health.api.entity.PatientDiseaseProfile;
 import technology.grameen.gk.health.api.entity.Prescription;
 
+import java.util.List;
+
 public class PrescriptionCreateRequest {
 
     private Prescription prescription;
-    private PatientDiseaseProfile patientDiseaseProfile;
+    private List<PatientDiseaseProfile> patientDiseaseProfile;
 
     public Prescription getPrescription() {
         return prescription;
@@ -16,11 +18,11 @@ public class PrescriptionCreateRequest {
         this.prescription = prescription;
     }
 
-    public PatientDiseaseProfile getPatientDiseaseProfile() {
+    public List<PatientDiseaseProfile> getPatientDiseaseProfile() {
         return patientDiseaseProfile;
     }
 
-    public void setPatientDiseaseProfile(PatientDiseaseProfile patientDiseaseProfile) {
+    public void setPatientDiseaseProfile(List<PatientDiseaseProfile> patientDiseaseProfile) {
         this.patientDiseaseProfile = patientDiseaseProfile;
     }
 }

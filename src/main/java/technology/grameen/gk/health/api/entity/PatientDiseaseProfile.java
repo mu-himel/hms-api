@@ -27,7 +27,7 @@ public class PatientDiseaseProfile {
 
     private LocalDate endDate;
 
-    private Boolean isActive;
+    private Boolean isActive=true;
 
     private Integer followup;
 

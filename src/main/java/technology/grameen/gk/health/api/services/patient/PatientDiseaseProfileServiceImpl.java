@@ -23,6 +23,12 @@ public class PatientDiseaseProfileServiceImpl implements PatientDiseaseProfileSe
     }
 
     @Override
+    @Transactional
+    public List<PatientDiseaseProfile> addDiseaseProfiles(List<PatientDiseaseProfile> diseaseProfiles) {
+        return diseaseProfileRepository.saveAll(diseaseProfiles);
+    }
+
+    @Override
     public List<?> getDiseaseProfileByPatient(Long id) {
         return diseaseProfileRepository.findByPatientId(id);
     }
