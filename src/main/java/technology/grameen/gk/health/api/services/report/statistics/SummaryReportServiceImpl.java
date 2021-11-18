@@ -1,6 +1,7 @@
 package technology.grameen.gk.health.api.services.report.statistics;
 
 import org.springframework.stereotype.Service;
+import technology.grameen.gk.health.api.repositories.report.ReportRepository;
 import technology.grameen.gk.health.api.repositories.report.SummaryReportRepository;
 import technology.grameen.gk.health.api.services.report.ReportService;
 
@@ -12,9 +13,12 @@ import java.util.Optional;
 public class SummaryReportServiceImpl implements SummaryReportService{
 
     private SummaryReportRepository summaryReportRepository;
+    private ReportRepository reportRepository;
 
-    public SummaryReportServiceImpl(SummaryReportRepository summaryReportRepository) {
+    public SummaryReportServiceImpl(SummaryReportRepository summaryReportRepository,
+                                    ReportRepository reportRepository) {
         this.summaryReportRepository = summaryReportRepository;
+        this.reportRepository = reportRepository;
     }
 
     @Override
@@ -105,6 +109,37 @@ public class SummaryReportServiceImpl implements SummaryReportService{
             return Optional
                     .ofNullable(summaryReportRepository
                             .getSummaryOfServiceCount(regionCode,startDate,endDate,"x-ray"));
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<?> getSummaryCampStats(String type, String startDate, String endDate,
+                                           String regionCode, String centerCode) {
+
+        if(type.equalsIgnoreCase("monthly")) {
+            if(regionCode!=null && centerCode == null) {
+                return Optional
+                        .ofNullable(reportRepository.getCenterCampIncomes(regionCode, startDate));
+            }else if(regionCode==null && centerCode!=null){
+                return Optional.ofNullable(reportRepository.getCenterCampIncomesByCenter(centerCode,startDate));
+            } else{
+                return Optional
+                        .ofNullable(reportRepository.getCenterCampIncomesFromHO(startDate));
+            }
+        }else if(type.equalsIgnoreCase("range") ||
+                type.equalsIgnoreCase("daily")){
+            if(regionCode!=null && centerCode==null){
+                return Optional
+                        .ofNullable(reportRepository.getCenterCampIncomesByRangeByCenter(regionCode, startDate, endDate));
+            }else if((regionCode == null || regionCode !=null) && centerCode != null) {
+                return Optional
+                        .ofNullable(reportRepository.getCenterCampIncomesByRange(centerCode, startDate, endDate));
+
+            }else{
+                return Optional
+                        .ofNullable(reportRepository.getCenterCampIncomesByRangeFromHo(startDate, endDate));
+            }
         }
         return Optional.empty();
     }

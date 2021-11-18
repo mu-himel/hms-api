@@ -12,4 +12,5 @@ public interface SummaryReportService {
     Optional<?> getSummaryUltrasonoStats(String type, String startDate, String endDate, String regionCode);
     Optional<?> getSummaryEcgStats(String type, String startDate, String endDate, String regionCode);
     Optional<?> getSummaryXrayStats(String type, String startDate, String endDate, String regionCode);
+    Optional<?> getSummaryCampStats(String type, String startDate, String endDate, String regionCode,String centerCode);
 }

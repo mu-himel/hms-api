@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import technology.grameen.gk.health.api.responses.EntityResponse;
 import technology.grameen.gk.health.api.responses.IResponse;
 import technology.grameen.gk.health.api.services.report.statistics.DashboardStatisticService;
+import technology.grameen.gk.health.api.services.report.statistics.SummaryReportService;
 
 
 @RestController
@@ -16,9 +17,13 @@ import technology.grameen.gk.health.api.services.report.statistics.DashboardStat
 public class DashboardController {
 
     DashboardStatisticService statisticService;
-
-    public DashboardController(DashboardStatisticService statisticService) {
+    private SummaryReportService summaryReportService;
+    public DashboardController(DashboardStatisticService statisticService,
+                               SummaryReportService summaryReportService
+                               ) {
         this.statisticService = statisticService;
+        this.summaryReportService = summaryReportService;
+
     }
 
     @GetMapping("/patient-reg")
@@ -55,6 +60,19 @@ public class DashboardController {
         return new ResponseEntity<>(new EntityResponse<>(
                 HttpStatus.OK.value(),
                 statisticService.getServiceSaleStats(regionCode,centerCode,type,fromDate,toDate)
+        ), HttpStatus.OK);
+    }
+
+
+    @GetMapping("/camp-stats")
+    public ResponseEntity<IResponse> getCampStatistics(@RequestParam String regionCode,
+                                                          @RequestParam String centerCode,
+                                                          @RequestParam String type,
+                                                          @RequestParam String fromDate,
+                                                          @RequestParam String toDate){
+        return new ResponseEntity<>(new EntityResponse<>(
+                HttpStatus.OK.value(),
+                summaryReportService.getSummaryCampStats(type,fromDate,toDate,regionCode,centerCode)
         ), HttpStatus.OK);
     }
 }

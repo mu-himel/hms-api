@@ -212,10 +212,11 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
     interface EventCategoryWiseIncomeStats {
         Long getEcId();
         String getEcName();
+        Integer getTotalCount();
         String getTotalAmount();
         Long getCenterId();
     }
-    @Query(value = "SELECT e.EVENT_CATEGORY_ID ecId,ec.NAME ecName,SUM(pi2.PAID_AMOUNT) totalAmount, pi2.HEALTH_CENTER_ID centerId FROM PATIENT_INVOICES pi2 \n" +
+    @Query(value = "SELECT e.EVENT_CATEGORY_ID ecId,count(e.id) totalCount,ec.NAME ecName,SUM(pi2.PAID_AMOUNT) totalAmount, pi2.HEALTH_CENTER_ID centerId FROM PATIENT_INVOICES pi2 \n" +
             "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
             "JOIN events e ON pi2.EVENT_ID  = e.ID \n" +
             "JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID  = ec.ID \n" +
@@ -225,6 +226,66 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
     nativeQuery = true)
     List<EventCategoryWiseIncomeStats> getCenterCampIncomes(@Param("regionCode") String regionCode,
                                                             @Param("yearMonth") String yearMonth);
+
+    @Query(value = "SELECT e.EVENT_CATEGORY_ID ecId,count(e.id) totalCount,ec.NAME ecName,SUM(pi2.PAID_AMOUNT) totalAmount, pi2.HEALTH_CENTER_ID centerId FROM PATIENT_INVOICES pi2 \n" +
+            "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
+            "JOIN events e ON pi2.EVENT_ID  = e.ID \n" +
+            "JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID  = ec.ID \n" +
+            "JOIN HEALTH_CENTERS hc ON hc.ID = pi2.HEALTH_CENTER_ID \n" +
+            "WHERE hc.OFFICE_TYPE_ID = 6 AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM') LIKE :yearMonth||'%' AND pi2.INVOICE_TYPE = 'camp'\n" +
+            "GROUP BY e.EVENT_CATEGORY_ID,ec.NAME , pi2.HEALTH_CENTER_ID",
+            nativeQuery = true)
+    List<EventCategoryWiseIncomeStats> getCenterCampIncomesFromHO(@Param("yearMonth") String yearMonth);
+
+    @Query(value = "SELECT e.EVENT_CATEGORY_ID ecId,count(e.id) totalCount,ec.NAME ecName,SUM(pi2.PAID_AMOUNT) totalAmount, pi2.HEALTH_CENTER_ID centerId FROM PATIENT_INVOICES pi2 \n" +
+            "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
+            "JOIN events e ON pi2.EVENT_ID  = e.ID \n" +
+            "JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID  = ec.ID \n" +
+            "JOIN HEALTH_CENTERS hc ON hc.ID = pi2.HEALTH_CENTER_ID \n" +
+            "WHERE NVL(hc.CENTER_CODE,'0') = :centerCode AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM') LIKE :yearMonth||'%' AND pi2.INVOICE_TYPE = 'camp'\n" +
+            "GROUP BY e.EVENT_CATEGORY_ID,ec.NAME , pi2.HEALTH_CENTER_ID",
+            nativeQuery = true)
+    List<EventCategoryWiseIncomeStats> getCenterCampIncomesByCenter(@Param("centerCode") String centerCode,
+                                                            @Param("yearMonth") String yearMonth);
+
+    @Query(value = "SELECT e.EVENT_CATEGORY_ID ecId,count(e.id) totalCount,ec.NAME ecName,SUM(pi2.PAID_AMOUNT) totalAmount, pi2.HEALTH_CENTER_ID centerId FROM PATIENT_INVOICES pi2 \n" +
+            "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
+            "JOIN events e ON pi2.EVENT_ID  = e.ID \n" +
+            "JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID  = ec.ID \n" +
+            "JOIN HEALTH_CENTERS hc ON hc.ID = pi2.HEALTH_CENTER_ID \n" +
+            "WHERE NVL(hc.THIRD_LEVEL,'0') = :regionCode AND pi2.CREATED_AT BETWEEN TO_DATE(:startDate,'YYYY-MM-DD') " +
+            "AND TO_DATE(:endDate,'YYYY-MM-DD') AND pi2.INVOICE_TYPE = 'camp'\n" +
+            "GROUP BY e.EVENT_CATEGORY_ID,ec.NAME , pi2.HEALTH_CENTER_ID",
+            nativeQuery = true)
+    List<EventCategoryWiseIncomeStats> getCenterCampIncomesByRange(@Param("regionCode") String regionCode,
+                                                            @Param("startDate") String startDate,
+                                                                   @Param("endDate") String endDate);
+
+    @Query(value = "SELECT e.EVENT_CATEGORY_ID ecId,count(e.id) totalCount,ec.NAME ecName,SUM(pi2.PAID_AMOUNT) totalAmount, pi2.HEALTH_CENTER_ID centerId FROM PATIENT_INVOICES pi2 \n" +
+            "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
+            "JOIN events e ON pi2.EVENT_ID  = e.ID \n" +
+            "JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID  = ec.ID \n" +
+            "JOIN HEALTH_CENTERS hc ON hc.ID = pi2.HEALTH_CENTER_ID \n" +
+            "WHERE hc.OFFICE_TYPE_ID = 6 AND pi2.CREATED_AT BETWEEN TO_DATE(:startDate,'YYYY-MM-DD') " +
+            "AND TO_DATE(:endDate,'YYYY-MM-DD') AND pi2.INVOICE_TYPE = 'camp'\n" +
+            "GROUP BY e.EVENT_CATEGORY_ID,ec.NAME , pi2.HEALTH_CENTER_ID",
+            nativeQuery = true)
+    List<EventCategoryWiseIncomeStats> getCenterCampIncomesByRangeFromHo(@Param("startDate") String startDate,
+                                                                   @Param("endDate") String endDate);
+
+
+    @Query(value = "SELECT e.EVENT_CATEGORY_ID ecId,count(e.id) totalCount,ec.NAME ecName,SUM(pi2.PAID_AMOUNT) totalAmount, pi2.HEALTH_CENTER_ID centerId FROM PATIENT_INVOICES pi2 \n" +
+            "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
+            "JOIN events e ON pi2.EVENT_ID  = e.ID \n" +
+            "JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID  = ec.ID \n" +
+            "JOIN HEALTH_CENTERS hc ON hc.ID = pi2.HEALTH_CENTER_ID \n" +
+            "WHERE NVL(hc.CENTER_CODE,'0') = :centerCode AND pi2.CREATED_AT BETWEEN TO_DATE(:startDate,'YYYY-MM-DD') " +
+            "AND TO_DATE(:endDate,'YYYY-MM-DD') AND pi2.INVOICE_TYPE = 'camp'\n" +
+            "GROUP BY e.EVENT_CATEGORY_ID,ec.NAME , pi2.HEALTH_CENTER_ID",
+            nativeQuery = true)
+    List<EventCategoryWiseIncomeStats> getCenterCampIncomesByRangeByCenter(@Param("centerCode") String centerCode,
+                                                                   @Param("startDate") String startDate,
+                                                                   @Param("endDate") String endDate);
 
     interface ServiceCategoryIncome{
         BigDecimal getTotalAmount();
