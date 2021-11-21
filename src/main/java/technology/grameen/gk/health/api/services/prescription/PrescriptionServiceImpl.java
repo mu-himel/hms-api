@@ -160,7 +160,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         int date = (calendar.get(Calendar.DATE));
         Long maxId = 0L;
         try {
-            maxId = prescriptionRepository.getMaxId(422L);
+            maxId = prescriptionRepository.getMaxId(center.getId());
             maxId++;
         }catch(Exception ex){
             logger.error(ex.getLocalizedMessage());
