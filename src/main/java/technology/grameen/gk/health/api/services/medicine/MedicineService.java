@@ -12,5 +12,6 @@ public interface MedicineService {
     List<Medicine> getMedicines();
 
     Page<Medicine> getMedicines(String medicineName,Pageable pageable);
+    List<Medicine> getMedicines(String medicineName);
     Optional <Medicine> findById(Long id);
 }

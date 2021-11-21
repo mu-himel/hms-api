@@ -52,11 +52,19 @@ public class MedicineController {
                 medicineService.getMedicines(medicineName.orElse(""),pageable) ), HttpStatus.OK);
     }
 
+//    @GetMapping("/list")
+//    public ResponseEntity<IResponse> getMedicineList(){
+//        return new ResponseEntity<>(new EntityCollectionResponse<>(
+//                HttpStatus.OK.value(),
+//                medicineService.getMedicines()
+//        ),HttpStatus.OK);
+//    }
+
     @GetMapping("/list")
-    public ResponseEntity<IResponse> getMedicineList(){
+    public ResponseEntity<IResponse> getMedicineListByName(@RequestParam Optional<String> medicineName){
         return new ResponseEntity<>(new EntityCollectionResponse<>(
                 HttpStatus.OK.value(),
-                medicineService.getMedicines()
+                medicineService.getMedicines(medicineName.orElse(""))
         ),HttpStatus.OK);
     }
 

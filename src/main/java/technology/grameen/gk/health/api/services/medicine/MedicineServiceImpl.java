@@ -50,6 +50,11 @@ public class MedicineServiceImpl implements MedicineService{
     }
 
     @Override
+    public List<Medicine> getMedicines(String medicineName) {
+        return medicineRepository.findAllByNameContainingIgnoreCase(medicineName);
+    }
+
+    @Override
     public Optional <Medicine> findById(Long id) {
         return medicineRepository.findById(id);
     }
