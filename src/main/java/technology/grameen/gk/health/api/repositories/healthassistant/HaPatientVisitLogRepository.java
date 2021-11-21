@@ -71,4 +71,36 @@ public interface HaPatientVisitLogRepository extends JpaRepository<HaPatientVisi
                     " JOIN disease_profiles dp on dp.id = hplog.disease_profile_id",
             nativeQuery = true)
     Page<PageVisitLog> getAll(Pageable pageable);
+
+    @Query(value = "Select hplog.id, hplog.bp_diastolic as bpDiastolic, hplog.bp_systolic as bpSystolic, " +
+            " hplog.no_of_family_member noOfFamilyMember, e.full_name as heathAssistantName, p.full_name as patientName, " +
+            " dp.name diseaseProfile FROM ha_patient_visit_logs hplog" +
+            " JOIN employees e ON e.id = hplog.health_assistant_id" +
+            " JOIN patients p on p.id=hplog.patient_id " +
+            " LEFT JOIN disease_profiles dp on dp.id = hplog.disease_profile_id" +
+            " WHERE hplog.CENTER_ID=:centerId",
+            countQuery = "select count(hplog.id) FROM ha_patient_visit_logs hplog" +
+                    " JOIN employees e ON e.id = hplog.health_assistant_id" +
+                    " JOIN patients p on p.id = hplog.patient_id " +
+                    " JOIN disease_profiles dp on dp.id = hplog.disease_profile_id" +
+                    " WHERE hplog.CENTER_ID=:centerId",
+            nativeQuery = true)
+    Page<PageVisitLog> getAll(@Param("centerId") Long centerId, Pageable pageable);
+
+    @Query(value = "Select hplog.id, hplog.bp_diastolic as bpDiastolic, hplog.bp_systolic as bpSystolic, " +
+            " hplog.no_of_family_member noOfFamilyMember, e.full_name as heathAssistantName, p.full_name as patientName, " +
+            " dp.name diseaseProfile FROM ha_patient_visit_logs hplog" +
+            " JOIN HEALTH_CENTERS hc ON hc.id = hplog.CENTER_ID" +
+            " JOIN employees e ON e.id = hplog.health_assistant_id" +
+            " JOIN patients p on p.id=hplog.patient_id " +
+            " LEFT JOIN disease_profiles dp on dp.id = hplog.disease_profile_id" +
+            " WHERE NVL(hc.THIRD_LEVEL,0) =:regionCode",
+            countQuery = "select count(hplog.id) FROM ha_patient_visit_logs hplog" +
+                    " JOIN HEALTH_CENTERS hc ON hc.id = hplog.CENTER_ID" +
+                    " JOIN employees e ON e.id = hplog.health_assistant_id" +
+                    " JOIN patients p on p.id = hplog.patient_id " +
+                    " JOIN disease_profiles dp on dp.id = hplog.disease_profile_id" +
+                    " WHERE NVL(hc.THIRD_LEVEL,0) =:regionCode",
+            nativeQuery = true)
+    Page<PageVisitLog> getAll(@Param("regionCode") String regionCode, Pageable pageable);
 }

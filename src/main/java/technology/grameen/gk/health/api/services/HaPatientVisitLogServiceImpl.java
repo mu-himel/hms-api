@@ -30,6 +30,24 @@ public class HaPatientVisitLogServiceImpl implements HaPatientVisitLogService{
     }
 
     @Override
+    public Page<HaPatientVisitLogRepository.PageVisitLog> getVisitLogs(Long centerId, Pageable pageable) {
+        return patientVisitLogRepository.getAll(centerId,pageable);
+    }
+
+    @Override
+    public Page<HaPatientVisitLogRepository.PageVisitLog> getVisitLogs(String regionCode, Long centerId,
+                                                                       Pageable pageable) {
+
+        if(regionCode!=null && centerId==null){
+            return patientVisitLogRepository.getAll(regionCode,pageable);
+        }else if((regionCode==null || regionCode!=null) && centerId!=null){
+            return patientVisitLogRepository.getAll(centerId,pageable);
+        }
+
+        return null;
+    }
+
+    @Override
     public Optional<?> getPatientVisitLogByPatientAndDate(Long centerId,Long pid, String dt) {
 
         return patientVisitLogRepository.findVisitLogByPatientAndDate(centerId,pid,dt);

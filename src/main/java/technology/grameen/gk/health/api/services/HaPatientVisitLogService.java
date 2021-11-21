@@ -12,6 +12,8 @@ public interface HaPatientVisitLogService {
     HaPatientVisitLog addPatientVisit(HaPatientVisitLog patientVisitLog);
 
     Page<HaPatientVisitLogRepository.PageVisitLog> getVisitLogs(Pageable pageable);
+    Page<HaPatientVisitLogRepository.PageVisitLog> getVisitLogs(Long centerId,Pageable pageable);
+    Page<HaPatientVisitLogRepository.PageVisitLog> getVisitLogs(String regionCode,Long centerId,Pageable pageable);
 
     Optional<?> getPatientVisitLogByPatientAndDate(Long centerId,Long pid, String dt);
 }

@@ -34,7 +34,10 @@ public class HaPatientVisitController {
     }
 
     @GetMapping("")
-    public ResponseEntity<IResponse> getVouchers(@RequestParam Optional<Integer> page,
+    public ResponseEntity<IResponse> getVouchers(
+                                                 @RequestParam Optional<String> regionCode,
+                                                 @RequestParam Optional<Long> centerId,
+                                                 @RequestParam Optional<Integer> page,
                                                  @RequestParam Optional<Integer> size,
                                                  @RequestParam Optional<String> sortBy,
                                                  @RequestParam Optional<Boolean> sortDesc){
@@ -66,7 +69,7 @@ public class HaPatientVisitController {
 
         return new ResponseEntity<>(new EntityResponse<>(
                 HttpStatus.OK.value(),
-                patientVisitLogService.getVisitLogs(pageable)
+                patientVisitLogService.getVisitLogs(regionCode.orElse(null),centerId.orElse(null),pageable)
         ), HttpStatus.OK);
 
     }
