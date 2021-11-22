@@ -118,10 +118,10 @@ public class SummaryReportServiceImpl implements SummaryReportService{
                                            String regionCode, String centerCode) {
 
         if(type.equalsIgnoreCase("monthly")) {
-            if(regionCode!=null && (centerCode == null || centerCode=="")) {
+            if(!regionCode.isEmpty() && centerCode.isEmpty()) {
                 return Optional
                         .ofNullable(reportRepository.getCenterCampIncomes(regionCode, startDate));
-            }else if((regionCode==null || regionCode!=null) && (centerCode!=null && centerCode!="")){
+            }else if((regionCode.isEmpty() || !regionCode.isEmpty()) && (!centerCode.isEmpty())){
                 return Optional.ofNullable(reportRepository.getCenterCampIncomesByCenter(centerCode,startDate));
             } else{
                 return Optional
@@ -129,11 +129,11 @@ public class SummaryReportServiceImpl implements SummaryReportService{
             }
         }else if(type.equalsIgnoreCase("range") ||
                 type.equalsIgnoreCase("daily")){
-            if(regionCode!=null && centerCode==null){
+            if(!regionCode.isEmpty() && centerCode.isEmpty()){
                 return Optional
                         .ofNullable(reportRepository.getCenterCampIncomesByRange(regionCode, startDate, endDate));
 
-            }else if((regionCode == null || regionCode !=null) && centerCode != null) {
+            }else if((regionCode.isEmpty() || !regionCode.isEmpty()) && (!centerCode.isEmpty())) {
                 return Optional
                         .ofNullable(reportRepository.getCenterCampIncomesByRangeByCenter(centerCode, startDate, endDate));
             }else{
