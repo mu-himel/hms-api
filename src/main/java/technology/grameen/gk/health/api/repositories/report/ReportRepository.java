@@ -21,7 +21,7 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
     @Query(value = "SELECT count(*) as total, hc.id as centerId FROM PRESCRIPTIONS p \n" +
             "    JOIN PATIENTS p2 ON p2.ID = p.PRESCRIPTION_PATIENT_ID \n" +
             "    JOIN HEALTH_CENTERS hc ON hc.ID  = p2.CENTER_ID \n" +
-            "    WHERE NVL(hc.THIRD_LEVEL,0) = :regionCode AND p.IS_REFER = 1 " +
+            "    WHERE NVL(hc.THIRD_LEVEL,'0') = :regionCode AND p.IS_REFER = 1 " +
             "AND TO_CHAR(p.CREATED_AT,'YYYY-MM') LIKE :yearMonth||'%' " +
             "GROUP BY hc.id",nativeQuery = true)
     List<ReferCenterCount> getReferCenterCount(@Param("regionCode") String regionCode,
@@ -38,7 +38,7 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             " FROM HEALTH_CENTERS hc " +
             " JOIN EVENTS e ON e.CENTER_ID = hc.ID\n" +
             " JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID=ec.id  AND ec.IS_SATELLITE = 0\n" +
-            "WHERE e.STATUS = 'approved' AND nvl(hc.THIRD_LEVEL,0) = :regionCode" +
+            "WHERE e.STATUS = 'approved' AND nvl(hc.THIRD_LEVEL,'0') = :regionCode" +
             " AND TO_CHAR(e.event_date,'YYYY-MM') = :yearMonth GROUP BY hc.id,ec.id, ec.name",nativeQuery = true)
     List<CampNo> getCampNoCenterWiseEvent(@Param("yearMonth") String yearMonth,
                                           @Param("regionCode") String regionCode);
@@ -57,7 +57,7 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "JOIN EVENTS e ON pn.EVENT_ID = e.ID\n" +
             "JOIN EVENT_CATEGORIES ec ON ec.id = e.EVENT_CATEGORY_ID\n" +
             "WHERE (e.STATUS = 'approved' OR e.STATUS = 'completed') AND" +
-            " TO_CHAR(e.event_date,'YYYY-MM') = :yearMonth AND nvl(hc.THIRD_LEVEL,0)=:regionCode AND pr.id IS NOT NULL AND ec.is_satellite=0\n" +
+            " TO_CHAR(e.event_date,'YYYY-MM') = :yearMonth AND nvl(hc.THIRD_LEVEL,'0')=:regionCode AND pr.id IS NOT NULL AND ec.is_satellite=0\n" +
             "GROUP BY hc.id,ec.id,ec.name, p.id,pr.id) r\n" +
             "GROUP BY r.centerId,r.ecName,r.ecId", nativeQuery = true)
     List<CampWiseCardMemberCount> getCardMemberCenterWiseEvent(@Param("yearMonth") String yearMonth,
@@ -78,7 +78,7 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "JOIN EVENTS e ON pn.EVENT_ID = e.ID\n" +
             "JOIN EVENT_CATEGORIES ec ON ec.id = e.EVENT_CATEGORY_ID\n" +
             "WHERE (e.STATUS = 'approved' OR e.STATUS = 'completed') AND" +
-            " TO_CHAR(e.event_date,'YYYY-MM') = :yearMonth AND nvl(hc.THIRD_LEVEL,0)=:regionCode AND pr.id IS NULL AND ec.is_satellite=0\n" +
+            " TO_CHAR(e.event_date,'YYYY-MM') = :yearMonth AND nvl(hc.THIRD_LEVEL,'0')=:regionCode AND pr.id IS NULL AND ec.is_satellite=0\n" +
             "GROUP BY hc.id,ec.id,ec.name, p.id,pr.id) r\n" +
             "GROUP BY r.centerId,r.ecName,r.ecId, r.pid", nativeQuery = true)
     List<CampWiseNonCardMemberCount> getNonCardMemberCenterWiseEvent(@Param("yearMonth") String yearMonth,
@@ -151,7 +151,7 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
     @Query(value = "SELECT count(e.id) as total, CENTER_ID as centerId FROM EVENTS e \n" +
             "JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID = ec.ID \n" +
             "JOIN HEALTH_CENTERS hc ON e.CENTER_ID  = hc.ID \n" +
-            "WHERE NVL(hc.THIRD_LEVEL,0)  =  :regionCode " +
+            "WHERE NVL(hc.THIRD_LEVEL,'0')  =  :regionCode " +
             "AND lower(ec.NAME) LIKE 'school%' AND to_char(e.EVENT_DATE,'YYYY-MM') = :yearMonth\n" +
             "GROUP BY e.CENTER_ID ",nativeQuery = true)
     List<SchoolVisitCampStats> getSchoolVisitCampNo(
@@ -166,7 +166,7 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "JOIN PATIENT_INVOICES pi2 ON e.id = pi2.EVENT_ID AND pi2.HEALTH_CENTER_ID  = hc.ID \n" +
             "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID = pi2.ID \n" +
             "JOIN SERVICE s ON psd.SERVICE_ID = s.SERVICE_ID AND s.CODE LIKE :serviceName||'%' \n" +
-            "WHERE NVL(hc.THIRD_LEVEL,0)  =  :regionCode AND lower(ec.NAME) LIKE 'school%' AND to_char(pi2.CREATED_AT,'YYYY-MM') = :yearMonth\n" +
+            "WHERE NVL(hc.THIRD_LEVEL,'0')  =  :regionCode AND lower(ec.NAME) LIKE 'school%' AND to_char(pi2.CREATED_AT,'YYYY-MM') = :yearMonth\n" +
             "GROUP BY hc.ID ", nativeQuery = true)
     List<SchoolVisitCampStats> getSchoolVisitServiceCount(
             @Param("serviceName") String serviceName,
@@ -178,7 +178,7 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID = ec.ID \n" +
             "JOIN HEALTH_CENTERS hc ON e.CENTER_ID  = hc.ID\n" +
             "JOIN PATIENT_INVOICES pi2 ON e.id = pi2.EVENT_ID AND pi2.HEALTH_CENTER_ID  = hc.ID \n" +
-            "WHERE NVL(hc.THIRD_LEVEL,0)  = :regionCode AND lower(ec.NAME) LIKE 'school%' " +
+            "WHERE NVL(hc.THIRD_LEVEL,'0')  = :regionCode AND lower(ec.NAME) LIKE 'school%' " +
             "AND to_char(pi2.CREATED_AT,'YYYY-MM') = :yearMonth\n" +
             "GROUP BY hc.ID",nativeQuery = true)
     List<SchoolVisitCampStats> getSchoolVisitPatientNo(
@@ -216,72 +216,154 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
         String getTotalAmount();
         Long getCenterId();
     }
-    @Query(value = "SELECT e.EVENT_CATEGORY_ID ecId,count(e.id) totalCount,ec.NAME ecName,SUM(pi2.PAID_AMOUNT) totalAmount, pi2.HEALTH_CENTER_ID centerId FROM PATIENT_INVOICES pi2 \n" +
-            "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
-            "JOIN events e ON pi2.EVENT_ID  = e.ID \n" +
-            "JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID  = ec.ID \n" +
-            "JOIN HEALTH_CENTERS hc ON hc.ID = pi2.HEALTH_CENTER_ID \n" +
-            "WHERE NVL(hc.THIRD_LEVEL,'0') = :regionCode AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM') LIKE :yearMonth||'%' AND pi2.INVOICE_TYPE = 'camp'\n" +
-            "GROUP BY e.EVENT_CATEGORY_ID,ec.NAME , pi2.HEALTH_CENTER_ID",
+    @Query(value = "SELECT t1.id ecId, t1.name ecName, " +
+            "nvl(total,0) totalCount, nvl(amount,0) totalAmount,t1.center_id centerId FROM (\n" +
+            "        SELECT c.id,count(c.id) total, c.name,c.center_id FROM(SELECT  ec.id,ec.name,e.EVENT_DATE,e.CENTER_ID FROM EVENTS e\n" +
+            "JOIN EVENT_CATEGORIES ec ON ec.ID  = e.EVENT_CATEGORY_ID \n" +
+            "JOIN HEALTH_CENTERS hc ON hc.ID = e.CENTER_ID \n" +
+            "WHERE \n" +
+            "NVL(hc.THIRD_LEVEL,'0') = :regionCode AND\n" +
+            "TO_CHAR(e.EVENT_DATE,'YYYY-MM') = :yearMonth \n" +
+            "AND e.EVENT_TYPE = 'camp' GROUP BY ec.name,ec.id,e.EVENT_DATE,e.CENTER_ID) c GROUP BY c.id,c.name,c.center_id) t1\n" +
+            "LEFT JOIN (\n" +
+            "SELECT sum(pi2.PAID_AMOUNT) amount , ec.name,ec.id,e.CENTER_ID \n" +
+            "FROM PATIENT_INVOICES pi2 \n" +
+            "            JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
+            "            JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID \n" +
+            "            JOIN events e ON pi2.EVENT_ID  = e.ID \n" +
+            "            JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID  = ec.ID \n" +
+            "            JOIN HEALTH_CENTERS hc ON hc.ID = pi2.HEALTH_CENTER_ID\n" +
+            "            WHERE NVL(hc.THIRD_LEVEL,'0') = :regionCode\n" +
+            "            AND TO_CHAR(e.EVENT_DATE ,'YYYY-MM') = :yearMonth AND e.EVENT_TYPE = 'camp'\n" +
+            "            GROUP BY ec.name , ec.id,e.CENTER_ID) t2\n" +
+            "            ON t1.id = t2.id AND t1.center_id = t2.center_id",
     nativeQuery = true)
     List<EventCategoryWiseIncomeStats> getCenterCampIncomes(@Param("regionCode") String regionCode,
                                                             @Param("yearMonth") String yearMonth);
 
-    @Query(value = "SELECT e.EVENT_CATEGORY_ID ecId,count(e.id) totalCount,ec.NAME ecName,SUM(pi2.PAID_AMOUNT) totalAmount, pi2.HEALTH_CENTER_ID centerId FROM PATIENT_INVOICES pi2 \n" +
-            "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
-            "JOIN events e ON pi2.EVENT_ID  = e.ID \n" +
-            "JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID  = ec.ID \n" +
-            "JOIN HEALTH_CENTERS hc ON hc.ID = pi2.HEALTH_CENTER_ID \n" +
-            "WHERE hc.OFFICE_TYPE_ID = 6 AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM') LIKE :yearMonth||'%' AND pi2.INVOICE_TYPE = 'camp'\n" +
-            "GROUP BY e.EVENT_CATEGORY_ID,ec.NAME , pi2.HEALTH_CENTER_ID",
+    @Query(value = "SELECT t1.id ecId, t1.name ecName, nvl(total,0) totalCount, " +
+            " nvl(amount,0) totalAmount,t1.center_id centerId FROM (\n" +
+            "            SELECT c.id,count(c.id) total, c.name,c.center_id FROM(SELECT  ec.id,ec.name,e.EVENT_DATE,e.CENTER_ID FROM EVENTS e\n" +
+            "JOIN EVENT_CATEGORIES ec ON ec.ID  = e.EVENT_CATEGORY_ID \n" +
+            "JOIN HEALTH_CENTERS hc ON hc.ID = e.CENTER_ID \n" +
+            "WHERE \n" +
+            "hc.OFFICE_TYPE_ID = 6 AND\n" +
+            "TO_CHAR(e.EVENT_DATE,'YYYY-MM') = :yearMonth \n" +
+            "AND e.EVENT_TYPE = 'camp' GROUP BY ec.name,ec.id,e.EVENT_DATE,e.CENTER_ID) c GROUP BY c.id,c.name,c.center_id) t1\n" +
+            "LEFT JOIN (\n" +
+            "SELECT sum(pi2.PAID_AMOUNT) amount , ec.name,ec.id,e.CENTER_ID \n" +
+            "FROM PATIENT_INVOICES pi2 \n" +
+            "            JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
+            "            JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID \n" +
+            "            JOIN events e ON pi2.EVENT_ID  = e.ID \n" +
+            "            JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID  = ec.ID \n" +
+            "            JOIN HEALTH_CENTERS hc ON hc.ID = pi2.HEALTH_CENTER_ID\n" +
+            "            WHERE hc.OFFICE_TYPE_ID = 6\n" +
+            "            AND TO_CHAR(e.EVENT_DATE ,'YYYY-MM') = :yearMonth AND e.EVENT_TYPE = 'camp'\n" +
+            "            GROUP BY ec.name , ec.id,e.CENTER_ID) t2\n" +
+            "            ON t1.id = t2.id AND t1.center_id = t2.center_id",
             nativeQuery = true)
     List<EventCategoryWiseIncomeStats> getCenterCampIncomesFromHO(@Param("yearMonth") String yearMonth);
 
-    @Query(value = "SELECT e.EVENT_CATEGORY_ID ecId,count(e.id) totalCount,ec.NAME ecName,SUM(pi2.PAID_AMOUNT) totalAmount, pi2.HEALTH_CENTER_ID centerId FROM PATIENT_INVOICES pi2 \n" +
-            "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
-            "JOIN events e ON pi2.EVENT_ID  = e.ID \n" +
-            "JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID  = ec.ID \n" +
-            "JOIN HEALTH_CENTERS hc ON hc.ID = pi2.HEALTH_CENTER_ID \n" +
-            "WHERE NVL(hc.CENTER_CODE,'0') = :centerCode AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM') LIKE :yearMonth||'%' AND pi2.INVOICE_TYPE = 'camp'\n" +
-            "GROUP BY e.EVENT_CATEGORY_ID,ec.NAME , pi2.HEALTH_CENTER_ID",
+    @Query(value = "SELECT t1.id ecId, t1.name ecName, nvl(total,0) totalCount, " +
+            "nvl(amount,0) totalAmount,t1.center_id centerId FROM (\n" +
+            "            SELECT c.id,count(c.id) total, c.name,c.center_id FROM(SELECT  ec.id,ec.name,e.EVENT_DATE,e.CENTER_ID FROM EVENTS e\n" +
+            "JOIN EVENT_CATEGORIES ec ON ec.ID  = e.EVENT_CATEGORY_ID \n" +
+            "JOIN HEALTH_CENTERS hc ON hc.ID = e.CENTER_ID \n" +
+            "WHERE \n" +
+            "NVL(hc.CENTER_CODE,'0') = :centerCode AND\n" +
+            "TO_CHAR(e.EVENT_DATE,'YYYY-MM') = :yearMonth \n" +
+            "AND e.EVENT_TYPE = 'camp' GROUP BY ec.name,ec.id,e.EVENT_DATE,e.CENTER_ID) c GROUP BY c.id,c.name,c.center_id) t1\n" +
+            "LEFT JOIN (\n" +
+            "SELECT sum(pi2.PAID_AMOUNT) amount , ec.name,ec.id,e.CENTER_ID \n" +
+            "FROM PATIENT_INVOICES pi2 \n" +
+            "            JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
+            "            JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID \n" +
+            "            JOIN events e ON pi2.EVENT_ID  = e.ID \n" +
+            "            JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID  = ec.ID \n" +
+            "            JOIN HEALTH_CENTERS hc ON hc.ID = pi2.HEALTH_CENTER_ID\n" +
+            "            WHERE NVL(hc.CENTER_CODE,'0') = :centerCode\n" +
+            "            AND TO_CHAR(e.EVENT_DATE ,'YYYY-MM') = :yearMonth AND e.EVENT_TYPE = 'camp'\n" +
+            "            GROUP BY ec.name , ec.id,e.CENTER_ID) t2\n" +
+            "            ON t1.id = t2.id AND t1.center_id = t2.center_id",
             nativeQuery = true)
     List<EventCategoryWiseIncomeStats> getCenterCampIncomesByCenter(@Param("centerCode") String centerCode,
                                                             @Param("yearMonth") String yearMonth);
 
-    @Query(value = "SELECT e.EVENT_CATEGORY_ID ecId,count(e.id) totalCount,ec.NAME ecName,SUM(pi2.PAID_AMOUNT) totalAmount, pi2.HEALTH_CENTER_ID centerId FROM PATIENT_INVOICES pi2 \n" +
-            "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
-            "JOIN events e ON pi2.EVENT_ID  = e.ID \n" +
-            "JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID  = ec.ID \n" +
-            "JOIN HEALTH_CENTERS hc ON hc.ID = pi2.HEALTH_CENTER_ID \n" +
-            "WHERE NVL(hc.THIRD_LEVEL,'0') = :regionCode AND pi2.CREATED_AT BETWEEN TO_DATE(:startDate,'YYYY-MM-DD') " +
-            "AND TO_DATE(:endDate,'YYYY-MM-DD') AND pi2.INVOICE_TYPE = 'camp'\n" +
-            "GROUP BY e.EVENT_CATEGORY_ID,ec.NAME , pi2.HEALTH_CENTER_ID",
+    @Query(value = "SELECT t1.id ecId, t1.name ecName, " +
+            "nvl(total,0) totalCount,  nvl(amount,0) totalAmount,t1.center_id centerId FROM (\n" +
+            "            SELECT c.id,count(c.id) total, c.name,c.center_id FROM(SELECT  ec.id,ec.name,e.EVENT_DATE,e.CENTER_ID FROM EVENTS e\n" +
+            "JOIN EVENT_CATEGORIES ec ON ec.ID  = e.EVENT_CATEGORY_ID \n" +
+            "JOIN HEALTH_CENTERS hc ON hc.ID = e.CENTER_ID \n" +
+            "WHERE \n" +
+            "NVL(hc.THIRD_LEVEL,'0') = :regionCode AND\n" +
+            "e.EVENT_DATE BETWEEN TO_DATE(:startDate,'YYYY-MM-DD') AND TO_DATE(:endDate,'YYYY-MM-DD') \n" +
+            "AND e.EVENT_TYPE = 'camp' GROUP BY ec.name,ec.id,e.EVENT_DATE,e.CENTER_ID) c GROUP BY c.id,c.name,c.center_id) t1\n" +
+            "LEFT JOIN (\n" +
+            "SELECT sum(pi2.PAID_AMOUNT) amount , ec.name,ec.id,e.CENTER_ID \n" +
+            "FROM PATIENT_INVOICES pi2 \n" +
+            "            JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
+            "            JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID \n" +
+            "            JOIN events e ON pi2.EVENT_ID  = e.ID \n" +
+            "            JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID  = ec.ID \n" +
+            "            JOIN HEALTH_CENTERS hc ON hc.ID = pi2.HEALTH_CENTER_ID\n" +
+            "            WHERE NVL(hc.THIRD_LEVEL,'0') = :regionCode\n" +
+            "            AND e.EVENT_DATE BETWEEN TO_DATE(:startDate,'YYYY-MM-DD') AND TO_DATE(:endDate,'YYYY-MM-DD') AND e.EVENT_TYPE = 'camp'\n" +
+            "            GROUP BY ec.name , ec.id,e.CENTER_ID) t2\n" +
+            "            ON t1.id = t2.id AND t1.center_id = t2.center_id",
             nativeQuery = true)
     List<EventCategoryWiseIncomeStats> getCenterCampIncomesByRange(@Param("regionCode") String regionCode,
                                                             @Param("startDate") String startDate,
                                                                    @Param("endDate") String endDate);
 
-    @Query(value = "SELECT e.EVENT_CATEGORY_ID ecId,count(e.id) totalCount,ec.NAME ecName,SUM(pi2.PAID_AMOUNT) totalAmount, pi2.HEALTH_CENTER_ID centerId FROM PATIENT_INVOICES pi2 \n" +
-            "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
-            "JOIN events e ON pi2.EVENT_ID  = e.ID \n" +
-            "JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID  = ec.ID \n" +
-            "JOIN HEALTH_CENTERS hc ON hc.ID = pi2.HEALTH_CENTER_ID \n" +
-            "WHERE hc.OFFICE_TYPE_ID = 6 AND pi2.CREATED_AT BETWEEN TO_DATE(:startDate,'YYYY-MM-DD') " +
-            "AND TO_DATE(:endDate,'YYYY-MM-DD') AND pi2.INVOICE_TYPE = 'camp'\n" +
-            "GROUP BY e.EVENT_CATEGORY_ID,ec.NAME , pi2.HEALTH_CENTER_ID",
+    @Query(value = "SELECT t1.id ecId, t1.name ecName, nvl(total,0) totalCount," +
+            "  nvl(amount,0) totalAmount,t1.center_id centerId FROM (\n" +
+            "            SELECT c.id,count(c.id) total, c.name,c.center_id FROM(SELECT  ec.id,ec.name,e.EVENT_DATE,e.CENTER_ID FROM EVENTS e\n" +
+            "JOIN EVENT_CATEGORIES ec ON ec.ID  = e.EVENT_CATEGORY_ID \n" +
+            "JOIN HEALTH_CENTERS hc ON hc.ID = e.CENTER_ID \n" +
+            "WHERE \n" +
+            "hc.OFFICE_TYPE_ID = 6 AND\n" +
+            "e.EVENT_DATE BETWEEN TO_DATE(:startDate,'YYYY-MM-DD') AND TO_DATE(:endDate,'YYYY-MM-DD') \n" +
+            "AND e.EVENT_TYPE = 'camp' GROUP BY ec.name,ec.id,e.EVENT_DATE,e.CENTER_ID) c GROUP BY c.id,c.name,c.center_id) t1\n" +
+            "LEFT JOIN (\n" +
+            "SELECT sum(pi2.PAID_AMOUNT) amount , ec.name,ec.id,e.CENTER_ID \n" +
+            "FROM PATIENT_INVOICES pi2 \n" +
+            "  JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
+            "  JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID \n" +
+            "  JOIN events e ON pi2.EVENT_ID  = e.ID \n" +
+            "  JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID  = ec.ID \n" +
+            "  JOIN HEALTH_CENTERS hc ON hc.ID = pi2.HEALTH_CENTER_ID\n" +
+            "  WHERE hc.OFFICE_TYPE_ID = 6\n" +
+            "  AND e.EVENT_DATE BETWEEN TO_DATE(:startDate,'YYYY-MM-DD') AND TO_DATE(:endDate,'YYYY-MM-DD')" +
+            "  AND e.EVENT_TYPE = 'camp'\n" +
+            "  GROUP BY ec.name , ec.id,e.CENTER_ID) t2\n" +
+            "  ON t1.id = t2.id AND t1.center_id = t2.center_id",
             nativeQuery = true)
     List<EventCategoryWiseIncomeStats> getCenterCampIncomesByRangeFromHo(@Param("startDate") String startDate,
                                                                    @Param("endDate") String endDate);
 
 
-    @Query(value = "SELECT e.EVENT_CATEGORY_ID ecId,count(e.id) totalCount,ec.NAME ecName,SUM(pi2.PAID_AMOUNT) totalAmount, pi2.HEALTH_CENTER_ID centerId FROM PATIENT_INVOICES pi2 \n" +
-            "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
-            "JOIN events e ON pi2.EVENT_ID  = e.ID \n" +
-            "JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID  = ec.ID \n" +
-            "JOIN HEALTH_CENTERS hc ON hc.ID = pi2.HEALTH_CENTER_ID \n" +
-            "WHERE NVL(hc.CENTER_CODE,'0') = :centerCode AND pi2.CREATED_AT BETWEEN TO_DATE(:startDate,'YYYY-MM-DD') " +
-            "AND TO_DATE(:endDate,'YYYY-MM-DD') AND pi2.INVOICE_TYPE = 'camp'\n" +
-            "GROUP BY e.EVENT_CATEGORY_ID,ec.NAME , pi2.HEALTH_CENTER_ID",
+    @Query(value = "SELECT t1.id ecId, t1.name ecName, nvl(total,0) totalCount, " +
+            "nvl(amount,0) totalAmount,t1.center_id centerId FROM (\n" +
+            "            SELECT c.id,count(c.id) total, c.name,c.center_id FROM(SELECT  ec.id,ec.name,e.EVENT_DATE,e.CENTER_ID FROM EVENTS e\n" +
+            "JOIN EVENT_CATEGORIES ec ON ec.ID  = e.EVENT_CATEGORY_ID \n" +
+            "JOIN HEALTH_CENTERS hc ON hc.ID = e.CENTER_ID \n" +
+            "WHERE \n" +
+            "NVL(hc.CENTER_CODE,'0') = :centerCode AND\n" +
+            "e.EVENT_DATE BETWEEN TO_DATE(:startDate,'YYYY-MM-DD') AND TO_DATE(:endDate,'YYYY-MM-DD') \n" +
+            "AND e.EVENT_TYPE = 'camp' GROUP BY ec.name,ec.id,e.EVENT_DATE,e.CENTER_ID) c GROUP BY c.id,c.name,c.center_id) t1\n" +
+            "LEFT JOIN (\n" +
+            "SELECT sum(pi2.PAID_AMOUNT) amount , ec.name,ec.id,e.CENTER_ID \n" +
+            "FROM PATIENT_INVOICES pi2 \n" +
+            "            JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
+            "            JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID \n" +
+            "            JOIN events e ON pi2.EVENT_ID  = e.ID \n" +
+            "            JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID  = ec.ID \n" +
+            "            JOIN HEALTH_CENTERS hc ON hc.ID = pi2.HEALTH_CENTER_ID\n" +
+            "            WHERE NVL(hc.CENTER_CODE,'0') = :centerCode\n" +
+            "            AND e.EVENT_DATE BETWEEN TO_DATE(:startDate,'YYYY-MM-DD') AND TO_DATE(:endDate,'YYYY-MM-DD') AND e.EVENT_TYPE = 'camp'\n" +
+            "            GROUP BY ec.name , ec.id,e.CENTER_ID) t2\n" +
+            "            ON t1.id = t2.id AND t1.center_id = t2.center_id",
             nativeQuery = true)
     List<EventCategoryWiseIncomeStats> getCenterCampIncomesByRangeByCenter(@Param("centerCode") String centerCode,
                                                                    @Param("startDate") String startDate,
@@ -300,7 +382,7 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID = pi2.id \n" +
             "JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID \n" +
             "JOIN SERVICE_CATEGORIES sc ON sc.ID = s.SERVICE_CATEGORY_ID \n" +
-            "WHERE NVL(hc.THIRD_LEVEL,0)=:regionCode AND lower(sc.NAME) LIKE '%'||:serviceCategory||'%'\n" +
+            "WHERE NVL(hc.THIRD_LEVEL,'0')=:regionCode AND lower(sc.NAME) LIKE '%'||:serviceCategory||'%'\n" +
             "AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM') LIKE :yearMonth||'%' " +
             "GROUP BY pi2.HEALTH_CENTER_ID , s.SERVICE_ID,s.NAME",nativeQuery = true)
     List<ServiceCategoryIncome> getIncomeByServiceCategory(@Param("regionCode") String regionCode,
@@ -320,12 +402,11 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "JOIN PATIENTS p ON p.id = pi2.PATIENT_ID \n" +
             "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID = pi2.id \n" +
             "JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID \n" +
-            "WHERE NVL(hc.THIRD_LEVEL,0)=:regionCode AND lower(s.NAME) LIKE 'free prescription'||'%'\n" +
+            "WHERE NVL(hc.THIRD_LEVEL,'0')=:regionCode AND lower(s.NAME) LIKE 'free prescription'||'%'\n" +
             "AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM') LIKE :yearMonth||'%' AND GET_CURRENT_YEAR(p.CREATED_AT,p.age)>60\n" +
             "GROUP BY pi2.HEALTH_CENTER_ID , s.SERVICE_ID",nativeQuery = true)
     List<SafetyNetCount> getSafetyNetCount(@Param("regionCode") String regionCode,
-                                           @Param("yearMonth") String month
-                                           );
+                                           @Param("yearMonth") String month);
 
     interface DeliveryCount{
         Integer getTotal();
@@ -338,7 +419,7 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "JOIN PATIENTS p ON p.id = pi2.PATIENT_ID \n" +
             "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID = pi2.id \n" +
             "JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID \n" +
-            "WHERE NVL(hc.THIRD_LEVEL,0)=:regionCode AND lower(s.NAME) LIKE 'delivery'||'%'\n" +
+            "WHERE NVL(hc.THIRD_LEVEL,'0')=:regionCode AND lower(s.NAME) LIKE 'delivery'||'%'\n" +
             "AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM') LIKE :yearMonth||'%' \n" +
             "GROUP BY pi2.HEALTH_CENTER_ID , s.SERVICE_ID",nativeQuery = true)
     List<DeliveryCount> getCenterWiseDeliveryCount(@Param("regionCode") String regionCode,
@@ -351,7 +432,7 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
     @Query(value = "SELECT count(*) total, pdp.CENTER_ID centerId FROM PATIENT_DISEASE_PROFILES pdp \n" +
             "JOIN DISEASE_PROFILES dp ON dp.ID = pdp.DISEASE_PROFILE_ID \n" +
             "JOIN HEALTH_CENTERS hc ON hc.ID = pdp.CENTER_ID \n" +
-            "WHERE NVL(hc.THIRD_LEVEL,0)=:regionCode AND dp.ALIAS = 'pregnant' " +
+            "WHERE NVL(hc.THIRD_LEVEL,'0')=:regionCode AND dp.ALIAS = 'pregnant' " +
             "AND TO_CHAR(pdp.CREATED_AT,'YYYY-MM') = :yearMonth \n" +
             "GROUP BY pdp.CENTER_ID ",nativeQuery = true)
     List<PregnantRegistered> getMonthWisePregnantRegistered(@Param("yearMonth") String yearMonth,
@@ -372,7 +453,7 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "    JOIN PATIENTS p ON p.id = pi2.PATIENT_ID \n" +
             "    JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID \n" +
             "    JOIN SERVICE_CATEGORIES sc ON sc.ID = s.SERVICE_CATEGORY_ID \n" +
-            "    WHERE NVL(hc.THIRD_LEVEL,0)=:regionCode AND lower(sc.NAME) LIKE '%'||'vaccine'||'%'\n" +
+            "    WHERE NVL(hc.THIRD_LEVEL,'0')=:regionCode AND lower(sc.NAME) LIKE '%'||'vaccine'||'%'\n" +
             "    AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM') LIKE :yearMonth||'%'\n" +
             "    AND GET_CURRENT_YEAR(p.CREATED_AT,p.age)<18\n" +
             "    GROUP BY pi2.HEALTH_CENTER_ID , s.SERVICE_ID,s.NAME,p.age",nativeQuery = true)
@@ -387,7 +468,7 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "    JOIN PATIENTS p ON p.id = pi2.PATIENT_ID \n" +
             "    JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID \n" +
             "    JOIN SERVICE_CATEGORIES sc ON sc.ID = s.SERVICE_CATEGORY_ID \n" +
-            "    WHERE NVL(hc.THIRD_LEVEL,0)=:regionCode AND lower(sc.NAME) LIKE '%'||'vaccine'||'%'\n" +
+            "    WHERE NVL(hc.THIRD_LEVEL,'0')=:regionCode AND lower(sc.NAME) LIKE '%'||'vaccine'||'%'\n" +
             "    AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM') LIKE :yearMonth||'%'\n" +
             "    AND GET_CURRENT_YEAR(p.CREATED_AT,p.age)>18\n" +
             "    GROUP BY pi2.HEALTH_CENTER_ID , s.SERVICE_ID,s.NAME,p.age",nativeQuery = true)
