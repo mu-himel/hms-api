@@ -34,21 +34,22 @@ public class MedicineServiceImpl implements MedicineService{
     @Override
     @Transactional
     public Medicine addMedicine(Medicine medicine) throws CustomException {
+
+        Optional<MedicineGroup> optionalMedicineGroup = medicineGroupRepository.findById(medicine
+                .getMedicineGroup().getId());
+
+        Optional<MedicineBrand> optionalMedicineBrand = medicineBrandRepository.findById(medicine
+                .getMedicineBrand().getId());
+
+        if(!optionalMedicineGroup.isPresent()){
+            throw new CustomException("Medicine Group not available in Health App");
+        }
+
+        if(!optionalMedicineBrand.isPresent()){
+            throw new CustomException("Medicine Brand not available in Health App");
+        }
+
         if(medicine.getId()!=null){
-
-            Optional<MedicineGroup> optionalMedicineGroup = medicineGroupRepository.findById(medicine
-                                        .getMedicineGroup().getId());
-
-            Optional<MedicineBrand> optionalMedicineBrand = medicineBrandRepository.findById(medicine
-                    .getMedicineBrand().getId());
-
-            if(!optionalMedicineGroup.isPresent()){
-                throw new CustomException("Medicine Group not available in Health App");
-            }
-
-            if(!optionalMedicineBrand.isPresent()){
-                throw new CustomException("Medicine Brand not available in Health App");
-            }
 
             Optional<Medicine> optMedicine = medicineRepository.findById(medicine.getId());
             if(optMedicine.isPresent()){
