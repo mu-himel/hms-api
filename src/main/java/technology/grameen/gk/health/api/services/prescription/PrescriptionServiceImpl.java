@@ -152,6 +152,53 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         return prescriptionRepository.findAllPrescriptions(pNumber, fullName, date, pageable);
     }
 
+    @Override
+    public Page<PrescriptionListItem> getPrescriptions(String regionCode, String centerCode, String pNumber, String fullName, String date, Pageable pageable) {
+        Page<PrescriptionListItem> result = null;
+        if(!regionCode.isEmpty() && centerCode.isEmpty()){
+            if(pNumber.isEmpty() && fullName.isEmpty() && date.isEmpty()){
+                result = prescriptionRepository.findAllPrescriptions(regionCode,pageable);
+            }
+            if(!pNumber.isEmpty() && fullName.isEmpty() && date.isEmpty()){
+                result = prescriptionRepository.findAllPrescriptionsByPNumber(regionCode,pNumber,pageable);
+            }
+            if(pNumber.isEmpty() && !fullName.isEmpty() && date.isEmpty()){
+                result = prescriptionRepository.findAllPrescriptionsByFullName(regionCode,fullName,pageable);
+            }
+            if(pNumber.isEmpty() && fullName.isEmpty() && !date.isEmpty()){
+                result = prescriptionRepository.findAllPrescriptionsByDate(regionCode,date,pageable);
+            }
+        }else if(regionCode.isEmpty() && !centerCode.isEmpty()){
+            if(pNumber.isEmpty() && fullName.isEmpty() && date.isEmpty()){
+                result = prescriptionRepository.findAllPrescriptionsByCenter(centerCode,pageable);
+            }
+            if(!pNumber.isEmpty() && fullName.isEmpty() && date.isEmpty()){
+                result = prescriptionRepository.findAllPrescriptionsByPNumberByCenter(centerCode,pNumber,pageable);
+            }
+            if(pNumber.isEmpty() && !fullName.isEmpty() && date.isEmpty()){
+                result = prescriptionRepository.findAllPrescriptionsByFullNameByCenter(centerCode,fullName,pageable);
+            }
+            if(pNumber.isEmpty() && fullName.isEmpty() && !date.isEmpty()){
+                result = prescriptionRepository.findAllPrescriptionsByDateByCenter(centerCode,date,pageable);
+            }
+        }else{
+            if(pNumber.isEmpty() && fullName.isEmpty() && date.isEmpty()){
+                result = prescriptionRepository.findAllPrescriptions(pageable);
+            }
+            if(!pNumber.isEmpty() && fullName.isEmpty() && date.isEmpty()){
+                result = prescriptionRepository.findAllPrescriptionsByPNumber(pNumber,pageable);
+            }
+            if(pNumber.isEmpty() && !fullName.isEmpty() && date.isEmpty()){
+                result = prescriptionRepository.findAllPrescriptionsByFullName(fullName,pageable);
+            }
+            if(pNumber.isEmpty() && fullName.isEmpty() && !date.isEmpty()){
+                result = prescriptionRepository.findAllPrescriptionsByDate(date,pageable);
+            }
+        }
+
+        return result;
+    }
+
     @Transactional
     String getPrescriptionNumber(HealthCenter center){
         Calendar calendar = Calendar.getInstance();

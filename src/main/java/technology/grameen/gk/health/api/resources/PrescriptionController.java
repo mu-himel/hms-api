@@ -56,6 +56,8 @@ public class PrescriptionController {
     public ResponseEntity<IResponse> getPrescriptions(
                                                       @RequestParam Optional<String> pNumber,
                                                       @RequestParam Optional<String> fullName,
+                                                      @RequestParam Optional<String> regionCode,
+                                                      @RequestParam Optional<String> centerCode,
                                                       @RequestParam Optional<String> date,
                                                       @RequestParam Optional<Integer> page,
                                                       @RequestParam Optional<Integer> size,
@@ -75,7 +77,8 @@ public class PrescriptionController {
 
 
         return new ResponseEntity<>(new EntityResponse<>(HttpStatus.OK.value(),
-                prescriptionService.getPrescriptions(pNumber.orElse(""),
+                prescriptionService.getPrescriptions(regionCode.orElse(""),
+                        centerCode.orElse(""),pNumber.orElse(""),
                                                 fullName.orElse(""),
                         date.orElse(""),pageable)),
                 HttpStatus.OK);

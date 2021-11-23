@@ -32,6 +32,34 @@ public interface PrescriptionRepository extends JpaRepository<Prescription,Long>
     @Query(value = "SELECT pr.id as prescriptionId, pr.p_number as pNumber, pr.created_at as createdAt, " +
             "p.id,p.full_name as fullName, last_free_visit_date as lastFreeVisitDate " +
             " from prescriptions pr" +
+            " JOIN health_centers hc ON pr.center_id = hc.id" +
+            " INNER JOIN patients p ON p.id = pr.prescription_patient_id" +
+            " WHERE NVL(hc.THIRD_LEVEL,'0') = :regionCode " +
+            " ORDER BY pr.created_at DESC",nativeQuery = true,
+            countQuery = "SELECT count(*) " +
+                    " from prescriptions pr " +
+                    " JOIN health_centers hc ON pr.center_id = hc.id" +
+                    " INNER JOIN patients p ON p.id=pr.prescription_patient_id"+
+                    " WHERE NVL(hc.THIRD_LEVEL,'0') = :regionCode ")
+    Page<PrescriptionListItem> findAllPrescriptions(@Param("regionCode") String regionCode,Pageable pageable);
+
+    @Query(value = "SELECT pr.id as prescriptionId, pr.p_number as pNumber, pr.created_at as createdAt, " +
+            "p.id,p.full_name as fullName, last_free_visit_date as lastFreeVisitDate " +
+            " from prescriptions pr" +
+            " JOIN health_centers hc ON pr.center_id = hc.id" +
+            " INNER JOIN patients p ON p.id = pr.prescription_patient_id" +
+            " WHERE NVL(hc.CENTER_CODE,'0') = :centerCode " +
+            " ORDER BY pr.created_at DESC",nativeQuery = true,
+            countQuery = "SELECT count(*) " +
+                    " from prescriptions pr " +
+                    " JOIN health_centers hc ON pr.center_id = hc.id" +
+                    " INNER JOIN patients p ON p.id=pr.prescription_patient_id" +
+                    " WHERE NVL(hc.CENTER_CODE,'0') = :centerCode ")
+    Page<PrescriptionListItem> findAllPrescriptionsByCenter(@Param("centerCode") String centerCode,Pageable pageable);
+
+    @Query(value = "SELECT pr.id as prescriptionId, pr.p_number as pNumber, pr.created_at as createdAt, " +
+            "p.id,p.full_name as fullName, last_free_visit_date as lastFreeVisitDate " +
+            " from prescriptions pr" +
             " INNER JOIN patients p ON p.id = pr.prescription_patient_id" +
             " WHERE upper(pr.p_number) LIKE upper('%'||:pNumber||'%') " +
             " AND upper(p.full_name) LIKE upper('%'||:fullName||'%') " +
@@ -61,6 +89,48 @@ public interface PrescriptionRepository extends JpaRepository<Prescription,Long>
     Page<PrescriptionListItem> findAllPrescriptionsByPNumber(@Param("pNumber") String pNumber,
                                                      Pageable pageable);
 
+    @Query(value = "SELECT pr.id as prescriptionId, pr.p_number as pNumber, " +
+            "pr.created_at as createdAt, p.id,p.full_name as fullName, " +
+            "last_free_visit_date as lastFreeVisitDate " +
+            " from prescriptions pr" +
+            " JOIN health_centers hc ON pr.center_id = hc.id" +
+            " INNER JOIN patients p ON p.id = pr.prescription_patient_id" +
+            " WHERE NVL(hc.THIRD_LEVEL,'0') = :regionCode " +
+            " AND upper(pr.p_number) LIKE upper('%'||:pNumber||'%') " +
+            " ORDER BY pr.created_at DESC",nativeQuery = true,
+            countQuery = "SELECT count(*) " +
+                    " from prescriptions pr " +
+                    " JOIN health_centers hc ON pr.center_id = hc.id" +
+                    " INNER JOIN patients p ON p.id=pr.prescription_patient_id"+
+                    " WHERE NVL(hc.THIRD_LEVEL,'0') = :regionCode " +
+                    " AND upper(pr.p_number) LIKE upper('%'||:pNumber||'%') "
+
+    )
+    Page<PrescriptionListItem> findAllPrescriptionsByPNumber(@Param("regionCode") String regionCode,
+                                                             @Param("pNumber") String pNumber,
+                                                             Pageable pageable);
+
+    @Query(value = "SELECT pr.id as prescriptionId, pr.p_number as pNumber, " +
+            "pr.created_at as createdAt, p.id,p.full_name as fullName, " +
+            "last_free_visit_date as lastFreeVisitDate " +
+            " from prescriptions pr" +
+            " JOIN health_centers hc ON pr.center_id = hc.id" +
+            " INNER JOIN patients p ON p.id = pr.prescription_patient_id" +
+            " WHERE NVL(hc.CENTER_CODE,'0') = :centerCode " +
+            " AND upper(pr.p_number) LIKE upper('%'||:pNumber||'%') " +
+            " ORDER BY pr.created_at DESC",nativeQuery = true,
+            countQuery = "SELECT count(*) " +
+                    " from prescriptions pr " +
+                    " JOIN health_centers hc ON pr.center_id = hc.id" +
+                    " INNER JOIN patients p ON p.id=pr.prescription_patient_id"+
+                    " WHERE NVL(hc.CENTER_CODE,'0') = :centerCode " +
+                    " AND upper(pr.p_number) LIKE upper('%'||:pNumber||'%') "
+
+    )
+    Page<PrescriptionListItem> findAllPrescriptionsByPNumberByCenter(@Param("centerCode") String regionCode,
+                                                             @Param("pNumber") String pNumber,
+                                                             Pageable pageable);
+
     @Query(value = "SELECT pr.id as prescriptionId, pr.p_number as pNumber, pr.created_at as createdAt, " +
             "p.id,p.full_name as fullName, last_free_visit_date as lastFreeVisitDate " +
             " from prescriptions pr" +
@@ -76,6 +146,42 @@ public interface PrescriptionRepository extends JpaRepository<Prescription,Long>
                                                      Pageable pageable);
 
     @Query(value = "SELECT pr.id as prescriptionId, pr.p_number as pNumber, pr.created_at as createdAt, " +
+            "p.id,p.full_name as fullName, last_free_visit_date as lastFreeVisitDate " +
+            " from prescriptions pr" +
+            " JOIN health_centers hc ON pr.center_id = hc.id" +
+            " INNER JOIN patients p ON p.id = pr.prescription_patient_id" +
+            " WHERE NVL(hc.THIRD_LEVEL,'0') = :regionCode AND upper(p.full_name) LIKE upper('%'||:fullName||'%')"+
+            " ORDER BY pr.created_at DESC",nativeQuery = true,
+            countQuery = "SELECT count(*) " +
+                    " from prescriptions pr " +
+                    " JOIN health_centers hc ON pr.center_id = hc.id" +
+                    " INNER JOIN patients p ON p.id=pr.prescription_patient_id"+
+                    " WHERE NVL(hc.THIRD_LEVEL,'0') = :regionCode AND " +
+                    " upper(p.full_name) LIKE upper('%'||:fullName||'%')"
+    )
+    Page<PrescriptionListItem> findAllPrescriptionsByFullName(@Param("regionCode") String regionCode,
+            @Param("fullName") String fullName,
+            Pageable pageable);
+
+    @Query(value = "SELECT pr.id as prescriptionId, pr.p_number as pNumber, pr.created_at as createdAt, " +
+            "p.id,p.full_name as fullName, last_free_visit_date as lastFreeVisitDate " +
+            " from prescriptions pr" +
+            " JOIN health_centers hc ON pr.center_id = hc.id" +
+            " INNER JOIN patients p ON p.id = pr.prescription_patient_id" +
+            " WHERE NVL(hc.CENTER_CODE,'0') = :centerCode AND upper(p.full_name) LIKE upper('%'||:fullName||'%')"+
+            " ORDER BY pr.created_at DESC",nativeQuery = true,
+            countQuery = "SELECT count(*) " +
+                    " from prescriptions pr " +
+                    " JOIN health_centers hc ON pr.center_id = hc.id" +
+                    " INNER JOIN patients p ON p.id=pr.prescription_patient_id"+
+                    " WHERE NVL(hc.CENTER_CODE,'0') = :centerCode AND " +
+                    " upper(p.full_name) LIKE upper('%'||:fullName||'%')"
+    )
+    Page<PrescriptionListItem> findAllPrescriptionsByFullNameByCenter(@Param("centerCode") String regionCode,
+                                                              @Param("fullName") String fullName,
+                                                              Pageable pageable);
+
+    @Query(value = "SELECT pr.id as prescriptionId, pr.p_number as pNumber, pr.created_at as createdAt, " +
             "p.id,p.full_name as fullName,last_free_visit_date as lastFreeVisitDate " +
             " from prescriptions pr" +
             " INNER JOIN patients p ON p.id = pr.prescription_patient_id" +
@@ -86,6 +192,42 @@ public interface PrescriptionRepository extends JpaRepository<Prescription,Long>
                     " WHERE TO_CHAR(pr.created_at,'YYYY-MM-DD') = :date"
     )
     Page<PrescriptionListItem> findAllPrescriptionsByDate(@Param("date") String date, Pageable pageable);
+
+    @Query(value = "SELECT pr.id as prescriptionId, pr.p_number as pNumber, pr.created_at as createdAt, " +
+            "p.id,p.full_name as fullName,last_free_visit_date as lastFreeVisitDate " +
+            " from prescriptions pr" +
+            " JOIN health_centers hc ON pr.center_id = hc.id" +
+            " INNER JOIN patients p ON p.id = pr.prescription_patient_id" +
+            " WHERE NVL(hc.THIRD_LEVEL,'0') = :regionCode AND TO_CHAR(pr.created_at,'YYYY-MM-DD') = :date"+
+            " ORDER BY pr.created_at DESC",nativeQuery = true,
+            countQuery = "SELECT count(*) " +
+                    " from prescriptions pr " +
+                    " JOIN health_centers hc ON pr.center_id = hc.id" +
+                    " INNER JOIN patients p ON p.id=pr.prescription_patient_id"+
+                    " WHERE NVL(hc.THIRD_LEVEL,'0') = :regionCode " +
+                    " AND TO_CHAR(pr.created_at,'YYYY-MM-DD') = :date"
+    )
+    Page<PrescriptionListItem> findAllPrescriptionsByDate(@Param("regionCode") String regionCode,
+                                                          @Param("date") String date,
+                                                          Pageable pageable);
+
+    @Query(value = "SELECT pr.id as prescriptionId, pr.p_number as pNumber, pr.created_at as createdAt, " +
+            "p.id,p.full_name as fullName,last_free_visit_date as lastFreeVisitDate " +
+            " from prescriptions pr" +
+            " JOIN health_centers hc ON pr.center_id = hc.id" +
+            " INNER JOIN patients p ON p.id = pr.prescription_patient_id" +
+            " WHERE NVL(hc.CENTER_CODE,'0') = :centerCode AND TO_CHAR(pr.created_at,'YYYY-MM-DD') = :date"+
+            " ORDER BY pr.created_at DESC",nativeQuery = true,
+            countQuery = "SELECT count(*) " +
+                    " from prescriptions pr " +
+                    " JOIN health_centers hc ON pr.center_id = hc.id" +
+                    " INNER JOIN patients p ON p.id=pr.prescription_patient_id"+
+                    " WHERE NVL(hc.CENTER_CODE,'0') = :centerCode " +
+                    "AND TO_CHAR(pr.created_at,'YYYY-MM-DD') = :date"
+    )
+    Page<PrescriptionListItem> findAllPrescriptionsByDateByCenter(@Param("centerCode") String regionCode,
+                                                          @Param("date") String date,
+                                                          Pageable pageable);
 
     @Query(value = "SELECT p from Prescription p WHERE p.id=:id")
     Optional<PrescriptionDetail> findByPatientId(@Param("id") Long id);

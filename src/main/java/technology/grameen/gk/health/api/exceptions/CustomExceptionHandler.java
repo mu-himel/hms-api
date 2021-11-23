@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import technology.grameen.gk.health.api.responses.ExceptionResponse;
 
@@ -17,7 +18,7 @@ import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
-//@ControllerAdvice
+@ControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
@@ -33,7 +34,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
             errors.add(error.getObjectName() + ": " + error.getDefaultMessage());
         }
 
-        String message = "Sorry! Invalid Input";// (errors.size()>0)? errors.get(errors.size()-1):"Sorry! Invalid";
+        String message =  (errors.size()>0)? errors.get(errors.size()-1):"Sorry! Invalid Input";
         ExceptionResponse apiError =
                 new ExceptionResponse(HttpStatus.UNPROCESSABLE_ENTITY, message , errors);
         return handleExceptionInternal(
@@ -45,18 +46,26 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
             ConstraintViolationException ex, WebRequest request) {
         List<String> errors = new ArrayList<String>();
         for (ConstraintViolation<?> violation : ex.getConstraintViolations()) {
-            errors.add(violation.getRootBeanClass().getName() + " " +
-                    violation.getPropertyPath() + ": " + violation.getMessage());
+            errors.add(violation.getPropertyPath() + ": " + violation.getMessage());
         }
 
-        String message = ex.getLocalizedMessage();
-        if(message.isEmpty()){
-            message = "Constraint Violated";
-        }
         ExceptionResponse apiError =
-                new ExceptionResponse(HttpStatus.UNPROCESSABLE_ENTITY, message, errors);
+                new ExceptionResponse(HttpStatus.UNPROCESSABLE_ENTITY, errors.toString().replaceAll("\\[|]",""), errors);
         return new ResponseEntity<Object>(
                 apiError, new HttpHeaders(), apiError.getStatus());
+    }
+
+    @ExceptionHandler({ MethodArgumentTypeMismatchException.class })
+    public ResponseEntity<Object> handleMethodArgumentTypeMismatch(
+            MethodArgumentTypeMismatchException ex, WebRequest request) {
+
+        String error =
+                ex.getName() + " should be of type " + ex.getRequiredType().getName();
+
+        ExceptionResponse apiError =
+                new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), error);
+        return new ResponseEntity<Object>(
+                apiError, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({CustomException.class})
