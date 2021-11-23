@@ -33,7 +33,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
             errors.add(error.getObjectName() + ": " + error.getDefaultMessage());
         }
 
-        String message = (errors.size()>0)? errors.get(errors.size()-1):"";
+        String message = "Sorry! Invalid Input";// (errors.size()>0)? errors.get(errors.size()-1):"Sorry! Invalid";
         ExceptionResponse apiError =
                 new ExceptionResponse(HttpStatus.UNPROCESSABLE_ENTITY, message , errors);
         return handleExceptionInternal(
@@ -49,8 +49,12 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
                     violation.getPropertyPath() + ": " + violation.getMessage());
         }
 
+        String message = ex.getLocalizedMessage();
+        if(message.isEmpty()){
+            message = "Constraint Violated";
+        }
         ExceptionResponse apiError =
-                new ExceptionResponse(HttpStatus.UNPROCESSABLE_ENTITY, ex.getLocalizedMessage(), errors);
+                new ExceptionResponse(HttpStatus.UNPROCESSABLE_ENTITY, message, errors);
         return new ResponseEntity<Object>(
                 apiError, new HttpHeaders(), apiError.getStatus());
     }

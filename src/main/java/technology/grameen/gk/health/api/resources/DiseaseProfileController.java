@@ -23,10 +23,6 @@ public class DiseaseProfileController {
     private static final Integer PAGE_SIZE = 10;
     private DiseaseProfileService diseaseProfileService;
 
-    // add following columns
-    // isActive true
-    // followup 3
-
     public DiseaseProfileController(DiseaseProfileService diseaseProfileService) {
         this.diseaseProfileService = diseaseProfileService;
     }
