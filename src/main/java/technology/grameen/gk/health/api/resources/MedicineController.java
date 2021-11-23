@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import technology.grameen.gk.health.api.entity.Medicine;
+import technology.grameen.gk.health.api.exceptions.CustomException;
 import technology.grameen.gk.health.api.responses.EntityCollectionResponse;
 import technology.grameen.gk.health.api.responses.EntityResponse;
 import technology.grameen.gk.health.api.responses.ExceptionResponse;
@@ -69,7 +70,7 @@ public class MedicineController {
     }
 
     @PostMapping(value = "/add")
-    public ResponseEntity<IResponse> addMedicine(@RequestBody Medicine req){
+    public ResponseEntity<IResponse> addMedicine(@RequestBody Medicine req) throws CustomException {
         if(req.getName().isEmpty()){
             return new ResponseEntity<>(new ExceptionResponse(HttpStatus.OK.value(), "Name is Required")
                     , HttpStatus.OK);
