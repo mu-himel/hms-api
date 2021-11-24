@@ -27,8 +27,9 @@ public interface MedicineRepository extends JpaRepository<Medicine, Long> {
                                                      Pageable pageable);
 
     @Query(value = "select m from Medicine m JOIN FETCH m.medicineBrand mb" +
-            " JOIN FETCH m.medicineGroup mg WHERE lower(m.name) LIKE CONCAT('%' ,  lower(:medicineName) , '%')",
+            " JOIN FETCH m.medicineGroup mg WHERE lower(m.name) LIKE CONCAT(lower(:medicineName) , '%')" +
+            " ORDER BY m.name ASC",
             countQuery = "select count(*) from Medicine m JOIN m.medicineBrand mb" +
-                    " JOIN m.medicineGroup mg WHERE lower(m.name) LIKE CONCAT('%' , lower(:medicineName) , '%')")
+                    " JOIN m.medicineGroup mg WHERE lower(m.name) LIKE CONCAT(lower(:medicineName) , '%')")
     List<Medicine> findAllByNameContainingIgnoreCase(@Param("medicineName") String medicineName);
 }
