@@ -7,6 +7,7 @@ import technology.grameen.gk.health.api.entity.MonthlyStatisticalCenterWiseView;
 import technology.grameen.gk.health.api.projection.MonthlyStatisticalReport;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenterWiseView,Long> {
@@ -297,7 +298,7 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "JOIN HEALTH_CENTERS hc ON hc.ID = e.CENTER_ID \n" +
             "WHERE \n" +
             "NVL(hc.THIRD_LEVEL,'0') = :regionCode AND\n" +
-            "e.EVENT_DATE BETWEEN TO_DATE(:startDate,'YYYY-MM-DD') AND TO_DATE(:endDate,'YYYY-MM-DD') \n" +
+            "e.EVENT_DATE BETWEEN :startDate AND :endDate \n" +
             "AND e.EVENT_TYPE = 'camp' GROUP BY ec.name,ec.id,e.EVENT_DATE,e.CENTER_ID) c GROUP BY c.id,c.name,c.center_id) t1\n" +
             "LEFT JOIN (\n" +
             "SELECT sum(pi2.PAID_AMOUNT) amount , ec.name,ec.id,e.CENTER_ID \n" +
@@ -308,13 +309,13 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "            JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID  = ec.ID \n" +
             "            JOIN HEALTH_CENTERS hc ON hc.ID = pi2.HEALTH_CENTER_ID\n" +
             "            WHERE NVL(hc.THIRD_LEVEL,'0') = :regionCode\n" +
-            "            AND e.EVENT_DATE BETWEEN TO_DATE(:startDate,'YYYY-MM-DD') AND TO_DATE(:endDate,'YYYY-MM-DD') AND e.EVENT_TYPE = 'camp'\n" +
+            "            AND e.EVENT_DATE BETWEEN :startDate AND :endDate AND e.EVENT_TYPE = 'camp'\n" +
             "            GROUP BY ec.name , ec.id,e.CENTER_ID) t2\n" +
             "            ON t1.id = t2.id AND t1.center_id = t2.center_id",
             nativeQuery = true)
     List<EventCategoryWiseIncomeStats> getCenterCampIncomesByRange(@Param("regionCode") String regionCode,
-                                                            @Param("startDate") String startDate,
-                                                                   @Param("endDate") String endDate);
+                                                            @Param("startDate") LocalDateTime startDate,
+                                                                   @Param("endDate") LocalDateTime endDate);
 
     @Query(value = "SELECT t1.id ecId, t1.name ecName, nvl(total,0) totalCount," +
             "  nvl(amount,0) totalAmount,t1.center_id centerId FROM (\n" +
@@ -323,7 +324,7 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "JOIN HEALTH_CENTERS hc ON hc.ID = e.CENTER_ID \n" +
             "WHERE \n" +
             "hc.OFFICE_TYPE_ID = 6 AND\n" +
-            "e.EVENT_DATE BETWEEN TO_DATE(:startDate,'YYYY-MM-DD') AND TO_DATE(:endDate,'YYYY-MM-DD') \n" +
+            "e.EVENT_DATE BETWEEN :startDate AND :endDate \n" +
             "AND e.EVENT_TYPE = 'camp' GROUP BY ec.name,ec.id,e.EVENT_DATE,e.CENTER_ID) c GROUP BY c.id,c.name,c.center_id) t1\n" +
             "LEFT JOIN (\n" +
             "SELECT sum(pi2.PAID_AMOUNT) amount , ec.name,ec.id,e.CENTER_ID \n" +
@@ -334,13 +335,13 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "  JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID  = ec.ID \n" +
             "  JOIN HEALTH_CENTERS hc ON hc.ID = pi2.HEALTH_CENTER_ID\n" +
             "  WHERE hc.OFFICE_TYPE_ID = 6\n" +
-            "  AND e.EVENT_DATE BETWEEN TO_DATE(:startDate,'YYYY-MM-DD') AND TO_DATE(:endDate,'YYYY-MM-DD')" +
+            "  AND e.EVENT_DATE BETWEEN :startDate AND :endDate" +
             "  AND e.EVENT_TYPE = 'camp'\n" +
             "  GROUP BY ec.name , ec.id,e.CENTER_ID) t2\n" +
             "  ON t1.id = t2.id AND t1.center_id = t2.center_id",
             nativeQuery = true)
-    List<EventCategoryWiseIncomeStats> getCenterCampIncomesByRangeFromHo(@Param("startDate") String startDate,
-                                                                   @Param("endDate") String endDate);
+    List<EventCategoryWiseIncomeStats> getCenterCampIncomesByRangeFromHo(@Param("startDate") LocalDateTime startDate,
+                                                                   @Param("endDate") LocalDateTime endDate);
 
 
     @Query(value = "SELECT t1.id ecId, t1.name ecName, nvl(total,0) totalCount, " +
@@ -350,7 +351,7 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "JOIN HEALTH_CENTERS hc ON hc.ID = e.CENTER_ID \n" +
             "WHERE \n" +
             "NVL(hc.CENTER_CODE,'0') = :centerCode AND\n" +
-            "e.EVENT_DATE BETWEEN TO_DATE(:startDate,'YYYY-MM-DD') AND TO_DATE(:endDate,'YYYY-MM-DD') \n" +
+            "e.EVENT_DATE BETWEEN :startDate AND :endDate \n" +
             "AND e.EVENT_TYPE = 'camp' GROUP BY ec.name,ec.id,e.EVENT_DATE,e.CENTER_ID) c GROUP BY c.id,c.name,c.center_id) t1\n" +
             "LEFT JOIN (\n" +
             "SELECT sum(pi2.PAID_AMOUNT) amount , ec.name,ec.id,e.CENTER_ID \n" +
@@ -361,13 +362,13 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "            JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID  = ec.ID \n" +
             "            JOIN HEALTH_CENTERS hc ON hc.ID = pi2.HEALTH_CENTER_ID\n" +
             "            WHERE NVL(hc.CENTER_CODE,'0') = :centerCode\n" +
-            "            AND e.EVENT_DATE BETWEEN TO_DATE(:startDate,'YYYY-MM-DD') AND TO_DATE(:endDate,'YYYY-MM-DD') AND e.EVENT_TYPE = 'camp'\n" +
+            "            AND e.EVENT_DATE BETWEEN :startDate AND :endDate AND e.EVENT_TYPE = 'camp'\n" +
             "            GROUP BY ec.name , ec.id,e.CENTER_ID) t2\n" +
             "            ON t1.id = t2.id AND t1.center_id = t2.center_id",
             nativeQuery = true)
     List<EventCategoryWiseIncomeStats> getCenterCampIncomesByRangeByCenter(@Param("centerCode") String centerCode,
-                                                                   @Param("startDate") String startDate,
-                                                                   @Param("endDate") String endDate);
+                                                                   @Param("startDate") LocalDateTime startDate,
+                                                                   @Param("endDate") LocalDateTime endDate);
 
     interface ServiceCategoryIncome{
         BigDecimal getTotalAmount();

@@ -72,7 +72,8 @@ public class DashboardController {
                                                           @RequestParam String toDate){
         return new ResponseEntity<>(new EntityResponse<>(
                 HttpStatus.OK.value(),
-                summaryReportService.getSummaryCampStats(type,fromDate,toDate,regionCode,centerCode)
+                summaryReportService.getSummaryCampStats(type,fromDate,toDate,
+                            regionCode,centerCode)
         ), HttpStatus.OK);
     }
 }

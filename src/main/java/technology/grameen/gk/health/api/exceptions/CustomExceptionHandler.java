@@ -1,5 +1,6 @@
 package technology.grameen.gk.health.api.exceptions;
 
+import org.springframework.core.NestedRuntimeException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -73,6 +74,18 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
             CustomException ex, WebRequest request) {
         List<String> errors = new ArrayList<String>();
         errors.add(ex.getMessage());
+
+        ExceptionResponse apiError =
+                new ExceptionResponse(HttpStatus.UNPROCESSABLE_ENTITY.value(), ex.getMessage());
+        return new ResponseEntity<>(
+                apiError,  HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @ExceptionHandler({NestedRuntimeException.class})
+    public ResponseEntity<Object> handleConstraintViolation(
+            NestedRuntimeException ex, WebRequest request) {
+        List<String> errors = new ArrayList<String>();
+        errors.add(ex.getRootCause().getMessage());
 
         ExceptionResponse apiError =
                 new ExceptionResponse(HttpStatus.UNPROCESSABLE_ENTITY.value(), ex.getMessage());

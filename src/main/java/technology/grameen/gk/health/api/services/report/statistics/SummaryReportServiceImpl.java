@@ -5,6 +5,7 @@ import technology.grameen.gk.health.api.repositories.report.ReportRepository;
 import technology.grameen.gk.health.api.repositories.report.SummaryReportRepository;
 import technology.grameen.gk.health.api.services.report.ReportService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -129,16 +130,20 @@ public class SummaryReportServiceImpl implements SummaryReportService{
             }
         }else if(type.equalsIgnoreCase("range") ||
                 type.equalsIgnoreCase("daily")){
+            LocalDateTime _startDate = LocalDateTime.parse(startDate);
+            LocalDateTime _endDate = LocalDateTime.parse(endDate);
+
             if(!regionCode.isEmpty() && centerCode.isEmpty()){
+
                 return Optional
-                        .ofNullable(reportRepository.getCenterCampIncomesByRange(regionCode, startDate, endDate));
+                        .ofNullable(reportRepository.getCenterCampIncomesByRange(regionCode, _startDate, _endDate));
 
             }else if((regionCode.isEmpty() || !regionCode.isEmpty()) && (!centerCode.isEmpty())) {
                 return Optional
-                        .ofNullable(reportRepository.getCenterCampIncomesByRangeByCenter(centerCode, startDate, endDate));
+                        .ofNullable(reportRepository.getCenterCampIncomesByRangeByCenter(centerCode, _startDate, _endDate));
             }else{
                 return Optional
-                        .ofNullable(reportRepository.getCenterCampIncomesByRangeFromHo(startDate, endDate));
+                        .ofNullable(reportRepository.getCenterCampIncomesByRangeFromHo(_startDate, _endDate));
             }
         }
         return Optional.empty();
