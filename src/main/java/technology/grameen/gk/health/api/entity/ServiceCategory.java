@@ -24,6 +24,7 @@ public class ServiceCategory {
     private String description;
     private Boolean isActive;
     private Boolean isLabTest;
+    private Boolean isPrintable;
 
     @OneToMany(mappedBy = "serviceCategory")
     private Set<Service> services;
@@ -119,5 +120,13 @@ public class ServiceCategory {
 
     public void setLastUpdatedAt(LocalDateTime lastUpdatedAt) {
         this.lastUpdatedAt = lastUpdatedAt;
+    }
+
+    public Boolean getPrintable() {
+        return isPrintable;
+    }
+
+    public void setPrintable(Boolean printable) {
+        isPrintable = printable;
     }
 }

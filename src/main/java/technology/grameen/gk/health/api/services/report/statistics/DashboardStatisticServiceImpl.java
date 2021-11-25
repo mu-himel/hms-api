@@ -61,13 +61,14 @@ public class DashboardStatisticServiceImpl implements DashboardStatisticService{
         Map<String,Object> map = new HashMap<>();
 
         if(type.equalsIgnoreCase("daily")){
+            fromDate = fromDate.substring(0,10);
             if(centers.size()==0){
                 map.put("chGbReg",pvsReportRepository.getPatientCHCount(true, fromDate));
                 map.put("chNGbReg",pvsReportRepository.getPatientCHCount(false, fromDate));
                 map.put("nchGbReg",pvsReportRepository.getPatientNCHCount(true, fromDate));
                 map.put("nchNGbReg",pvsReportRepository.getPatientNCHCount( false, fromDate));
             }else{
-                fromDate = fromDate.substring(0,10);
+
                 map.put("chGbReg",pvsReportRepository.getPatientCHCount(centers, true, fromDate));
                 map.put("chNGbReg",pvsReportRepository.getPatientCHCount(centers, false, fromDate));
                 map.put("nchGbReg",pvsReportRepository.getPatientNCHCount(centers, true, fromDate));
@@ -113,6 +114,7 @@ public class DashboardStatisticServiceImpl implements DashboardStatisticService{
 
         Map<String,Object> map = new HashMap<>();
         if(type.equalsIgnoreCase("daily")){
+            fromDate = fromDate.substring(0,10);
             if(centers.size()==0){
 
                 map.put("chGbReg",reportRepository.getPatientCHCount(true, fromDate));
@@ -120,7 +122,7 @@ public class DashboardStatisticServiceImpl implements DashboardStatisticService{
                 map.put("nchGbReg",reportRepository.getPatientNCHCount(true, fromDate));
                 map.put("nchNGbReg",reportRepository.getPatientNCHCount( false, fromDate));
             }else{
-                fromDate = fromDate.substring(0,10);
+
                 map.put("chGbReg",reportRepository.getPatientCHCount(centers, true, fromDate));
                 map.put("chNGbReg",reportRepository.getPatientCHCount(centers, false, fromDate));
                 map.put("nchGbReg",reportRepository.getPatientNCHCount(centers, true, fromDate));
@@ -171,13 +173,15 @@ public class DashboardStatisticServiceImpl implements DashboardStatisticService{
 
         Map<String,Object> map = new HashMap<>();
         if(type.equalsIgnoreCase("daily")){
+            fromDate = fromDate.substring(0,10);
             if(centers.size()==0){
+                fromDate = fromDate.substring(0,10);
                 map.put("prescription",ssReportRepository.getPrescriptionStats(fromDate));
                 map.put("labtest",ssReportRepository.getLabTestStats(fromDate));
                 map.put("ultrasono",ssReportRepository.getUltraSonoStats(fromDate));
 
             }else{
-                fromDate = fromDate.substring(0,10);
+
                 map.put("prescription",ssReportRepository.getPrescriptionStats(centers,  fromDate));
                 map.put("labtest",ssReportRepository.getLabTestStats(centers,  fromDate));
                 map.put("ultrasono",ssReportRepository.getUltraSonoStats(centers, fromDate));
