@@ -67,6 +67,7 @@ public class DashboardStatisticServiceImpl implements DashboardStatisticService{
                 map.put("nchGbReg",pvsReportRepository.getPatientNCHCount(true, fromDate));
                 map.put("nchNGbReg",pvsReportRepository.getPatientNCHCount( false, fromDate));
             }else{
+                fromDate = fromDate.substring(0,10);
                 map.put("chGbReg",pvsReportRepository.getPatientCHCount(centers, true, fromDate));
                 map.put("chNGbReg",pvsReportRepository.getPatientCHCount(centers, false, fromDate));
                 map.put("nchGbReg",pvsReportRepository.getPatientNCHCount(centers, true, fromDate));
@@ -119,6 +120,7 @@ public class DashboardStatisticServiceImpl implements DashboardStatisticService{
                 map.put("nchGbReg",reportRepository.getPatientNCHCount(true, fromDate));
                 map.put("nchNGbReg",reportRepository.getPatientNCHCount( false, fromDate));
             }else{
+                fromDate = fromDate.substring(0,10);
                 map.put("chGbReg",reportRepository.getPatientCHCount(centers, true, fromDate));
                 map.put("chNGbReg",reportRepository.getPatientCHCount(centers, false, fromDate));
                 map.put("nchGbReg",reportRepository.getPatientNCHCount(centers, true, fromDate));
