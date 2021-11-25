@@ -161,7 +161,9 @@ public class PatientManageServiceImpl implements PatientManageService {
         if(req.getSpouseName()!=null){
             patient.setSpouseName(req.getSpouseName());
         }
-        patient.setMotherName(req.getMotherName().trim());
+        if(req.getMotherName() != null) {
+            patient.setMotherName(req.getMotherName().trim());
+        }
         if(req.getMobileNumber()!=null) {
             patient.setMobileNumber(req.getMobileNumber().trim());
         }
