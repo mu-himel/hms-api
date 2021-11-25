@@ -177,6 +177,7 @@ public class DashboardStatisticServiceImpl implements DashboardStatisticService{
                 map.put("ultrasono",ssReportRepository.getUltraSonoStats(fromDate));
 
             }else{
+                fromDate = fromDate.substring(0,10);
                 map.put("prescription",ssReportRepository.getPrescriptionStats(centers,  fromDate));
                 map.put("labtest",ssReportRepository.getLabTestStats(centers,  fromDate));
                 map.put("ultrasono",ssReportRepository.getUltraSonoStats(centers, fromDate));
