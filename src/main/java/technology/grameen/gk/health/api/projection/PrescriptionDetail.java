@@ -3,6 +3,7 @@ package technology.grameen.gk.health.api.projection;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import technology.grameen.gk.health.api.entity.*;
 
+import javax.persistence.OrderBy;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -88,6 +89,8 @@ public interface PrescriptionDetail {
     Center getCenter();
     Doctor getDoctor();
     String getpNumber();
+
+
     List<RecommendedMedicine> getRecommendedMedicines();
     List<RecommendedTest> getRecommendedTests();
     String getSymptoms();

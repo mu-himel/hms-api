@@ -6,7 +6,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -49,10 +51,12 @@ public class Prescription {
     private GeneralExamination generalExamination;
 
     @OneToMany(mappedBy = "prescription")
-    private Set<RecommendedTest> recommendedTests;
+    @OrderBy("id ASC")
+    private List<RecommendedTest> recommendedTests;
 
     @OneToMany(mappedBy = "prescription")
-    private Set<RecommendedMedicine> recommendedMedicines;
+    @OrderBy("id ASC")
+    private List<RecommendedMedicine> recommendedMedicines;
 
     private Boolean isNew;
     private Boolean isTeleCall = false;
@@ -225,28 +229,28 @@ public class Prescription {
         this.generalExamination = generalExamination;
     }
 
-    public Set<RecommendedTest> getRecommendedTests() {
+    public List<RecommendedTest> getRecommendedTests() {
         return recommendedTests;
     }
 
     public void addRecommendedTest(RecommendedTest recommendedTest) {
         if(recommendedTest != null){
             if(this.recommendedTests == null){
-                this.recommendedTests = new HashSet<>();
+                this.recommendedTests = new ArrayList<>();
             }
             recommendedTest.setPrescription(this);
             this.recommendedTests.add(recommendedTest);
         }
     }
 
-    public Set<RecommendedMedicine> getRecommendedMedicines() {
+    public List<RecommendedMedicine> getRecommendedMedicines() {
         return recommendedMedicines;
     }
 
     public void addRecommendedMedicine(RecommendedMedicine recommendedMedicine) {
         if(recommendedMedicine != null){
             if(this.recommendedMedicines == null){
-                this.recommendedMedicines = new HashSet<>();
+                this.recommendedMedicines = new ArrayList<>();
             }
             this.recommendedMedicines.add(recommendedMedicine);
         }

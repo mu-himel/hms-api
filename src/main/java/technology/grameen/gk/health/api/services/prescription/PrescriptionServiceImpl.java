@@ -96,22 +96,21 @@ public class PrescriptionServiceImpl implements PrescriptionService {
             generalExaminationRepository.save(generalExamination);
 
             if (prescription.getRecommendedTests().size() > 0) {
-                prescription.getRecommendedTests().stream()
-                        .map((recommendedTest) -> {
+                prescription.getRecommendedTests().forEach((recommendedTest) -> {
                             recommendedTest.setPrescription(prescription);
-                            return recommendedTest;
-                        }).collect(Collectors.toSet());
-                recommendedTestRepository.saveAll(prescription.getRecommendedTests());
+                            recommendedTestRepository.save(recommendedTest);
+                        });
+
             }
 
             if (prescription.getRecommendedMedicines().size() > 0) {
-                prescription.getRecommendedMedicines().stream()
-                        .map((recommendedMedicine) -> {
+                prescription.getRecommendedMedicines().forEach((recommendedMedicine) -> {
                             recommendedMedicine.setPrescription(prescription);
-                            return recommendedMedicine;
-                        }).collect(Collectors.toSet());
+                            recommendedMedicineRepository.save(recommendedMedicine);
 
-                recommendedMedicineRepository.saveAll(prescription.getRecommendedMedicines());
+                        });
+
+
             }
 
 
@@ -224,5 +223,10 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     @Override
     public Optional<PrescriptionDetail> getPrescriptionByPatientAndInvoice(Patient patientId, PatientInvoice invoiceId) {
         return prescriptionRepository.findByPrescriptionPatientAndPatientInvoice(patientId, invoiceId);
+    }
+
+    @Override
+    public void deleteRecommendedMedicine(Long id) {
+        recommendedMedicineRepository.deleteById(id);
     }
 }

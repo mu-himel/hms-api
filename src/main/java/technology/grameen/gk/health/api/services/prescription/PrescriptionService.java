@@ -22,4 +22,7 @@ public interface PrescriptionService {
     Optional<PrescriptionDetail> getPrescriptionById(Long id);
 
     Optional<PrescriptionDetail> getPrescriptionByPatientAndInvoice(Patient patient, PatientInvoice invoice);
+
+    void deleteRecommendedMedicine(Long id);
+
 }

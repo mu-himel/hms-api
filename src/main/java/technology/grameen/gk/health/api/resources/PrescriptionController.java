@@ -101,4 +101,13 @@ public class PrescriptionController {
 
                 prescriptionService.getPrescriptionByPatientAndInvoice(patient,patientInvoice)),HttpStatus.OK);
     }
+
+    @DeleteMapping("/medicine/{id}")
+    public ResponseEntity<IResponse> deleteRecommendedMedicine(@PathVariable("id") Long id){
+        prescriptionService.deleteRecommendedMedicine(id);
+        return new ResponseEntity<>(new EntityResponse<>(
+                HttpStatus.OK.value(),
+                true
+        ), HttpStatus.OK);
+    }
 }
