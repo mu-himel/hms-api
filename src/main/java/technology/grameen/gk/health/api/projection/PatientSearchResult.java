@@ -124,6 +124,7 @@ public interface PatientSearchResult {
         String getMotherName();
         String getGender();
         String getMobileNumber();
+        String getSecondaryMobileNumber();
         String getEmail();
         String getAge();
         @JsonFormat(pattern = "yyyy-MM-dd")
