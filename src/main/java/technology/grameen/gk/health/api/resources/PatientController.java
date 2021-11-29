@@ -95,6 +95,14 @@ public class PatientController {
         ),HttpStatus.OK);
     }
 
+    @DeleteMapping("/disease-profile/{id}")
+    public ResponseEntity<IResponse> removePatientDiseaseProfileById(@PathVariable("id") Long id){
+        return new ResponseEntity<>(new EntityResponse<>(
+                HttpStatus.OK.value(),
+                patientDiseaseProfileService.deleteById(id)
+        ),HttpStatus.OK);
+    }
+
     @GetMapping(value = "/by-pid/{pid}")
     public ResponseEntity<IResponse> getPatientByPID(@PathVariable("pid") String pid){
         Optional<PatientSearchResult> patient = patientManageService.getPatientByPId(pid);

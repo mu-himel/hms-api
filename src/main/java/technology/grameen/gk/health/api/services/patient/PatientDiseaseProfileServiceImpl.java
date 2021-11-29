@@ -32,4 +32,11 @@ public class PatientDiseaseProfileServiceImpl implements PatientDiseaseProfileSe
     public List<?> getDiseaseProfileByPatient(Long id) {
         return diseaseProfileRepository.findByPatientId(id);
     }
+
+    @Override
+    @Transactional
+    public Boolean deleteById(Long id) {
+        diseaseProfileRepository.deleteById(id);
+        return true;
+    }
 }
