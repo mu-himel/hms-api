@@ -43,14 +43,15 @@ public interface BusinessTargetStatRepository extends ReportRepository{
             "sat_patient_per_day satPatientPerDay,\n" +
             "nvl(t2.hcPatientCount,0) hcPatientCount,nvl(t2.hcAmount,0) hcAmount,t2.health_center_id hcId,\n" +
             "nvl(t3.satPatientCount,0) satPatientCount,nvl(t3.satAmount,0) satAmount,t3.health_center_id satCenterId FROM (SELECT * FROM BUSINESS_TARGETS bt \n" +
-            "WHERE bt.YEAR_MONTH  = :yearMonth AND FOR_OFFICE_ID = :regionId) t1\n" +
+            "WHERE bt.YEAR_MONTH  = :yearMonth AND FOR_OFFICE_ID IN (SELECT id FROM HEALTH_CENTERS hc5 WHERE hc5.THIRD_LEVEL  = (SELECT third_level FROM \n" +
+            "HEALTH_CENTERS hc6 WHERE hc6.id = :regionId ) AND hc5.OFFICE_TYPE_ID=6)) t1\n" +
             "LEFT JOIN \n" +
-            "(SELECT :regionId AS areaid, count(pi2.patient_id) hcPatientCount, sum(pi2.PAID_AMOUNT) hcAmount,pi2.HEALTH_CENTER_ID FROM PATIENT_INVOICES pi2\n" +
+            "(SELECT pi2.HEALTH_CENTER_ID AS areaid, count(pi2.patient_id) hcPatientCount, sum(pi2.PAID_AMOUNT) hcAmount,pi2.HEALTH_CENTER_ID FROM PATIENT_INVOICES pi2\n" +
             "WHERE pi2.HEALTH_CENTER_ID IN (SELECT id FROM HEALTH_CENTERS hc2 WHERE THIRD_LEVEL IN (\n" +
             "SELECT THIRD_LEVEL FROM HEALTH_CENTERS hc WHERE id = :regionId) AND OFFICE_TYPE_ID = 6) \n" +
             "AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM-DD') = :fromDate AND pi2.EVENT_ID  IS NULL GROUP BY pi2.HEALTH_CENTER_ID) t2\n" +
             "ON t1.for_office_id = t2.areaid\n" +
-            "LEFT JOIN (SELECT :regionId AS areaid, count(pi3.patient_id) satPatientCount, sum(pi3.PAID_AMOUNT) satAmount,pi3.HEALTH_CENTER_ID FROM PATIENT_INVOICES pi3\n" +
+            "LEFT JOIN (SELECT pi3.HEALTH_CENTER_ID AS areaid, count(pi3.patient_id) satPatientCount, sum(pi3.PAID_AMOUNT) satAmount,pi3.HEALTH_CENTER_ID FROM PATIENT_INVOICES pi3\n" +
             "WHERE pi3.HEALTH_CENTER_ID IN (SELECT id FROM HEALTH_CENTERS hc2 WHERE THIRD_LEVEL IN (\n" +
             "SELECT THIRD_LEVEL FROM HEALTH_CENTERS hc WHERE id = :regionId) AND OFFICE_TYPE_ID = 6) " +
             "AND TO_CHAR(pi3.CREATED_AT,'YYYY-MM-DD') = :fromDate AND pi3.EVENT_ID  IS NOT NULL AND pi3.INVOICE_TYPE='satellite'\n" +
