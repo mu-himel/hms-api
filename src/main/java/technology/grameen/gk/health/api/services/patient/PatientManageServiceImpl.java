@@ -167,6 +167,10 @@ public class PatientManageServiceImpl implements PatientManageService {
         if(req.getMobileNumber()!=null) {
             patient.setMobileNumber(req.getMobileNumber().trim());
         }
+
+        if(req.getSecondaryMobileNumber()!=null){
+            patient.setMobileNumber(req.getSecondaryMobileNumber().trim());
+        }
         if(req.getEmail()!=null){
             patient.setEmail(req.getEmail().trim());
         }

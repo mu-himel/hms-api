@@ -27,6 +27,7 @@ public class PatientRequest {
     private String gender;
     private String maritalStatus;
     private String mobileNumber;
+    private String secondaryMobileNumber;
     private String email;
     private Integer age;
     private LocalDate dob;
@@ -225,5 +226,13 @@ public class PatientRequest {
 
     public void setHome(HaHome home) {
         this.home = home;
+    }
+
+    public String getSecondaryMobileNumber() {
+        return secondaryMobileNumber;
+    }
+
+    public void setSecondaryMobileNumber(String secondaryMobileNumber) {
+        this.secondaryMobileNumber = secondaryMobileNumber;
     }
 }

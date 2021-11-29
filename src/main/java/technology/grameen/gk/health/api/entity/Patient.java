@@ -32,6 +32,7 @@ public class Patient {
     private String gender;
     private String maritalStatus;
     private String mobileNumber;
+    private String secondaryMobileNumber;
     private String email;
     private String age;
 
@@ -346,5 +347,13 @@ public class Patient {
 
     public void setCardMember(CardMember cardMember) {
         this.cardMember = cardMember;
+    }
+
+    public String getSecondaryMobileNumber() {
+        return secondaryMobileNumber;
+    }
+
+    public void setSecondaryMobileNumber(String secondaryMobileNumber) {
+        this.secondaryMobileNumber = secondaryMobileNumber;
     }
 }
