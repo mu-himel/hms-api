@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface BusinessTargetStatService {
 
-   List<?> getStats(Long regionId, Short officeTypeId, String yearMonth, String fromDate) throws CustomException;
+   List<?> getStats(Long regionId, Short officeTypeId, String yearMonth, String fromDate);
 }
