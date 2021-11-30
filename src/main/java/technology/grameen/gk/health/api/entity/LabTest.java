@@ -32,9 +32,8 @@ public class LabTest {
     @JoinColumn(name = "lab_test_group_id", referencedColumnName = "id")
     private LabTestGroup labTestGroup;
 
-    @ManyToOne
-    @JoinColumn(name = "service_id")
-    private Service service;
+    @ManyToMany(mappedBy = "labTests")
+    private Set<Service> services;
 
     @OneToMany(mappedBy = "labTest")
     private Set<LabTestDetail> details;
@@ -43,6 +42,10 @@ public class LabTest {
     private LocalDateTime receivedDate;
     private LocalDateTime printDate;
     private LocalDate deliveryDate;
+    private Boolean groupReport;
+
+    @ManyToOne
+    private HealthCenter center;
 
     private String status;
 
@@ -155,12 +158,12 @@ public class LabTest {
         this.lastUpdatedAt = lastUpdatedAt;
     }
 
-    public Service getService() {
-        return service;
+    public Set<Service> getServices() {
+        return services;
     }
 
-    public void setService(Service service) {
-        this.service = service;
+    public void setService(Set<Service> services) {
+        this.services = services;
     }
 
     public LocalDate getDeliveryDate() {
@@ -185,5 +188,21 @@ public class LabTest {
 
     public void setCheckBy(Employee checkBy) {
         this.checkBy = checkBy;
+    }
+
+    public Boolean getGroupReport() {
+        return groupReport;
+    }
+
+    public void setGroupReport(Boolean groupReport) {
+        this.groupReport = groupReport;
+    }
+
+    public HealthCenter getCenter() {
+        return center;
+    }
+
+    public void setCenter(HealthCenter center) {
+        this.center = center;
     }
 }

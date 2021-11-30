@@ -7,6 +7,7 @@ import technology.grameen.gk.health.api.entity.PatientServiceDetail;
 import technology.grameen.gk.health.api.entity.Service;
 
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface PatientServiceRepository extends JpaRepository<PatientServiceDetail,Long> {

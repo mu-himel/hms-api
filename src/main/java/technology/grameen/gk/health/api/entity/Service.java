@@ -29,7 +29,11 @@ public class Service {
     @OrderBy("displayOrder ASC")
     private Set<LabTestAttribute> labTestAttributes = new HashSet<>();
 
-    @OneToMany(mappedBy = "service")
+    @ManyToMany
+    @JoinTable(
+            name = "lab_tests_services",
+            joinColumns = @JoinColumn(name = "services_service_id"),
+            inverseJoinColumns = @JoinColumn(name = "lab_test_id"))
     private Set<LabTest> labTests;
 
     @ManyToOne
@@ -228,7 +232,7 @@ public class Service {
             if (this.labTests == null) {
                 this.labTests = new HashSet<>();
             }
-            labTest.setService(this);
+//            labTest.setService(this);
             this.labTests.add(labTest);
         }
     }

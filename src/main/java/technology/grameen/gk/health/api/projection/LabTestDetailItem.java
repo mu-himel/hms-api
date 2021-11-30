@@ -104,7 +104,8 @@ public interface LabTestDetailItem {
      PatientInvoice getPatientInvoice();
      Specimen getSpecimen();
      LabTestGroup getLabTestGroup();
-     Service getService();
+     Boolean getGroupReport();
+     Set<Service> getServices();
      Set<LabTestReportDetail> getDetails();
 
      @JsonFormat(pattern = "yyyy-MM-dd")

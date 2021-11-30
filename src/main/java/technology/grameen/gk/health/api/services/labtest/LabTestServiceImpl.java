@@ -5,11 +5,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import technology.grameen.gk.health.api.entity.*;
+import technology.grameen.gk.health.api.exceptions.CustomException;
 import technology.grameen.gk.health.api.projection.LabTestDetailItem;
 import technology.grameen.gk.health.api.projection.LabTestListItem;
 import technology.grameen.gk.health.api.repositories.LabTestRepository;
+import technology.grameen.gk.health.api.repositories.lookup.ServiceRepository;
 import technology.grameen.gk.health.api.services.invoice.PatientInvoiceService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -21,31 +24,55 @@ public class LabTestServiceImpl implements LabTestService {
     private LabTestRepository labTestRepository;
     private LabTestResultService resultService;
     private PatientInvoiceService patientInvoiceService;
+    private ServiceRepository serviceRepository;
 
     LabTestServiceImpl(LabTestRepository labTestRepository,
                        LabTestResultService resultService,
-                       PatientInvoiceService patientInvoiceService){
+                       PatientInvoiceService patientInvoiceService,
+                       ServiceRepository serviceRepository){
         this.labTestRepository = labTestRepository;
         this.resultService = resultService;
         this.patientInvoiceService = patientInvoiceService;
+        this.serviceRepository = serviceRepository;
     }
 
     @Override
     @Transactional
     public LabTest saveLabTest(LabTest labTest) {
 
-        Optional<PatientServiceDetail> patientServiceDetailSingle = patientInvoiceService
+        List<Optional<PatientServiceDetail>> patientServiceDetailSingles = new ArrayList<>();
+
+        labTest.getServices().forEach(s->{
+            Optional<PatientServiceDetail> patientServiceDetailSingle = patientInvoiceService
                     .getPatientServiceDetailByInvoiceAndService(labTest.getPatientInvoice(),
-                            labTest.getService());
+                           s);
 
         if(!patientServiceDetailSingle.isPresent())
         {
-            throw new RuntimeException("Sorry! Relevant invoice details not found");
+            throw new RuntimeException("Sorry! Relevant invoice details not found for service "+
+                    s.getName());
         }
+
+            patientServiceDetailSingles.add(patientServiceDetailSingle);
+        });
+
         Set<LabTestDetail> details = labTest.getDetails();
-        technology.grameen.gk.health.api.entity.Service service = labTest.getService();
-        service.addLabTest(labTest);
+        Set<technology.grameen.gk.health.api.entity.Service> services = labTest.getServices();
+//        services.stream().map(s->{
+//          s.addLabTest(labTest);
+//          return s;
+//        });
+
         LabTest labTest1 = labTestRepository.save(labTest);
+        services.forEach(s->{
+            Optional<technology.grameen.gk.health.api.entity.Service> serviceOp = serviceRepository.findById(s.getServiceId());
+            if(serviceOp.isPresent()){
+                technology.grameen.gk.health.api.entity.Service service = serviceOp.get();
+                service.addLabTest(labTest1);
+            }
+        });
+
+
         if(labTest1.getId() > 0){
             details.stream().map( d->{
                 d.setLabTest(labTest1);
@@ -53,9 +80,12 @@ public class LabTestServiceImpl implements LabTestService {
             }).collect(Collectors.toSet());
             resultService.saveAll(details);
 
-            PatientServiceDetail patientServiceDetail = patientServiceDetailSingle.get();
-            patientServiceDetail.setReportGenerated(true);
-            patientInvoiceService.updatePatientServiceDetail(patientServiceDetail);
+            patientServiceDetailSingles.forEach(psd->{
+                PatientServiceDetail patientServiceDetail = psd.get();
+                patientServiceDetail.setReportGenerated(true);
+                patientInvoiceService.updatePatientServiceDetail(patientServiceDetail);
+            });
+
         }
         return labTest1;
     }
@@ -100,6 +130,6 @@ public class LabTestServiceImpl implements LabTestService {
     public Optional<LabTestDetailItem> getLabTestReportByPatientInvoiceService(
             Patient patient, PatientInvoice patientInvoice,
             technology.grameen.gk.health.api.entity.Service service) {
-        return labTestRepository.findByPatientAndPatientInvoiceAndService(patient, patientInvoice, service);
+        return labTestRepository.findByPatientAndPatientInvoice(patient, patientInvoice);
     }
 }
