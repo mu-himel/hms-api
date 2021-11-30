@@ -80,11 +80,18 @@ public interface PatientInvoiceDetail {
         Boolean getPrintable();
     }
 
+    interface LabTestGroup{
+        Long getId();
+        String getName();
+    }
+
     interface Service{
         Long getServiceId();
         String getName();
         String getServiceCode();
         Boolean getLabTest();
+        Boolean getGroupable();
+        LabTestGroup getLabTestGroup();
         ServiceCategory getServiceCategory();
     }
 

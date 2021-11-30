@@ -47,6 +47,7 @@ public class Service {
     private Boolean isLabTest;
     private Boolean isPrescription;
     private Boolean fieldSaleable;
+    private Boolean isGroupable;
     private BigDecimal fieldCost;
 
     @CreationTimestamp
@@ -254,5 +255,13 @@ public class Service {
 
     public void setFieldCost(BigDecimal fieldCost) {
         this.fieldCost = fieldCost;
+    }
+
+    public Boolean getGroupable() {
+        return isGroupable;
+    }
+
+    public void setGroupable(Boolean groupable) {
+        isGroupable = groupable;
     }
 }

@@ -33,6 +33,7 @@ public interface PatientInvoiceRepository extends JpaRepository<PatientInvoice,L
             " LEFT JOIN FETCH r.members m " +
             " LEFT JOIN FETCH p.prescriptions ps" +
             " LEFT JOIN FETCH s.labTestAttributes lta" +
+            " LEFT JOIN FETCH s.labTestGroup ltg" +
             " LEFT JOIN FETCH lta.labTestUnit ltu" +
             " LEFT JOIN FETCH p.createdBy createdBy where pi.id = :number")
     Optional<PatientInvoiceDetail> findByInvoiceId(@Param("number") Long number);
