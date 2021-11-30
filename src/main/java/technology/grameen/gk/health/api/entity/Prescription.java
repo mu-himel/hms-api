@@ -39,6 +39,8 @@ public class Prescription {
     private LocalDateTime lastFreeVisitDate;
 
     private String symptoms;
+
+    @Column(length = 1000)
     private String diseaseProfile;
 
     @OneToOne(mappedBy = "prescription")
