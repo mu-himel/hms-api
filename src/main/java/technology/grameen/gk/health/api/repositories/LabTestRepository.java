@@ -21,12 +21,30 @@ import java.util.Optional;
 @Repository
 public interface LabTestRepository extends JpaRepository<LabTest,Long> {
 
-    @Query(value = "SELECT lt.id, lt.status, p.FULL_NAME AS fullName , p.PID as pid , pi2.INVOICE_NUMBER AS invoiceNumber," +
-            " lt.CREATED_AT AS createdAt FROM  LAB_TESTS lt INNER JOIN PATIENTS p ON p.id = lt.PATIENT_ID \n" +
-            "INNER JOIN PATIENT_INVOICES pi2 ON pi2.id = lt.PATIENT_INVOICE_ID " +
-            "ORDER BY lt.id DESC",
-            countQuery = "SELECT count(*) from LAB_TESTS lt INNER JOIN PATIENTS p ON p.id = lt.PATIENT_ID" +
-                    " INNER JOIN PATIENT_INVOICES pi2 ON pi2.id = lt.PATIENT_INVOICE_ID", nativeQuery=true)
+    @Query(value = "SELECT r.id,LISTAGG(r.name, ', ') servicename,r.status,r.fullname,r.pid, r.invoicenumber, r.createdat \n" +
+            "FROM(SELECT lt.id,s.NAME,lt.status, p.FULL_NAME AS fullName , p.PID as pid ,\n" +
+            "\tpi2.INVOICE_NUMBER AS invoiceNumber,\n" +
+            "    lt.CREATED_AT AS createdAt FROM  LAB_TESTS lt \n" +
+            "    INNER JOIN PATIENTS p ON p.id = lt.PATIENT_ID \n" +
+            "    INNER JOIN PATIENT_INVOICES pi2 ON pi2.id = lt.PATIENT_INVOICE_ID \n" +
+            "    INNER JOIN LAB_TESTS_SERVICES lts ON lts.lab_test_id = lt.id\n" +
+            "    INNER JOIN SERVICE s ON s.service_id = lts.services_service_id\n" +
+            "    JOIN LAB_TESTS_SERVICES lts ON lts.lab_test_id = lt.id\n" +
+            "    GROUP BY lt.id,lt.STATUS,s.name, p.FULL_NAME , p.pid, pi2.INVOICE_NUMBER, lt.CREATED_AT\n" +
+            "    ORDER BY lt.id DESC) r\n" +
+            "    GROUP BY r.id,r.status,r.fullname,r.pid,r.invoicenumber,r.createdat",
+            countQuery = "select count(*) from(SELECT r.id,LISTAGG(r.name, ', ') servicename,r.status,r.fullname,r.pid, r.invoicenumber, r.createdat \n" +
+                    "FROM(SELECT lt.id,s.NAME,lt.status, p.FULL_NAME AS fullName , p.PID as pid ,\n" +
+                    "\tpi2.INVOICE_NUMBER AS invoiceNumber,\n" +
+                    "    lt.CREATED_AT AS createdAt FROM  LAB_TESTS lt \n" +
+                    "    INNER JOIN PATIENTS p ON p.id = lt.PATIENT_ID \n" +
+                    "    INNER JOIN PATIENT_INVOICES pi2 ON pi2.id = lt.PATIENT_INVOICE_ID \n" +
+                    "    INNER JOIN LAB_TESTS_SERVICES lts ON lts.lab_test_id = lt.id\n" +
+                    "    INNER JOIN SERVICE s ON s.service_id = lts.services_service_id\n" +
+                    "    JOIN LAB_TESTS_SERVICES lts ON lts.lab_test_id = lt.id\n" +
+                    "    GROUP BY lt.id,lt.STATUS,s.name, p.FULL_NAME , p.pid, pi2.INVOICE_NUMBER, lt.CREATED_AT\n" +
+                    "    ORDER BY lt.id DESC) r\n" +
+                    "    GROUP BY r.id,r.status,r.fullname,r.pid,r.invoicenumber,r.createdat) c", nativeQuery=true)
     Page<LabTestListItem> getLabTests(Pageable pageable);
 
     @Query(value = "SELECT lt.id, lt.status, p.FULL_NAME AS fullName , p.PID as pid , pi2.INVOICE_NUMBER AS invoiceNumber," +

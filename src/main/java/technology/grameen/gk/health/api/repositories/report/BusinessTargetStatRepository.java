@@ -8,6 +8,7 @@ import java.util.List;
 public interface BusinessTargetStatRepository extends ReportRepository{
 
     interface BusinessStats{
+        Long getForOfficeId();
         Double getHcIncomePerDay();
         Long getHcPatientPerDay();
         Double getSatIncomePerDay();
@@ -69,12 +70,10 @@ public interface BusinessTargetStatRepository extends ReportRepository{
         Long getSatPatientPerDay();
         Long getHcPatientCount();
         Double getHcAmount();
-//        Long getHcId();
         Long getSatPatientCount();
         Double getSatAmount();
-//        Long getSatCenterId();
-
     }
+
     @Query(value = "SELECT p.forofficeid,p.hcincomeperday,p.hcpatientperday,\n" +
             "p.satincomeperday,p.satpatientperday,sum(p.hcpatientcount) HCPATIENTCOUNT ,\n" +
             "sum(p.hcamount) HCAMOUNT, sum(p.satPatientCount) SATPATIENTCOUNT ,\n" +
