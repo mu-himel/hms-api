@@ -56,4 +56,9 @@ public interface HealthCenterRepository extends JpaRepository<HealthCenter,Long>
     List<Long> getAllIdByThirdLevel(@Param("thirdLevelCode") String thirdLevelCode);
 
     Optional<HealthCenter> findByCenterCode(String code);
+
+    @Query(value = "SELECT count(*) total FROM HEALTH_CENTERS hc WHERE hc.THIRD_LEVEL = :thirdLevel" +
+            "    AND OFFICE_TYPE_ID = 6",
+            nativeQuery = true)
+    Optional<Integer> getCenterCountOfRegionByThirdLevel(@Param("thirdLevel") String thirdLevel);
 }

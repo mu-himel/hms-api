@@ -134,4 +134,9 @@ public class HealthCenterServiceImpl implements HealthCenterService {
     public Optional<HealthCenter> getCenterByCenterCode(String code) {
         return healthCenterRepository.findByCenterCode(code);
     }
+
+    @Override
+    public Optional<Integer> getCenterCountOfRegionByThirdLevel(String thirdLevel) {
+        return healthCenterRepository.getCenterCountOfRegionByThirdLevel(thirdLevel);
+    }
 }

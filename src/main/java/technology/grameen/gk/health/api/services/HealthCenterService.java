@@ -3,6 +3,8 @@ package technology.grameen.gk.health.api.services;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import technology.grameen.gk.health.api.entity.HealthCenter;
 
 import java.util.List;
@@ -38,6 +40,9 @@ public interface HealthCenterService {
 
     List<String> getCenterIds();
     List<String> getCenterIds(String thirdLevelCode);
+
+
+    Optional<Integer> getCenterCountOfRegionByThirdLevel(String thirdLevel);
 
     List<Long> getCenterIdByThirdLevel(String thirdLevelCode);
 }

@@ -5,10 +5,7 @@ import technology.grameen.gk.health.api.entity.HealthCenter;
 import technology.grameen.gk.health.api.repositories.report.BusinessTargetStatRepository;
 import technology.grameen.gk.health.api.services.HealthCenterService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class BusinessTargetStatServiceImpl implements BusinessTargetStatService{
@@ -28,9 +25,11 @@ public class BusinessTargetStatServiceImpl implements BusinessTargetStatService{
             List<Map<String,?>> results = new ArrayList<>();
             List<HealthCenter> healthCenters = healthCenterService.getCentersByOfficeTypeId(5);
             healthCenters.forEach(hc->{
+                Optional<Integer> centerCount = healthCenterService.getCenterCountOfRegionByThirdLevel(hc.getThirdLevel());
                 Map<String, Object> map = new HashMap<>();
                 map.put("name",hc.getName());
                 map.put("id",hc.getId());
+                map.put("centerCount",centerCount);
                 map.put("stats",
                 businessTargetStatRepository.getRegionGroupWiseStats(hc.getId(), yearMonth, fromDate)
                 );
