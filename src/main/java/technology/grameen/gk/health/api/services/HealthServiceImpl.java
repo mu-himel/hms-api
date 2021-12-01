@@ -63,11 +63,20 @@ public class HealthServiceImpl implements HealthServiceInterface {
     }
 
     @Override
-    public Page<ServiceListItem> getAll(String serviceName, Pageable pageable) {
-        if(serviceName.isEmpty()){
+    public Page<ServiceListItem> getAll(String serviceName,String serviceCode, Pageable pageable) {
+
+        if(!serviceName.isEmpty()) {
+            return serviceRepository.findAllServices(serviceName, pageable);
+        }
+        if(!serviceCode.isEmpty()) {
+            return serviceRepository.findAllServices(serviceCode, pageable);
+        }
+
+        if(serviceName.isEmpty() && serviceCode.isEmpty()){
             return serviceRepository.findAllServices(pageable);
         }
-        return serviceRepository.findAllServices(serviceName,pageable);
+
+        return null;
     }
 
     @Override

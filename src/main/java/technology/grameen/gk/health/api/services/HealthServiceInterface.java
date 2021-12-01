@@ -19,7 +19,7 @@ public interface HealthServiceInterface {
     public Service addServiceAttributes(Service service) throws Exception;
 
     List<ServiceListItem> getAll();
-    Page<ServiceListItem> getAll(String serviceName, Pageable pageable);
+    Page<ServiceListItem> getAll(String serviceName,String serviceCode, Pageable pageable);
 
 
 

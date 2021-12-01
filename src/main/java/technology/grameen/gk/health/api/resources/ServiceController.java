@@ -38,6 +38,7 @@ public class ServiceController {
     @RequestMapping(value = "")
     public ResponseEntity<IResponse> list(
                                           @RequestParam Optional<String> serviceName,
+                                          @RequestParam Optional<String> serviceCode,
                                           @RequestParam Optional<Integer> page,
                                           @RequestParam Optional<Integer> size,
                                           @RequestParam Optional<String> sortBy,
@@ -56,7 +57,7 @@ public class ServiceController {
                 : PageRequest.of(page.orElse(0),size.orElse(PAGE_SIZE));
 
         return new ResponseEntity<>(new EntityResponse<>(HttpStatus.OK.value(),
-                healthServiceInterface.getAll(serviceName.orElse(""),pageable)), HttpStatus.OK);
+                healthServiceInterface.getAll(serviceName.orElse(""),serviceCode.orElse(""),pageable)), HttpStatus.OK);
     }
 
     @PostMapping(value = "/add")
