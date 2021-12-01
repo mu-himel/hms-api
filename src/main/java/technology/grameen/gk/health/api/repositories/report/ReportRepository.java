@@ -276,16 +276,19 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "TO_CHAR(e.EVENT_DATE,'YYYY-MM') = :yearMonth \n" +
             "AND e.EVENT_TYPE = 'camp' GROUP BY ec.name,ec.id,e.EVENT_DATE,e.CENTER_ID) c GROUP BY c.id,c.name,c.center_id) t1\n" +
             "LEFT JOIN (\n" +
-            "SELECT sum(pi2.PAID_AMOUNT) amount , ec.name,ec.id,e.CENTER_ID \n" +
-            "FROM PATIENT_INVOICES pi2 \n" +
-            "            JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
-            "            JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID \n" +
-            "            JOIN events e ON pi2.EVENT_ID  = e.ID \n" +
-            "            JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID  = ec.ID \n" +
-            "            JOIN HEALTH_CENTERS hc ON hc.ID = pi2.HEALTH_CENTER_ID\n" +
-            "            WHERE NVL(hc.CENTER_CODE,'0') = :centerCode\n" +
-            "            AND TO_CHAR(e.EVENT_DATE ,'YYYY-MM') = :yearMonth AND e.EVENT_TYPE = 'camp'\n" +
-            "            GROUP BY ec.name , ec.id,e.CENTER_ID) t2\n" +
+            "SELECT sum(c.PAID_AMOUNT) amount, c.name, c.id, c.center_id \n" +
+            "   FROM (SELECT pi2.PAID_AMOUNT, ec.name,ec.id,e.CENTER_ID \n" +
+            "\t    FROM PATIENT_INVOICES pi2 \n" +
+            "\t    JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
+            "\t    JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID \n" +
+            "\t    JOIN events e ON pi2.EVENT_ID  = e.ID \n" +
+            "\t    JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID  = ec.ID \n" +
+            "\t    JOIN HEALTH_CENTERS hc ON hc.ID = pi2.HEALTH_CENTER_ID\n" +
+            "\t    WHERE NVL(hc.CENTER_CODE,'0') = 175\n" +
+            "\t    AND TO_CHAR(e.EVENT_DATE,'YYYY-MM') = :yearMonth" +
+            "\t\tAND e.EVENT_TYPE = 'camp'\n" +
+            "\t    GROUP BY pi2.PAID_AMOUNT,ec.name , ec.id,e.CENTER_ID) c\n" +
+            "\t    GROUP BY c.name,c.id,c.center_id) t2\n" +
             "            ON t1.id = t2.id AND t1.center_id = t2.center_id",
             nativeQuery = true)
     List<EventCategoryWiseIncomeStats> getCenterCampIncomesByCenter(@Param("centerCode") String centerCode,
@@ -354,16 +357,19 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "e.EVENT_DATE BETWEEN :startDate AND :endDate \n" +
             "AND e.EVENT_TYPE = 'camp' GROUP BY ec.name,ec.id,e.EVENT_DATE,e.CENTER_ID) c GROUP BY c.id,c.name,c.center_id) t1\n" +
             "LEFT JOIN (\n" +
-            "SELECT sum(pi2.PAID_AMOUNT) amount , ec.name,ec.id,e.CENTER_ID \n" +
-            "FROM PATIENT_INVOICES pi2 \n" +
-            "            JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
-            "            JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID \n" +
-            "            JOIN events e ON pi2.EVENT_ID  = e.ID \n" +
-            "            JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID  = ec.ID \n" +
-            "            JOIN HEALTH_CENTERS hc ON hc.ID = pi2.HEALTH_CENTER_ID\n" +
-            "            WHERE NVL(hc.CENTER_CODE,'0') = :centerCode\n" +
-            "            AND e.EVENT_DATE BETWEEN :startDate AND :endDate AND e.EVENT_TYPE = 'camp'\n" +
-            "            GROUP BY ec.name , ec.id,e.CENTER_ID) t2\n" +
+            "SELECT sum(c.PAID_AMOUNT) amount, c.name, c.id, c.center_id FROM (SELECT pi2.PAID_AMOUNT, ec.name,ec.id,e.CENTER_ID \n" +
+            "            FROM PATIENT_INVOICES pi2 \n" +
+            "                        JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
+            "                        JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID \n" +
+            "                        JOIN events e ON pi2.EVENT_ID  = e.ID \n" +
+            "                        JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID  = ec.ID \n" +
+            "                        JOIN HEALTH_CENTERS hc ON hc.ID = pi2.HEALTH_CENTER_ID\n" +
+            "                        WHERE NVL(hc.CENTER_CODE,'0') = :centerCode\n" +
+            "                        AND e.EVENT_DATE BETWEEN :startDate \n" +
+            "                        AND :endDate \n" +
+            " AND e.EVENT_TYPE = 'camp'\n" +
+            "                        GROUP BY pi2.PAID_AMOUNT,ec.name , ec.id,e.CENTER_ID) c\n" +
+            "                        GROUP BY c.name,c.id,c.center_id) t2\n" +
             "            ON t1.id = t2.id AND t1.center_id = t2.center_id",
             nativeQuery = true)
     List<EventCategoryWiseIncomeStats> getCenterCampIncomesByRangeByCenter(@Param("centerCode") String centerCode,

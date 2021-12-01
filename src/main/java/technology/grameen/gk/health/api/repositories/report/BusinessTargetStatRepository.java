@@ -22,7 +22,7 @@ public interface BusinessTargetStatRepository extends ReportRepository{
 
     }
     @Query(value = "SELECT \n" +
-            "hc_income_per_day hcIncomePerDay,hc_patient_per_day hcPatientPerDay,sat_income_per_day satIncomePerDay,\n" +
+            "t1.FOR_OFFICE_ID forOfficeID,hc_income_per_day hcIncomePerDay,hc_patient_per_day hcPatientPerDay,sat_income_per_day satIncomePerDay,\n" +
             "sat_patient_per_day satPatientPerDay,\n" +
             "nvl(t2.hcPatientCount,0) hcPatientCount,nvl(t2.hcAmount,0) hcAmount,t2.health_center_id hcId,\n" +
             "nvl(t3.satPatientCount,0) satPatientCount,nvl(t3.satAmount,0) satAmount,t3.health_center_id satCenterId FROM (SELECT * FROM BUSINESS_TARGETS bt \n" +

@@ -30,6 +30,7 @@ public class BusinessTargetStatServiceImpl implements BusinessTargetStatService{
             healthCenters.forEach(hc->{
                 Map<String, Object> map = new HashMap<>();
                 map.put("name",hc.getName());
+                map.put("id",hc.getId());
                 map.put("stats",
                 businessTargetStatRepository.getRegionGroupWiseStats(hc.getId(), yearMonth, fromDate)
                 );
