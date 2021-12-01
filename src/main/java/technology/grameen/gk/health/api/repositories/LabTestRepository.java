@@ -64,48 +64,105 @@ public interface LabTestRepository extends JpaRepository<LabTest,Long> {
                                       @Param("fullName") String fullName,
                                       @Param("pid") String pid, Pageable pageable);
 
-    @Query(value = "SELECT lt.id, lt.status, p.FULL_NAME AS fullName , p.PID as pid , pi2.INVOICE_NUMBER AS invoiceNumber," +
-            " lt.CREATED_AT AS createdAt FROM  LAB_TESTS lt INNER JOIN PATIENTS p ON p.id = lt.PATIENT_ID \n" +
-            "INNER JOIN PATIENT_INVOICES pi2 ON pi2.id = lt.PATIENT_INVOICE_ID " +
-
-            "WHERE upper(pi2.invoice_number) LIKE upper('%'||:invoiceNumber||'%') " +
-            " ORDER BY lt.id DESC",
-            countQuery = "SELECT count(*) from LAB_TESTS lt INNER JOIN PATIENTS p ON p.id = lt.PATIENT_ID" +
-                    " INNER JOIN PATIENT_INVOICES pi2 ON pi2.id = lt.PATIENT_INVOICE_ID" +
-                    " WHERE upper(pi2.invoice_number) LIKE upper('%'||:invoiceNumber||'%') " , nativeQuery=true)
+    @Query(value = "SELECT r.id,LISTAGG(r.name, ', ') servicename,r.status,r.fullname,r.pid, r.invoicenumber, r.createdat \n" +
+            "FROM( SELECT lt.id, lt.status,s.name, p.FULL_NAME AS fullName , p.PID as pid , pi2.INVOICE_NUMBER AS invoiceNumber,\n" +
+            "lt.CREATED_AT AS createdAt FROM  LAB_TESTS lt INNER JOIN PATIENTS p ON p.id = lt.PATIENT_ID \n" +
+            "INNER JOIN PATIENT_INVOICES pi2 ON pi2.id = lt.PATIENT_INVOICE_ID \n" +
+            "INNER JOIN LAB_TESTS_SERVICES lts ON lts.lab_test_id = lt.id\n" +
+            "INNER JOIN SERVICE s ON s.service_id = lts.services_service_id\n" +
+            "WHERE upper(pi2.invoice_number) LIKE upper('%' || :invoiceNumber || '%') \n" +
+            "GROUP BY lt.id,lt.STATUS,s.name, p.FULL_NAME , p.pid, pi2.INVOICE_NUMBER, lt.CREATED_AT\n" +
+            "ORDER BY lt.id DESC) r\n" +
+            "GROUP BY r.id,r.status,r.fullname,r.pid,r.invoicenumber,r.createdat",
+            countQuery = "select count(c.id) FROM (SELECT r.id,LISTAGG(r.name, ', ') servicename,r.status,r.fullname,r.pid, r.invoicenumber, r.createdat \n" +
+                    "FROM( SELECT lt.id, lt.status,s.name, p.FULL_NAME AS fullName , p.PID as pid , pi2.INVOICE_NUMBER AS invoiceNumber,\n" +
+                    "lt.CREATED_AT AS createdAt FROM  LAB_TESTS lt INNER JOIN PATIENTS p ON p.id = lt.PATIENT_ID \n" +
+                    "INNER JOIN PATIENT_INVOICES pi2 ON pi2.id = lt.PATIENT_INVOICE_ID \n" +
+                    "INNER JOIN LAB_TESTS_SERVICES lts ON lts.lab_test_id = lt.id\n" +
+                    "INNER JOIN SERVICE s ON s.service_id = lts.services_service_id\n" +
+                    "WHERE upper(pi2.invoice_number) LIKE upper('%' || invoiceNumber || '%') \n" +
+                    "GROUP BY lt.id,lt.STATUS,s.name, p.FULL_NAME , p.pid, pi2.INVOICE_NUMBER, lt.CREATED_AT\n" +
+                    "ORDER BY lt.id DESC) r\n" +
+                    "GROUP BY r.id,r.status,r.fullname,r.pid,r.invoicenumber,r.createdat) c" , nativeQuery=true)
     Page<LabTestListItem> getLabTestsByInvoiceNumber(@Param("invoiceNumber") String invoiceId,
                                        Pageable pageable);
 
-    @Query(value = "SELECT lt.id, lt.status, p.FULL_NAME AS fullName , p.PID as pid , pi2.INVOICE_NUMBER AS invoiceNumber," +
-            " lt.CREATED_AT AS createdAt FROM  LAB_TESTS lt INNER JOIN PATIENTS p ON p.id = lt.PATIENT_ID \n" +
-            "INNER JOIN PATIENT_INVOICES pi2 ON pi2.id = lt.PATIENT_INVOICE_ID " +
-            "WHERE upper(p.full_name) LIKE upper('%'||:fullName||'%')" +
-            " ORDER BY lt.id DESC",
-            countQuery = "SELECT count(*) from LAB_TESTS lt INNER JOIN PATIENTS p ON p.id = lt.PATIENT_ID" +
-                    " INNER JOIN PATIENT_INVOICES pi2 ON pi2.id = lt.PATIENT_INVOICE_ID" +
-
-                    " WHERE upper(p.full_name) LIKE upper('%'||:fullName||'%')", nativeQuery=true)
+    @Query(value = "SELECT r.id,LISTAGG(r.name, ', ') servicename,r.status,r.fullname,r.pid, r.invoicenumber, r.createdat \n" +
+            "FROM( SELECT lt.id, lt.status, s.name, p.FULL_NAME AS fullName , p.PID as pid , \n" +
+            "pi2.INVOICE_NUMBER AS invoiceNumber,\n" +
+            "lt.CREATED_AT AS createdAt FROM  LAB_TESTS lt \n" +
+            "INNER JOIN PATIENTS p ON p.id = lt.PATIENT_ID \n" +
+            "INNER JOIN LAB_TESTS_SERVICES lts ON lts.lab_test_id = lt.id\n" +
+            "INNER JOIN SERVICE s ON s.service_id = lts.services_service_id\n" +
+            "INNER JOIN PATIENT_INVOICES pi2 ON pi2.id = lt.PATIENT_INVOICE_ID \n" +
+            "WHERE upper(p.full_name) LIKE upper('%'|| :fullName ||'%')\n" +
+            "GROUP BY lt.id,lt.STATUS,s.name, p.FULL_NAME , p.pid, pi2.INVOICE_NUMBER, lt.CREATED_AT\n" +
+            "ORDER BY lt.id DESC ) r\n" +
+            "GROUP BY r.id,r.status,r.fullname,r.pid,r.invoicenumber,r.createdat",
+            countQuery = "SELECT COUNT(c.id) FROM (SELECT r.id,LISTAGG(r.name, ', ') servicename,r.status,r.fullname,r.pid, r.invoicenumber, r.createdat \n" +
+                    "FROM( SELECT lt.id, lt.status, s.name, p.FULL_NAME AS fullName , p.PID as pid , \n" +
+                    "pi2.INVOICE_NUMBER AS invoiceNumber,\n" +
+                    "lt.CREATED_AT AS createdAt FROM  LAB_TESTS lt \n" +
+                    "INNER JOIN PATIENTS p ON p.id = lt.PATIENT_ID \n" +
+                    "INNER JOIN LAB_TESTS_SERVICES lts ON lts.lab_test_id = lt.id\n" +
+                    "INNER JOIN SERVICE s ON s.service_id = lts.services_service_id\n" +
+                    "INNER JOIN PATIENT_INVOICES pi2 ON pi2.id = lt.PATIENT_INVOICE_ID \n" +
+                    "WHERE upper(p.full_name) LIKE upper('%'|| :fullName ||'%')\n" +
+                    "GROUP BY lt.id,lt.STATUS,s.name, p.FULL_NAME , p.pid, pi2.INVOICE_NUMBER, lt.CREATED_AT\n" +
+                    "ORDER BY lt.id DESC ) r\n" +
+                    "GROUP BY r.id,r.status,r.fullname,r.pid,r.invoicenumber,r.createdat) c", nativeQuery=true)
     Page<LabTestListItem> getLabTestByFullName(@Param("fullName") String fullName,Pageable pageable);
 
-    @Query(value = "SELECT lt.id, lt.status, p.FULL_NAME AS fullName , p.PID as pid , pi2.INVOICE_NUMBER AS invoiceNumber," +
-            " lt.CREATED_AT AS createdAt FROM  LAB_TESTS lt INNER JOIN PATIENTS p ON p.id = lt.PATIENT_ID \n" +
-            "INNER JOIN PATIENT_INVOICES pi2 ON pi2.id = lt.PATIENT_INVOICE_ID " +
-            "WHERE upper(p.pid) LIKE upper('%'||:pid||'%')"+
-            " ORDER BY lt.id DESC",
-            countQuery = "SELECT count(*) from LAB_TESTS lt INNER JOIN PATIENTS p ON p.id = lt.PATIENT_ID" +
-                    " INNER JOIN PATIENT_INVOICES pi2 ON pi2.id = lt.PATIENT_INVOICE_ID" +
-                    " WHERE upper(p.pid) LIKE upper('%'||:pid||'%')", nativeQuery=true)
+    @Query(value = "SELECT r.id,LISTAGG(r.name, ', ') servicename,r.status,r.fullname,r.pid, r.invoicenumber, r.createdat \n" +
+            "FROM(  SELECT lt.id, lt.status,s.name, p.FULL_NAME AS fullName, p.PID as pid , \n" +
+            "pi2.INVOICE_NUMBER AS invoiceNumber,\n" +
+            "lt.CREATED_AT AS createdAt FROM  LAB_TESTS lt \n" +
+            "INNER JOIN PATIENTS p ON p.id = lt.PATIENT_ID\n" +
+            "INNER JOIN LAB_TESTS_SERVICES lts ON lts.lab_test_id = lt.id\n" +
+            "INNER JOIN SERVICE s ON s.service_id = lts.services_service_id\n" +
+            "INNER JOIN PATIENT_INVOICES pi2 ON pi2.id = lt.PATIENT_INVOICE_ID\n" +
+            "WHERE upper(p.pid) LIKE upper('%' || :pid || '%')\n" +
+            "GROUP BY lt.id,lt.STATUS,s.name, p.FULL_NAME , p.pid, pi2.INVOICE_NUMBER, lt.CREATED_AT\n" +
+            "ORDER BY lt.id DESC) r\n" +
+            "GROUP BY r.id,r.status,r.fullname,r.pid,r.invoicenumber,r.createdat",
+            countQuery = "SELECT COUNT(c.id) FROM (SELECT r.id,LISTAGG(r.name, ', ') servicename,r.status,r.fullname,r.pid, r.invoicenumber, r.createdat \n" +
+                    "FROM(  SELECT lt.id, lt.status,s.name, p.FULL_NAME AS fullName, p.PID as pid , \n" +
+                    "pi2.INVOICE_NUMBER AS invoiceNumber,\n" +
+                    "lt.CREATED_AT AS createdAt FROM  LAB_TESTS lt \n" +
+                    "INNER JOIN PATIENTS p ON p.id = lt.PATIENT_ID\n" +
+                    "INNER JOIN LAB_TESTS_SERVICES lts ON lts.lab_test_id = lt.id\n" +
+                    "INNER JOIN SERVICE s ON s.service_id = lts.services_service_id\n" +
+                    "INNER JOIN PATIENT_INVOICES pi2 ON pi2.id = lt.PATIENT_INVOICE_ID\n" +
+                    "WHERE upper(p.pid) LIKE upper('%' || :pid || '%')\n" +
+                    "GROUP BY lt.id,lt.STATUS,s.name, p.FULL_NAME , p.pid, pi2.INVOICE_NUMBER, lt.CREATED_AT\n" +
+                    "ORDER BY lt.id DESC) r\n" +
+                    "GROUP BY r.id,r.status,r.fullname,r.pid,r.invoicenumber,r.createdat) c", nativeQuery=true)
     Page<LabTestListItem> getLabTestsByPid(@Param("pid") String pid, Pageable pageable);
 
-    @Query(value = "SELECT lt.id, lt.status, p.FULL_NAME AS fullName , p.PID as pid , pi2.INVOICE_NUMBER AS invoiceNumber," +
-            " lt.CREATED_AT AS createdAt FROM  LAB_TESTS lt INNER JOIN PATIENTS p ON p.id = lt.PATIENT_ID \n" +
-            "INNER JOIN PATIENT_INVOICES pi2 ON pi2.id = lt.PATIENT_INVOICE_ID " +
-            "WHERE status=:status"+
-            " ORDER BY lt.id DESC",
-            countQuery = "SELECT count(*) from LAB_TESTS lt INNER JOIN PATIENTS p ON p.id = lt.PATIENT_ID" +
-                    " INNER JOIN PATIENT_INVOICES pi2 ON pi2.id = lt.PATIENT_INVOICE_ID" +
-
-                    " WHERE status=:status", nativeQuery=true)
+    @Query(value = "SELECT r.id,LISTAGG(r.name, ', ') servicename,r.status,r.fullname,r.pid, r.invoicenumber, r.createdat \n" +
+            "FROM( SELECT lt.id, lt.status,s.name, p.FULL_NAME AS fullName , p.PID as pid , \n" +
+            "pi2.INVOICE_NUMBER AS invoiceNumber,\n" +
+            "lt.CREATED_AT AS createdAt FROM  LAB_TESTS lt \n" +
+            "INNER JOIN PATIENTS p ON p.id = lt.PATIENT_ID\n" +
+            "INNER JOIN LAB_TESTS_SERVICES lts ON lts.lab_test_id = lt.id\n" +
+            "INNER JOIN SERVICE s ON s.service_id = lts.services_service_id\n" +
+            "INNER JOIN PATIENT_INVOICES pi2 ON pi2.id = lt.PATIENT_INVOICE_ID\n" +
+            "WHERE status=:status\n" +
+            "GROUP BY lt.id,lt.STATUS,s.name, p.FULL_NAME , p.pid, pi2.INVOICE_NUMBER, lt.CREATED_AT\n" +
+            "ORDER BY lt.id DESC) r\n" +
+            "GROUP BY r.id,r.status,r.fullname,r.pid,r.invoicenumber,r.createdat",
+            countQuery = "SELECT COUNT(c.id) FROM (SELECT r.id,LISTAGG(r.name, ', ') servicename,r.status,r.fullname,r.pid, r.invoicenumber, r.createdat \n" +
+                    "FROM( SELECT lt.id, lt.status,s.name, p.FULL_NAME AS fullName , p.PID as pid , \n" +
+                    "pi2.INVOICE_NUMBER AS invoiceNumber,\n" +
+                    "lt.CREATED_AT AS createdAt FROM  LAB_TESTS lt \n" +
+                    "INNER JOIN PATIENTS p ON p.id = lt.PATIENT_ID\n" +
+                    "INNER JOIN LAB_TESTS_SERVICES lts ON lts.lab_test_id = lt.id\n" +
+                    "INNER JOIN SERVICE s ON s.service_id = lts.services_service_id\n" +
+                    "INNER JOIN PATIENT_INVOICES pi2 ON pi2.id = lt.PATIENT_INVOICE_ID\n" +
+                    "WHERE status=:status\n" +
+                    "GROUP BY lt.id,lt.STATUS,s.name, p.FULL_NAME , p.pid, pi2.INVOICE_NUMBER, lt.CREATED_AT\n" +
+                    "ORDER BY lt.id DESC) r\n" +
+                    "GROUP BY r.id,r.status,r.fullname,r.pid,r.invoicenumber,r.createdat) c", nativeQuery=true)
     Page<LabTestListItem> findAllByStatus(@Param("status") String status, Pageable pageable);
 
     @Query("Select l from LabTest l where l.id = :id")
