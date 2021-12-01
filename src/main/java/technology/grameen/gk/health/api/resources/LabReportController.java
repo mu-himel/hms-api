@@ -49,6 +49,8 @@ public class LabReportController {
                                                        @RequestParam Optional<String> fullName,
                                                        @RequestParam Optional<String> pid,
                                                        @RequestParam Optional<String> status,
+                                                       @RequestParam Optional<Long> officeId,
+                                                       @RequestParam Optional<Short> typeId,
                                                        @RequestParam Optional<Integer> page,
                                                        @RequestParam Optional<Integer> size,
                                                        @RequestParam Optional<String> sortBy,
@@ -69,7 +71,9 @@ public class LabReportController {
                 labTestService.getLabTestReports(invoiceNumber.orElse(""),
                         fullName.orElse(""),
                         pid.orElse("") ,
-                        status.orElse(""),pageable)),HttpStatus.OK);
+                        status.orElse(""),
+                        officeId.orElse(null),
+                        typeId.orElse(null),pageable)),HttpStatus.OK);
 
     }
 

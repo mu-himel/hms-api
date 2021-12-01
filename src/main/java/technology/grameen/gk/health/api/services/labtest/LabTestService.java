@@ -19,6 +19,8 @@ public interface LabTestService {
                                             String fullName,
                                             String pid,
                                             String status,
+                                            Long officeId,
+                                            Short typeId,
                                             Pageable pageable);
 
     Optional<LabTestDetailItem> getLabTestReportById(Long id);
