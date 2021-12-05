@@ -61,7 +61,7 @@ public interface ServiceSaleReportRepository extends ReportRepository{
             "JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID \n" +
             "JOIN SERVICE_CATEGORIES sc ON s.SERVICE_CATEGORY_ID  = sc.id\n" +
             "JOIN HEALTH_CENTERS hc  ON pi2.HEALTH_CENTER_ID = hc.id\n" +
-            "WHERE s.IS_LAB_TEST = 0 AND\n" +
+            "WHERE s.IS_LAB_TEST = 0 \n" +
             "AND (lower(s.code) LIKE 'card%' ) \n" +
             "AND TO_CHAR(pi2.created_at,'YYYY-MM') = :yearMonth\n" +
             "ORDER BY patient_id ASC) p",nativeQuery = true)
