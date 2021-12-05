@@ -175,16 +175,19 @@ public class DashboardStatisticServiceImpl implements DashboardStatisticService{
         if(type.equalsIgnoreCase("daily")){
             fromDate = fromDate.substring(0,10);
             if(centers.size()==0){
+
                 fromDate = fromDate.substring(0,10);
                 map.put("prescription",ssReportRepository.getPrescriptionStats(fromDate));
                 map.put("labtest",ssReportRepository.getLabTestStats(fromDate));
                 map.put("ultrasono",ssReportRepository.getUltraSonoStats(fromDate));
+                map.put("card",ssReportRepository.getCardRegStats(fromDate));
 
             }else{
 
                 map.put("prescription",ssReportRepository.getPrescriptionStats(centers,  fromDate));
                 map.put("labtest",ssReportRepository.getLabTestStats(centers,  fromDate));
                 map.put("ultrasono",ssReportRepository.getUltraSonoStats(centers, fromDate));
+                map.put("card",ssReportRepository.getCardRegStats(centers, fromDate));
 
             }
 
@@ -193,11 +196,13 @@ public class DashboardStatisticServiceImpl implements DashboardStatisticService{
                 map.put("prescription", ssReportRepository.getPrescriptionMonthlyStats(fromDate));
                 map.put("labtest", ssReportRepository.getLabTestMonthlyStats(fromDate));
                 map.put("ultrasono", ssReportRepository.getUltraSonoMonthlyStats(fromDate));
+                map.put("card", ssReportRepository.getCardRegMonthlyStats(fromDate));
 
             }else{
                 map.put("prescription", ssReportRepository.getPrescriptionMonthlyStats(centers, fromDate));
                 map.put("labtest", ssReportRepository.getLabTestMonthlyStats(centers,fromDate));
                 map.put("ultrasono", ssReportRepository.getUltraSonoMonthlyStats(centers, fromDate));
+                map.put("card", ssReportRepository.getCardRegMonthlyStats(centers, fromDate));
 
             }
         }else if(type.equalsIgnoreCase("range")){
@@ -207,11 +212,13 @@ public class DashboardStatisticServiceImpl implements DashboardStatisticService{
                 map.put("prescription", ssReportRepository.getPrescriptionStats(fromDateLDT, toDateLDT));
                 map.put("labtest", ssReportRepository.getLabTestStats(fromDateLDT, toDateLDT));
                 map.put("ultrasono", ssReportRepository.getUltraSonoStats(fromDateLDT, toDateLDT));
+                map.put("card", ssReportRepository.getCardRegStats(fromDateLDT, toDateLDT));
 
             }else {
                 map.put("prescription", ssReportRepository.getPrescriptionStats(centers, fromDateLDT, toDateLDT));
                 map.put("labtest", ssReportRepository.getLabTestStats(centers, fromDateLDT, toDateLDT));
                 map.put("ultrasono", ssReportRepository.getUltraSonoStats(centers,fromDateLDT, toDateLDT));
+                map.put("card", ssReportRepository.getCardRegStats(centers,fromDateLDT, toDateLDT));
 
             }
         }

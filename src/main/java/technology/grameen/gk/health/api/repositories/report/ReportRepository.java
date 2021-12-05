@@ -308,7 +308,7 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "    JOIN HEALTH_CENTERS hc ON hc.ID = e.CENTER_ID \n" +
             "    WHERE \n" +
             "    NVL(hc.THIRD_LEVEL,'0') = :regionCode AND\n" +
-            "    e.EVENT_DATE BETWEEN BETWEEN :startDate AND :endDate\n" +
+            "    e.EVENT_DATE BETWEEN :startDate AND :endDate\n" +
             "    AND e.EVENT_TYPE = 'camp' GROUP BY ec.name,ec.id,e.EVENT_DATE,e.CENTER_ID) c GROUP BY c.id,c.name,c.center_id) t1\n" +
             "            LEFT JOIN (\n" +
             "SELECT sum(c.PAID_AMOUNT) amount, c.name, c.EVENT_ID, c.id id,c.event_date, c.center_id FROM (\n" +

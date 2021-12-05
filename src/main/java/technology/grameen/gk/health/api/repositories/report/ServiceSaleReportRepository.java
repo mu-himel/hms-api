@@ -11,6 +11,61 @@ import java.util.Optional;
 public interface ServiceSaleReportRepository extends ReportRepository{
 
 
+    @Query(value = "SELECT count(total) total, nvl(sum(amount),0) amount FROM (\n" +
+            "SELECT psd.id total,\n" +
+            "psd.PAYABLE_AMOUNT amount, s.name,patient_id,sc.alias scname\n" +
+            "FROM patient_invoices pi2 \n" +
+            "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
+            "JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID \n" +
+            "JOIN SERVICE_CATEGORIES sc ON s.SERVICE_CATEGORY_ID  = sc.id \n" +
+            "WHERE s.IS_LAB_TEST = 0 AND pi2.HEALTH_CENTER_ID IN :centers\n" +
+            "AND (lower(s.code) LIKE 'card%' ) \n" +
+            "AND TO_CHAR(pi2.created_at,'YYYY-MM-DD') = :fromDate\n" +
+            "ORDER BY patient_id ASC) p",nativeQuery = true)
+    Optional<ServiceSaleStates> getCardRegStats(@Param("centers") List<Long> centers, String fromDate);
+
+    @Query(value = "SELECT count(total) total, nvl(sum(amount),0) amount FROM (\n" +
+            "SELECT psd.id total,\n" +
+            "psd.PAYABLE_AMOUNT amount, s.name,patient_id,sc.alias scname\n" +
+            "FROM patient_invoices pi2 \n" +
+            "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
+            "JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID \n" +
+            "JOIN SERVICE_CATEGORIES sc ON s.SERVICE_CATEGORY_ID  = sc.id \n" +
+            "WHERE s.IS_LAB_TEST = 0 \n" +
+            "AND (lower(s.code) LIKE 'card%' ) \n" +
+            "AND TO_CHAR(pi2.created_at,'YYYY-MM-DD') = :fromDate\n" +
+            "ORDER BY patient_id ASC) p",nativeQuery = true)
+    Optional<ServiceSaleStates> getCardRegStats(String fromDate);
+
+    @Query(value = "SELECT count(total) total, nvl(sum(amount),0) amount FROM (\n" +
+            "SELECT psd.id total,\n" +
+            "psd.PAYABLE_AMOUNT amount, s.name,patient_id,sc.alias scname\n" +
+            "FROM patient_invoices pi2 \n" +
+            "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
+            "JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID \n" +
+            "JOIN SERVICE_CATEGORIES sc ON s.SERVICE_CATEGORY_ID  = sc.id\n" +
+            "JOIN HEALTH_CENTERS hc  ON pi2.HEALTH_CENTER_ID = hc.id\n" +
+            "WHERE s.IS_LAB_TEST = 0 AND\n" +
+            "pi2.HEALTH_CENTER_ID IN :centers \n" +
+            "AND (lower(s.code) LIKE 'card%' ) \n" +
+            "AND TO_CHAR(pi2.created_at,'YYYY-MM') = :yearMonth\n" +
+            "ORDER BY patient_id ASC) p",nativeQuery = true)
+    Optional<ServiceSaleStates> getCardRegMonthlyStats(@Param("centers") List<Long> centers,
+                                                       @Param("yearMonth") String fromDate);
+
+    @Query(value = "SELECT count(total) total, nvl(sum(amount),0) amount FROM (\n" +
+            "SELECT psd.id total,\n" +
+            "psd.PAYABLE_AMOUNT amount, s.name,patient_id,sc.alias scname\n" +
+            "FROM patient_invoices pi2 \n" +
+            "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
+            "JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID \n" +
+            "JOIN SERVICE_CATEGORIES sc ON s.SERVICE_CATEGORY_ID  = sc.id\n" +
+            "JOIN HEALTH_CENTERS hc  ON pi2.HEALTH_CENTER_ID = hc.id\n" +
+            "WHERE s.IS_LAB_TEST = 0 AND\n" +
+            "AND (lower(s.code) LIKE 'card%' ) \n" +
+            "AND TO_CHAR(pi2.created_at,'YYYY-MM') = :yearMonth\n" +
+            "ORDER BY patient_id ASC) p",nativeQuery = true)
+    Optional<ServiceSaleStates> getCardRegMonthlyStats(@Param("yearMonth") String fromDate);
 
     interface ServiceSaleStates{
         Integer getTotal();
@@ -213,6 +268,22 @@ public interface ServiceSaleReportRepository extends ReportRepository{
     Optional<ServiceSaleStates> getUltraSonoStats(@Param("fromDate") LocalDateTime fromDateLDT,
                                               @Param("toDate") LocalDateTime toDateLDT);
 
+    @Query(value = "SELECT count(total) total, nvl(sum(amount),0) amount FROM (\n" +
+            "SELECT psd.id total,\n" +
+            "psd.PAYABLE_AMOUNT amount, s.name,patient_id,sc.alias scname\n" +
+            "FROM patient_invoices pi2 \n" +
+            "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
+            "JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID \n" +
+            "JOIN SERVICE_CATEGORIES sc ON s.SERVICE_CATEGORY_ID  = sc.id\n" +
+            "JOIN HEALTH_CENTERS hc  ON pi2.HEALTH_CENTER_ID = hc.id\n" +
+            "WHERE s.IS_LAB_TEST = 0 AND\n" +
+            "pi2.HEALTH_CENTER_ID IN (364)\n" +
+            "AND (lower(s.code) LIKE 'card%' ) \n" +
+            "AND psd.CREATED_AT BETWEEN :fromDate AND :toDate\n" +
+            "ORDER BY patient_id ASC) p",nativeQuery = true)
+    Optional<ServiceSaleStates> getCardRegStats(@Param("fromDate") LocalDateTime fromDateLDT,
+                                                @Param("toDate") LocalDateTime toDateLDT);
+
     @Query(value = "SELECT count(total) total, nvl(sum(amount),0) amount FROM (SELECT psd.id total,\n" +
             "NVL(psd.PAYABLE_AMOUNT,0) amount\n" +
             "            FROM PATIENT_SERVICE_DETAILS psd\n" +
@@ -226,4 +297,21 @@ public interface ServiceSaleReportRepository extends ReportRepository{
     Optional<ServiceSaleStates> getUltraSonoStats(@Param("centers") List<Long> centers,
                                               @Param("fromDate") LocalDateTime fromDateLDT,
                                               @Param("toDate") LocalDateTime toDateLDT);
+
+    @Query(value = "SELECT count(total) total, nvl(sum(amount),0) amount FROM (\n" +
+            "SELECT psd.id total,\n" +
+            "psd.PAYABLE_AMOUNT amount, s.name,patient_id,sc.alias scname\n" +
+            "FROM patient_invoices pi2 \n" +
+            "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
+            "JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID \n" +
+            "JOIN SERVICE_CATEGORIES sc ON s.SERVICE_CATEGORY_ID  = sc.id\n" +
+            "JOIN HEALTH_CENTERS hc  ON pi2.HEALTH_CENTER_ID = hc.id\n" +
+            "WHERE s.IS_LAB_TEST = 0 AND\n" +
+            "pi2.HEALTH_CENTER_ID IN :centers\n" +
+            "AND (lower(s.code) LIKE 'card%' ) \n" +
+            "AND psd.CREATED_AT BETWEEN :fromDate AND :toDate\n" +
+            "ORDER BY patient_id ASC) p",nativeQuery = true)
+    Optional<ServiceSaleStates> getCardRegStats(@Param("centers") List<Long> centers,
+                                                  @Param("fromDate") LocalDateTime fromDateLDT,
+                                                  @Param("toDate") LocalDateTime toDateLDT);
 }
