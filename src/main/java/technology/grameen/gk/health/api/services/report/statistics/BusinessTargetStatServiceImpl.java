@@ -29,7 +29,7 @@ public class BusinessTargetStatServiceImpl implements BusinessTargetStatService{
                 Map<String, Object> map = new HashMap<>();
                 map.put("name",hc.getName());
                 map.put("id",hc.getId());
-                map.put("centerCount",centerCount);
+                map.put("regionCenterCount",centerCount);
                 map.put("stats",
                 businessTargetStatRepository.getRegionGroupWiseStats(hc.getId(), yearMonth, fromDate)
                 );
