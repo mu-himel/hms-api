@@ -22,6 +22,7 @@ public class ServiceCategoryServiceImpl implements ServiceCategoryService {
     @Override
     @Transactional
     public ServiceCategory addCategory(ServiceCategory category) {
+        category.setAlias(category.getName().toLowerCase());
         serviceCategoryRepository.save(category);
         return category;
     }
