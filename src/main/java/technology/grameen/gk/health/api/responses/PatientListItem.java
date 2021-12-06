@@ -1,5 +1,7 @@
 package technology.grameen.gk.health.api.responses;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDateTime;
 
 public class PatientListItem {
@@ -14,12 +16,18 @@ public class PatientListItem {
     private String center;
     private String guardianName;
     private String mobileNumber;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime createdAt;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime lastUpdatedAt;
+
+    private String cardNumber;
 
     public PatientListItem(Long id, String pid, String fullName, String gender, String maritalStatus,
                            String age, Boolean gb, String center, String guardianName, String mobileNumber,
-                           LocalDateTime createdAt, LocalDateTime lastUpdatedAt) {
+                           String cn, LocalDateTime createdAt, LocalDateTime lastUpdatedAt) {
         this.id = id;
         this.pid = pid;
         this.fullName = fullName;
@@ -30,6 +38,7 @@ public class PatientListItem {
         this.center = center;
         this.guardianName = guardianName;
         this.mobileNumber = mobileNumber;
+        this.cardNumber = cn;
         this.createdAt = createdAt;
         this.lastUpdatedAt = lastUpdatedAt;
     }
@@ -120,6 +129,14 @@ public class PatientListItem {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
     }
 
     public LocalDateTime getLastUpdatedAt() {

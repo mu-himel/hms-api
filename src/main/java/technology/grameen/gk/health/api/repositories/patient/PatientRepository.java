@@ -22,25 +22,29 @@ public interface PatientRepository extends JpaRepository<Patient,Long> {
 
     @Query(value = "SELECT new technology.grameen.gk.health.api.responses.PatientListItem (p.id, p.pid, p.fullName, " +
             "p.gender, p.maritalStatus," +
-            "p.age,p.isGB, c.name,p.guardianName,p.mobileNumber," +
-            "p.createdAt, p.lastUpdatedAt) FROM Patient p LEFT JOIN p.center c",
-            countQuery = "SELECT count(p) FROM Patient p LEFT JOIN p.center c")
+            "p.age,p.isGB, c.name,p.guardianName,p.mobileNumber,r.cardNumber," +
+            "p.createdAt, p.lastUpdatedAt) FROM Patient p LEFT JOIN p.center c" +
+            " LEFT JOIN p.registration r",
+            countQuery = "SELECT count(p) FROM Patient p LEFT JOIN p.center c LEFT JOIN p.registration r")
     Page<PatientListItem> findAllPatients(Pageable pageable);
 
     @Query(value = "SELECT new technology.grameen.gk.health.api.responses.PatientListItem (p.id, p.pid, p.fullName, " +
             "p.gender, p.maritalStatus," +
-            "p.age,p.isGB, c.name,p.guardianName,p.mobileNumber," +
+            "p.age,p.isGB, c.name,p.guardianName,p.mobileNumber,r.cardNumber," +
             "p.createdAt, p.lastUpdatedAt) FROM Patient p LEFT JOIN p.center c" +
+            " LEFT JOIN p.registration r " +
             " WHERE c.id=:centerId ORDER BY p.pid DESC",
-            countQuery = "SELECT count(p) FROM Patient p LEFT JOIN p.center c WHERE c.id=:centerId")
+            countQuery = "SELECT count(p) FROM Patient p LEFT JOIN p.center c LEFT JOIN p.registration r WHERE c.id=:centerId")
     Page<PatientListItem> findByCenter(@Param("centerId") Long centerId, Pageable pageable);
 
     @Query(value = "SELECT new technology.grameen.gk.health.api.responses.PatientListItem (p.id, p.pid, p.fullName, " +
             "p.gender, p.maritalStatus," +
-            "p.age, p.isGB,c.name,p.guardianName,p.mobileNumber," +
+            "p.age, p.isGB,c.name,p.guardianName,p.mobileNumber,r.cardNumber," +
             "p.createdAt, p.lastUpdatedAt) FROM Patient p LEFT JOIN p.center c" +
+            " LEFT JOIN p.registration r " +
             " WHERE c.id=:centerId AND upper(p.fullName) LIKE upper(concat('%',:fullName,'%'))",
-            countQuery = "SELECT count(p) FROM Patient p LEFT JOIN p.center c WHERE c.id=:centerId AND" +
+            countQuery = "SELECT count(p) FROM Patient p LEFT JOIN p.center c " +
+                    "LEFT JOIN p.registration r WHERE c.id=:centerId AND" +
                     " upper(p.fullName) LIKE upper(concat('%',:fullName,'%'))")
     Page<PatientListItem> findByCenterAndFullName(@Param("centerId") Long centerId,
                                                @Param("fullName") String fullName,
@@ -48,10 +52,12 @@ public interface PatientRepository extends JpaRepository<Patient,Long> {
 
     @Query(value = "SELECT new technology.grameen.gk.health.api.responses.PatientListItem (p.id, p.pid, p.fullName, " +
             "p.gender, p.maritalStatus," +
-            "p.age,p.isGB, c.name,p.guardianName,p.mobileNumber," +
+            "p.age,p.isGB, c.name,p.guardianName,p.mobileNumber,r.cardNumber," +
             "p.createdAt, p.lastUpdatedAt) FROM Patient p LEFT JOIN p.center c" +
+            " LEFT JOIN p.registration r " +
             " WHERE c.id=:centerId AND p.mobileNumber LIKE %:mobileNumber%",
-            countQuery = "SELECT count(p) FROM Patient p LEFT JOIN p.center c WHERE c.id=:centerId " +
+            countQuery = "SELECT count(p) FROM Patient p LEFT JOIN p.center c " +
+                    "LEFT JOIN p.registration r WHERE c.id=:centerId " +
                     "AND p.mobileNumber LIKE %:mobileNumber%")
     Page<PatientListItem> findByCenterAndMobileNo(@Param("centerId") Long centerId,
                                              @Param("mobileNumber") String mobileNumber,
@@ -59,10 +65,12 @@ public interface PatientRepository extends JpaRepository<Patient,Long> {
 
     @Query(value = "SELECT new technology.grameen.gk.health.api.responses.PatientListItem (p.id, p.pid, p.fullName, " +
             "p.gender, p.maritalStatus," +
-            "p.age,p.isGB, c.name,p.guardianName,p.mobileNumber," +
+            "p.age,p.isGB, c.name,p.guardianName,p.mobileNumber,r.cardNumber," +
             "p.createdAt, p.lastUpdatedAt) FROM Patient p LEFT JOIN p.center c" +
+            " LEFT JOIN p.registration r " +
             " WHERE c.id=:centerId AND p.pid LIKE %:pid%",
-            countQuery = "SELECT count(p) FROM Patient p LEFT JOIN p.center c WHERE c.id=:centerId " +
+            countQuery = "SELECT count(p) FROM Patient p LEFT JOIN p.center c LEFT JOIN p.registration r" +
+                    " WHERE c.id=:centerId " +
                     "AND p.pid LIKE %:pid%")
     Page<PatientListItem> findByCenterAndPid(@Param("centerId") Long centerId,
                                           @Param("pid") String pid,
@@ -70,10 +78,12 @@ public interface PatientRepository extends JpaRepository<Patient,Long> {
 
     @Query(value = "SELECT new technology.grameen.gk.health.api.responses.PatientListItem (p.id, p.pid, p.fullName, " +
             "p.gender, p.maritalStatus," +
-            "p.age,p.isGB, c.name,p.guardianName,p.mobileNumber," +
+            "p.age,p.isGB, c.name,p.guardianName,p.mobileNumber,r.cardNumber," +
             "p.createdAt, p.lastUpdatedAt) FROM Patient p LEFT JOIN p.center c" +
+            " LEFT JOIN p.registration r " +
             " WHERE c.id=:centerId AND upper(p.guardianName) LIKE upper(concat('%',:name,'%'))",
-            countQuery = "SELECT count(p) FROM Patient p LEFT JOIN p.center c WHERE c.id=:centerId AND" +
+            countQuery = "SELECT count(p) FROM Patient p LEFT JOIN p.center c " +
+                    " LEFT JOIN p.registration r WHERE c.id=:centerId AND" +
                     " upper(p.guardianName) LIKE upper(concat('%',:name,'%'))")
     Page<PatientListItem> findByCenterAndGuardianName(@Param("centerId") Long centerId,
                                                   @Param("name") String fullName,
@@ -81,38 +91,46 @@ public interface PatientRepository extends JpaRepository<Patient,Long> {
 
     @Query(value = "SELECT new technology.grameen.gk.health.api.responses.PatientListItem (p.id, p.pid, p.fullName, " +
             "p.gender, p.maritalStatus," +
-            "p.age,p.isGB, c.name,p.guardianName,p.mobileNumber," +
-            "p.createdAt, p.lastUpdatedAt) FROM Patient p LEFT JOIN p.center c" +
+            "p.age,p.isGB, c.name,p.guardianName,p.mobileNumber,r.cardNumber," +
+            "p.createdAt, p.lastUpdatedAt) FROM Patient p LEFT JOIN p.center c " +
+            " LEFT JOIN p.registration r " +
             " WHERE upper(p.fullName) LIKE upper(concat('%',:fullName,'%'))",
-            countQuery = "SELECT count(p) FROM Patient p LEFT JOIN p.center c WHERE " +
+            countQuery = "SELECT count(p) FROM Patient p LEFT JOIN p.center c " +
+                    " LEFT JOIN p.registration r WHERE " +
                     " upper(p.fullName) LIKE upper(concat('%',:fullName,'%'))")
     Page<PatientListItem> findByFullName(@Param("fullName") String fullName, Pageable pageable);
 
 
     @Query(value = "SELECT new technology.grameen.gk.health.api.responses.PatientListItem (p.id, p.pid, p.fullName, " +
             "p.gender, p.maritalStatus," +
-            "p.age,p.isGB, c.name,p.guardianName,p.mobileNumber," +
+            "p.age,p.isGB, c.name,p.guardianName,p.mobileNumber,r.cardNumber," +
             "p.createdAt, p.lastUpdatedAt) FROM Patient p LEFT JOIN p.center c" +
+            " LEFT JOIN p.registration r " +
             " WHERE p.mobileNumber LIKE %:mobileNumber%",
-            countQuery = "SELECT count(p) FROM Patient p LEFT JOIN p.center c WHERE " +
+            countQuery = "SELECT count(p) FROM Patient p LEFT JOIN p.center c " +
+                    " LEFT JOIN p.registration r WHERE " +
                     " p.mobileNumber LIKE %:mobileNumber%")
     Page<PatientListItem> findByMobileNumber(@Param("mobileNumber") String mobileNumber, Pageable pageable);
 
     @Query(value = "SELECT new technology.grameen.gk.health.api.responses.PatientListItem (p.id, p.pid, p.fullName, " +
             "p.gender, p.maritalStatus," +
-            "p.age,p.isGB, c.name,p.guardianName,p.mobileNumber," +
-            "p.createdAt, p.lastUpdatedAt) FROM Patient p LEFT JOIN p.center c" +
+            "p.age,p.isGB, c.name,p.guardianName,p.mobileNumber,r.cardNumber," +
+            "p.createdAt, p.lastUpdatedAt) FROM Patient p LEFT JOIN p.center c " +
+            " LEFT JOIN p.registration r " +
             " WHERE p.pid LIKE %:pid%",
-            countQuery = "SELECT count(p) FROM Patient p LEFT JOIN p.center c WHERE p.pid LIKE %:pid%")
+            countQuery = "SELECT count(p) FROM Patient p LEFT JOIN p.center c " +
+                    " LEFT JOIN p.registration r WHERE p.pid LIKE %:pid%")
     Page<PatientListItem> findByPid(@Param("pid") String pid,
                                              Pageable pageable);
 
     @Query(value = "SELECT new technology.grameen.gk.health.api.responses.PatientListItem (p.id, p.pid, p.fullName, " +
             "p.gender, p.maritalStatus," +
-            "p.age,p.isGB, c.name,p.guardianName,p.mobileNumber," +
+            "p.age,p.isGB, c.name,p.guardianName,p.mobileNumber,r.cardNumber," +
             "p.createdAt, p.lastUpdatedAt) FROM Patient p LEFT JOIN p.center c" +
+            " LEFT JOIN p.registration r " +
             " WHERE upper(p.guardianName) LIKE upper(concat('%',:name,'%'))",
-            countQuery = "SELECT count(p) FROM Patient p LEFT JOIN p.center c WHERE " +
+            countQuery = "SELECT count(p) FROM Patient p LEFT JOIN p.center c " +
+                    " LEFT JOIN p.registration r WHERE " +
                     " upper(p.guardianName) LIKE upper(concat('%',:name,'%'))")
     Page<PatientListItem> findByGuardianName(@Param("name") String fullName, Pageable pageable);
 
