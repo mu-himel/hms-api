@@ -21,6 +21,7 @@ public interface ServiceSaleReportRepository extends ReportRepository{
             "WHERE s.IS_LAB_TEST = 0 AND pi2.HEALTH_CENTER_ID IN :centers\n" +
             "AND (lower(s.code) LIKE 'card%' ) \n" +
             "AND TO_CHAR(pi2.created_at,'YYYY-MM-DD') = :fromDate\n" +
+            "AND TO_CHAR(psd.created_at,'YYYY-MM-DD') = :fromDate\n" +
             "ORDER BY patient_id ASC) p",nativeQuery = true)
     Optional<ServiceSaleStates> getCardRegStats(@Param("centers") List<Long> centers, String fromDate);
 

@@ -86,7 +86,7 @@ public interface LabTestRepository extends JpaRepository<LabTest,Long> {
             "    JOIN LAB_TESTS_SERVICES lts ON lts.lab_test_id = lt.id\n" +
             "    WHERE lt.center_id = :centerId " +
             "    GROUP BY lt.id,lt.STATUS,s.name, p.FULL_NAME , p.pid, pi2.INVOICE_NUMBER, lt.CREATED_AT\n" +
-            "    ORDER BY lt.id DESC) r\n" +
+            "    ) r\n " +
             "    GROUP BY r.id,r.status,r.fullname,r.pid,r.invoicenumber,r.createdat",
             countQuery = "select count(*) from(SELECT r.id,LISTAGG(r.name, ', ') servicename,r.status,r.fullname,r.pid, r.invoicenumber, r.createdat \n" +
                     "FROM(SELECT lt.id,s.NAME,lt.status, p.FULL_NAME AS fullName , p.PID as pid ,\n" +
@@ -99,7 +99,7 @@ public interface LabTestRepository extends JpaRepository<LabTest,Long> {
                     "    JOIN LAB_TESTS_SERVICES lts ON lts.lab_test_id = lt.id\n" +
                     "    WHERE lt.center_id = :centerId " +
                     "    GROUP BY lt.id,lt.STATUS,s.name, p.FULL_NAME , p.pid, pi2.INVOICE_NUMBER, lt.CREATED_AT\n" +
-                    "    ORDER BY lt.id DESC) r\n" +
+                    "    ) r\n" +
                     "    GROUP BY r.id,r.status,r.fullname,r.pid,r.invoicenumber,r.createdat) c", nativeQuery=true)
     Page<LabTestListItem> getLabTests(@Param("centerId") Long centerId, Pageable pageable);
 
