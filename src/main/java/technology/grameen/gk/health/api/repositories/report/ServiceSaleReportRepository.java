@@ -150,7 +150,7 @@ public interface ServiceSaleReportRepository extends ReportRepository{
             "            JOIN SERVICE s ON s.SERVICE_ID = psd.SERVICE_ID \n" +
             "            JOIN SERVICE_CATEGORIES sc ON s.SERVICE_CATEGORY_ID  = sc.id \n" +
             "            WHERE s.IS_LAB_TEST =1 \n" +
-            "            AND (sc.ALIAS NOT LIKE '%ultra%' OR sc.ALIAS IS NULL) AND lower(s.name) NOT LIKE '%prescription%'\n" +
+            "            AND (sc.ALIAS NOT LIKE '%ultra%' OR sc.ALIAS IS NULL) AND lower(s.code) NOT LIKE '%prescription%'\n" +
             "             AND TO_CHAR(psd.CREATED_AT ,'YYYY-MM-DD') = :fromDate\n" +
             "             GROUP BY psd.id,psd.PAYABLE_AMOUNT) p", nativeQuery = true)
     Optional<ServiceSaleStates> getLabTestStats(@Param("fromDate") String fromDate);
@@ -162,7 +162,7 @@ public interface ServiceSaleReportRepository extends ReportRepository{
             "            JOIN SERVICE s ON s.SERVICE_ID = psd.SERVICE_ID \n" +
             "            JOIN SERVICE_CATEGORIES sc ON s.SERVICE_CATEGORY_ID  = sc.id \n" +
             "            WHERE pi2.HEALTH_CENTER_ID IN :centers AND s.IS_LAB_TEST =1 \n" +
-            "            AND (sc.ALIAS NOT LIKE '%ultra%' OR sc.ALIAS IS NULL) AND lower(s.name) NOT LIKE '%prescription%'\n" +
+            "            AND (sc.ALIAS NOT LIKE '%ultra%' OR sc.ALIAS IS NULL) AND lower(s.code) NOT LIKE '%prescription%'\n" +
             "             AND TO_CHAR(psd.CREATED_AT ,'YYYY-MM-DD') = :fromDate\n" +
             "             GROUP BY psd.id,psd.PAYABLE_AMOUNT) p", nativeQuery = true)
     Optional<ServiceSaleStates> getLabTestStats(@Param("centers") List<Long> centers,@Param("fromDate") String fromDate);
@@ -174,7 +174,7 @@ public interface ServiceSaleReportRepository extends ReportRepository{
             "            JOIN SERVICE s ON s.SERVICE_ID = psd.SERVICE_ID \n" +
             "            JOIN SERVICE_CATEGORIES sc ON s.SERVICE_CATEGORY_ID  = sc.id \n" +
             "            WHERE s.IS_LAB_TEST =1 \n" +
-            "            AND (sc.ALIAS NOT LIKE '%ultra%' OR sc.ALIAS IS NULL) AND lower(s.name) NOT LIKE '%prescription%'\n" +
+            "            AND (sc.ALIAS NOT LIKE '%ultra%' OR sc.ALIAS IS NULL) AND lower(s.code) NOT LIKE '%prescription%'\n" +
             "             AND TO_CHAR(psd.CREATED_AT ,'YYYY-MM') = :yearMonth\n" +
             "             GROUP BY psd.id,psd.PAYABLE_AMOUNT) p", nativeQuery = true)
     Optional<ServiceSaleStates> getLabTestMonthlyStats(@Param("yearMonth") String yearMonth);
@@ -186,7 +186,7 @@ public interface ServiceSaleReportRepository extends ReportRepository{
             "            JOIN SERVICE s ON s.SERVICE_ID = psd.SERVICE_ID \n" +
             "            JOIN SERVICE_CATEGORIES sc ON s.SERVICE_CATEGORY_ID  = sc.id \n" +
             "            WHERE pi2.HEALTH_CENTER_ID IN :centers AND s.IS_LAB_TEST =1 \n" +
-            "            AND (sc.ALIAS NOT LIKE '%ultra%' OR sc.ALIAS IS NULL) AND lower(s.name) NOT LIKE '%prescription%'\n" +
+            "            AND (sc.ALIAS NOT LIKE '%ultra%' OR sc.ALIAS IS NULL) AND lower(s.code) NOT LIKE '%prescription%'\n" +
             "             AND TO_CHAR(psd.CREATED_AT ,'YYYY-MM') = :yearMonth\n" +
             "             GROUP BY psd.id,psd.PAYABLE_AMOUNT) p", nativeQuery = true)
     Optional<ServiceSaleStates> getLabTestMonthlyStats(@Param("centers") List<Long> centers, @Param("yearMonth") String yearMonth);
@@ -198,7 +198,7 @@ public interface ServiceSaleReportRepository extends ReportRepository{
             "            JOIN SERVICE s ON s.SERVICE_ID = psd.SERVICE_ID \n" +
             "            JOIN SERVICE_CATEGORIES sc ON s.SERVICE_CATEGORY_ID  = sc.id \n" +
             "            WHERE s.IS_LAB_TEST =1 \n" +
-            "            AND (sc.ALIAS NOT LIKE '%ultra%' OR sc.ALIAS IS NULL) AND lower(s.name) NOT LIKE '%prescription%'\n" +
+            "            AND (sc.ALIAS NOT LIKE '%ultra%' OR sc.ALIAS IS NULL) AND lower(s.code) NOT LIKE '%prescription%'\n" +
             "             AND psd.CREATED_AT BETWEEN :fromDate AND :toDate \n" +
             "             GROUP BY psd.id,psd.PAYABLE_AMOUNT) p",nativeQuery = true)
     Optional<ServiceSaleStates> getLabTestStats(@Param("fromDate") LocalDateTime fromDate, @Param("toDate") LocalDateTime toDate);
@@ -210,7 +210,7 @@ public interface ServiceSaleReportRepository extends ReportRepository{
             "            JOIN SERVICE s ON s.SERVICE_ID = psd.SERVICE_ID \n" +
             "            JOIN SERVICE_CATEGORIES sc ON s.SERVICE_CATEGORY_ID  = sc.id \n" +
             "            WHERE pi2.HEALTH_CENTER_ID IN :centers AND s.IS_LAB_TEST =1 \n" +
-            "            AND (sc.ALIAS NOT LIKE '%ultra%' OR sc.ALIAS IS NULL) AND lower(s.name) NOT LIKE '%prescription%'\n" +
+            "            AND (sc.ALIAS NOT LIKE '%ultra%' OR sc.ALIAS IS NULL) AND lower(s.code) NOT LIKE '%prescription%'\n" +
             "             AND psd.CREATED_AT BETWEEN :fromDate AND :toDate \n" +
             "             GROUP BY psd.id,psd.PAYABLE_AMOUNT) p",nativeQuery = true)
     Optional<ServiceSaleStates> getLabTestStats(@Param("centers") List<Long> centers,
@@ -225,7 +225,7 @@ public interface ServiceSaleReportRepository extends ReportRepository{
             "            JOIN SERVICE s ON s.SERVICE_ID = psd.SERVICE_ID \n" +
             "            JOIN SERVICE_CATEGORIES sc ON s.SERVICE_CATEGORY_ID  = sc.id \n" +
             "            WHERE s.IS_LAB_TEST =1 \n" +
-            "            AND sc.ALIAS LIKE '%ultra%' AND lower(s.name) NOT LIKE '%prescription%'\n" +
+            "            AND sc.ALIAS LIKE '%ultra%' AND lower(s.code) NOT LIKE '%prescription%'\n" +
             "             AND TO_CHAR(psd.CREATED_AT ,'YYYY-MM-DD') = :fromDate\n" +
             "             GROUP BY psd.id,psd.PAYABLE_AMOUNT) p",nativeQuery = true)
     Optional<ServiceSaleStates> getUltraSonoStats(@Param("fromDate") String fromDate);
@@ -237,7 +237,7 @@ public interface ServiceSaleReportRepository extends ReportRepository{
             "            JOIN SERVICE s ON s.SERVICE_ID = psd.SERVICE_ID \n" +
             "            JOIN SERVICE_CATEGORIES sc ON s.SERVICE_CATEGORY_ID  = sc.id \n" +
             "            WHERE pi2.HEALTH_CENTER_ID IN :centers AND s.IS_LAB_TEST =1 \n" +
-            "            AND sc.ALIAS LIKE '%ultra%' AND lower(s.name) NOT LIKE '%prescription%'\n" +
+            "            AND sc.ALIAS LIKE '%ultra%' AND lower(s.code) NOT LIKE '%prescription%'\n" +
             "             AND TO_CHAR(psd.CREATED_AT ,'YYYY-MM-DD') = :fromDate\n" +
             "             GROUP BY psd.id,psd.PAYABLE_AMOUNT) p",nativeQuery = true)
     Optional<ServiceSaleStates> getUltraSonoStats(@Param("centers") List<Long> centers, @Param("fromDate") String fromDate);
@@ -249,7 +249,7 @@ public interface ServiceSaleReportRepository extends ReportRepository{
             "            JOIN SERVICE s ON s.SERVICE_ID = psd.SERVICE_ID \n" +
             "            JOIN SERVICE_CATEGORIES sc ON s.SERVICE_CATEGORY_ID  = sc.id \n" +
             "            WHERE s.IS_LAB_TEST =1 \n" +
-            "            AND sc.ALIAS LIKE '%ultra%' AND lower(s.name) NOT LIKE '%prescription%'\n" +
+            "            AND sc.ALIAS LIKE '%ultra%' AND lower(s.code) NOT LIKE '%prescription%'\n" +
             "             AND TO_CHAR(psd.CREATED_AT ,'YYYY-MM') = :yearMonth\n" +
             "             GROUP BY psd.id,psd.PAYABLE_AMOUNT) p",nativeQuery = true)
     Optional<ServiceSaleStates> getUltraSonoMonthlyStats(@Param("yearMonth") String yearMonth);
@@ -262,7 +262,7 @@ public interface ServiceSaleReportRepository extends ReportRepository{
             "            JOIN SERVICE s ON s.SERVICE_ID = psd.SERVICE_ID \n" +
             "            JOIN SERVICE_CATEGORIES sc ON s.SERVICE_CATEGORY_ID  = sc.id \n" +
             "            WHERE pi2.HEALTH_CENTER_ID IN :centers AND s.IS_LAB_TEST =1 \n" +
-            "            AND sc.ALIAS LIKE '%ultra%' AND lower(s.name) NOT LIKE '%prescription%'\n" +
+            "            AND sc.ALIAS LIKE '%ultra%' AND lower(s.code) NOT LIKE '%prescription%'\n" +
             "             AND TO_CHAR(psd.CREATED_AT ,'YYYY-MM') = :yearMonth \n" +
             "             GROUP BY psd.id,psd.PAYABLE_AMOUNT) p",nativeQuery = true)
     Optional<ServiceSaleStates> getUltraSonoMonthlyStats(@Param("centers") List<Long> centers, @Param("yearMonth") String yearMonth);
@@ -274,7 +274,7 @@ public interface ServiceSaleReportRepository extends ReportRepository{
             "            JOIN SERVICE s ON s.SERVICE_ID = psd.SERVICE_ID \n" +
             "            JOIN SERVICE_CATEGORIES sc ON s.SERVICE_CATEGORY_ID  = sc.id \n" +
             "            WHERE s.IS_LAB_TEST =1 \n" +
-            "            AND sc.ALIAS LIKE '%ultra%' AND lower(s.name) NOT LIKE '%prescription%'\n" +
+            "            AND sc.ALIAS LIKE '%ultra%' AND lower(s.code) NOT LIKE '%prescription%'\n" +
             "             AND psd.CREATED_AT BETWEEN :fromDate AND :toDate \n" +
             "             GROUP BY psd.id,psd.PAYABLE_AMOUNT) p",nativeQuery = true)
     Optional<ServiceSaleStates> getUltraSonoStats(@Param("fromDate") LocalDateTime fromDateLDT,
@@ -302,7 +302,7 @@ public interface ServiceSaleReportRepository extends ReportRepository{
             "            JOIN SERVICE s ON s.SERVICE_ID = psd.SERVICE_ID \n" +
             "            JOIN SERVICE_CATEGORIES sc ON s.SERVICE_CATEGORY_ID  = sc.id \n" +
             "            WHERE pi2.HEALTH_CENTER_ID IN :centers AND s.IS_LAB_TEST =1 \n" +
-            "            AND sc.ALIAS LIKE '%ultra%' AND lower(s.name) NOT LIKE '%prescription%'\n" +
+            "            AND sc.ALIAS LIKE '%ultra%' AND lower(s.code) NOT LIKE '%prescription%'\n" +
             "             AND psd.CREATED_AT BETWEEN :fromDate AND :toDate \n" +
             "             GROUP BY psd.id,psd.PAYABLE_AMOUNT) p",nativeQuery = true)
     Optional<ServiceSaleStates> getUltraSonoStats(@Param("centers") List<Long> centers,
