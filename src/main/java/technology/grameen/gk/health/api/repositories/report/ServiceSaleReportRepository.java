@@ -35,6 +35,7 @@ public interface ServiceSaleReportRepository extends ReportRepository{
             "WHERE s.IS_LAB_TEST = 0 \n" +
             "AND (lower(s.code) LIKE 'card%' ) \n" +
             "AND TO_CHAR(pi2.created_at,'YYYY-MM-DD') = :fromDate\n" +
+            "AND TO_CHAR(psd.created_at,'YYYY-MM-DD') = :fromDate\n" +
             "ORDER BY patient_id ASC) p",nativeQuery = true)
     Optional<ServiceSaleStates> getCardRegStats(String fromDate);
 
@@ -50,6 +51,7 @@ public interface ServiceSaleReportRepository extends ReportRepository{
             "pi2.HEALTH_CENTER_ID IN :centers \n" +
             "AND (lower(s.code) LIKE 'card%' ) \n" +
             "AND TO_CHAR(pi2.created_at,'YYYY-MM') = :yearMonth\n" +
+            "AND TO_CHAR(psd.created_at,'YYYY-MM') = :yearMonth\n" +
             "ORDER BY patient_id ASC) p",nativeQuery = true)
     Optional<ServiceSaleStates> getCardRegMonthlyStats(@Param("centers") List<Long> centers,
                                                        @Param("yearMonth") String fromDate);
@@ -65,6 +67,7 @@ public interface ServiceSaleReportRepository extends ReportRepository{
             "WHERE s.IS_LAB_TEST = 0 \n" +
             "AND (lower(s.code) LIKE 'card%' ) \n" +
             "AND TO_CHAR(pi2.created_at,'YYYY-MM') = :yearMonth\n" +
+            "AND TO_CHAR(psd.created_at,'YYYY-MM') = :yearMonth\n" +
             "ORDER BY patient_id ASC) p",nativeQuery = true)
     Optional<ServiceSaleStates> getCardRegMonthlyStats(@Param("yearMonth") String fromDate);
 
@@ -79,7 +82,9 @@ public interface ServiceSaleReportRepository extends ReportRepository{
             "            ON psd.PATIENT_INVOICE_ID  = pi2.ID\n" +
             "            JOIN SERVICE s ON s.SERVICE_ID = psd.SERVICE_ID \n" +
             "            WHERE lower(s.name) LIKE '%prescription%'\n" +
-            "             AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM-DD') = :fromDate) p",nativeQuery = true)
+            "             AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM-DD') = :fromDate\n" +
+            "   AND TO_CHAR(psd.CREATED_AT,'YYYY-MM-DD') = :fromDate \n" +
+            ") p",nativeQuery = true)
     Optional<ServiceSaleStates> getPrescriptionStats(@Param("fromDate") String fromDateLDT);
 
     @Query(value = "SELECT count(total) total, nvl(sum(amount),0) amount From (SELECT psd.id total, s.name,\n" +
@@ -88,7 +93,9 @@ public interface ServiceSaleReportRepository extends ReportRepository{
             "            ON psd.PATIENT_INVOICE_ID  = pi2.ID\n" +
             "            JOIN SERVICE s ON s.SERVICE_ID = psd.SERVICE_ID \n" +
             "            WHERE pi2.HEALTH_CENTER_ID IN :centers AND lower(s.name) LIKE '%prescription%'\n" +
-            "             AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM-DD') = :fromDate) p",nativeQuery = true)
+            "             AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM-DD') = :fromDate\n" +
+            " AND TO_CHAR(psd.CREATED_AT,'YYYY-MM-DD') = :fromDate \n" +
+            ") p",nativeQuery = true)
     Optional<ServiceSaleStates> getPrescriptionStats(@Param("centers") List<Long> centers,
                                                  @Param("fromDate") String fromDateLDT);
 
@@ -98,7 +105,9 @@ public interface ServiceSaleReportRepository extends ReportRepository{
             "            ON psd.PATIENT_INVOICE_ID  = pi2.ID\n" +
             "            JOIN SERVICE s ON s.SERVICE_ID = psd.SERVICE_ID \n" +
             "            WHERE lower(s.name) LIKE '%prescription%'\n" +
-            "             AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM') = :yearMonth) p",nativeQuery = true)
+            "             AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM') = :yearMonth\n" +
+            "  AND TO_CHAR(psd.CREATED_AT,'YYYY-MM') = :yearMonth \n " +
+            ") p",nativeQuery = true)
     Optional<ServiceSaleStates> getPrescriptionMonthlyStats(@Param("yearMonth") String yearMonth);
 
     @Query(value = "SELECT count(total) total, nvl(sum(amount),0) amount From (SELECT psd.id total, s.name,\n" +
@@ -107,7 +116,9 @@ public interface ServiceSaleReportRepository extends ReportRepository{
             "            ON psd.PATIENT_INVOICE_ID  = pi2.ID\n" +
             "            JOIN SERVICE s ON s.SERVICE_ID = psd.SERVICE_ID \n" +
             "            WHERE pi2.HEALTH_CENTER_ID IN :centers AND lower(s.name) LIKE '%prescription%'\n" +
-            "             AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM') = :yearMonth) p",nativeQuery = true)
+            "             AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM') = :yearMonth\n" +
+            " AND TO_CHAR(psd.CREATED_AT,'YYYY-MM') = :yearMonth\n " +
+            ") p",nativeQuery = true)
     Optional<ServiceSaleStates> getPrescriptionMonthlyStats(@Param("centers") List<Long> centers,
                                                         @Param("yearMonth") String yearMonth);
 
@@ -116,8 +127,8 @@ public interface ServiceSaleReportRepository extends ReportRepository{
             " FROM PATIENT_INVOICES pi2 JOIN PATIENT_SERVICE_DETAILS psd \n" +
             " ON psd.PATIENT_INVOICE_ID  = pi2.ID\n" +
             " JOIN SERVICE s ON s.SERVICE_ID = psd.SERVICE_ID \n" +
-            " WHERE lower(s.name) LIKE '%prescription%'\n" +
-            " AND pi2.CREATED_AT BETWEEN :fromDate AND :toDate ) p",nativeQuery = true)
+            " WHERE s.IS_LAB_TEST = 0 AND lower(s.code) LIKE '%prescription%'\n" +
+            " AND psd.CREATED_AT BETWEEN :fromDate AND :toDate ) p",nativeQuery = true)
     Optional<ServiceSaleStates> getPrescriptionStats(@Param("fromDate") LocalDateTime fromDateLDT,
                                                  @Param("toDate") LocalDateTime toDate);
 
@@ -126,8 +137,8 @@ public interface ServiceSaleReportRepository extends ReportRepository{
             " FROM PATIENT_INVOICES pi2 JOIN PATIENT_SERVICE_DETAILS psd \n" +
             " ON psd.PATIENT_INVOICE_ID  = pi2.ID\n" +
             " JOIN SERVICE s ON s.SERVICE_ID = psd.SERVICE_ID \n" +
-            " WHERE pi2.HEALTH_CENTER_ID IN :centers AND lower(s.name) LIKE '%prescription%'\n" +
-            " AND pi2.CREATED_AT BETWEEN :fromDate AND :toDate ) p",nativeQuery = true)
+            " WHERE s.IS_LAB_TEST=0 AND pi2.HEALTH_CENTER_ID IN :centers AND lower(s.code) LIKE '%prescription%'\n" +
+            " AND psd.CREATED_AT BETWEEN :fromDate AND :toDate ) p",nativeQuery = true)
     Optional<ServiceSaleStates> getPrescriptionStats(@Param("centers") List<Long> centers, @Param("fromDate")
                                                 LocalDateTime fromDateLDT,
                                                  @Param("toDate") LocalDateTime toDate);
@@ -277,8 +288,7 @@ public interface ServiceSaleReportRepository extends ReportRepository{
             "JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID \n" +
             "JOIN SERVICE_CATEGORIES sc ON s.SERVICE_CATEGORY_ID  = sc.id\n" +
             "JOIN HEALTH_CENTERS hc  ON pi2.HEALTH_CENTER_ID = hc.id\n" +
-            "WHERE s.IS_LAB_TEST = 0 AND\n" +
-            "pi2.HEALTH_CENTER_ID IN (364)\n" +
+            "WHERE s.IS_LAB_TEST = 0 \n"+
             "AND (lower(s.code) LIKE 'card%' ) \n" +
             "AND psd.CREATED_AT BETWEEN :fromDate AND :toDate\n" +
             "ORDER BY patient_id ASC) p",nativeQuery = true)
