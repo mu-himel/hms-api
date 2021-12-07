@@ -71,6 +71,71 @@ public interface ServiceSaleReportRepository extends ReportRepository{
             "ORDER BY patient_id ASC) p",nativeQuery = true)
     Optional<ServiceSaleStates> getCardRegMonthlyStats(@Param("yearMonth") String fromDate);
 
+    @Query(value = "SELECT count(id) total, nvl(sum(PAYABLE_AMOUNT),0) amount FROM (" +
+            "SELECT psd.id, psd.PAYABLE_AMOUNT, pi2.INVOICE_NUMBER, psd.CREATED_AT \n" +
+            "FROM PATIENT_INVOICES pi2 \n" +
+            "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
+            "JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID\n" +
+            "JOIN SERVICE_CATEGORIES sc ON sc.ID  = s.SERVICE_CATEGORY_ID \n" +
+            "WHERE sc.alias LIKE '%accessories%' \n" +
+            "AND TO_CHAR(psd.CREATED_AT,'YYYY-MM-DD') = :fromDate) p ", nativeQuery = true)
+    Optional<ServiceSaleStates> getOtherIncomeStats(@Param("fromDate") String fromDate);
+
+    @Query(value = "SELECT count(id) total, nvl(sum(PAYABLE_AMOUNT),0) amount FROM (" +
+            "SELECT psd.id, psd.PAYABLE_AMOUNT, pi2.INVOICE_NUMBER, psd.CREATED_AT \n" +
+            "FROM PATIENT_INVOICES pi2 \n" +
+            "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
+            "JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID\n" +
+            "JOIN SERVICE_CATEGORIES sc ON sc.ID  = s.SERVICE_CATEGORY_ID \n" +
+            "WHERE sc.alias LIKE '%accessories%' AND pi2.HEALTH_CENTER_ID IN :centers\n" +
+            "AND TO_CHAR(psd.CREATED_AT,'YYYY-MM-DD') = :fromDate ) p ",nativeQuery = true)
+    Optional<ServiceSaleStates> getOtherIncomeStats(@Param("centers") List<Long> centers,
+                                                    @Param("fromDate") String fromDate);
+
+    @Query(value = "SELECT count(id) total, nvl(sum(PAYABLE_AMOUNT),0) amount FROM (" +
+            "SELECT psd.id, psd.PAYABLE_AMOUNT, pi2.INVOICE_NUMBER, psd.CREATED_AT \n" +
+            "FROM PATIENT_INVOICES pi2 \n" +
+            "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
+            "JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID\n" +
+            "JOIN SERVICE_CATEGORIES sc ON sc.ID  = s.SERVICE_CATEGORY_ID \n" +
+            "WHERE sc.alias LIKE '%accessories%' \n" +
+            "AND TO_CHAR(psd.CREATED_AT,'YYYY-MM') = :yearMonth ) p",nativeQuery = true)
+    Optional<ServiceSaleStates> getOtherIncomeMonthlyStats(@Param("yearMonth") String yearMonth);
+
+    @Query(value = "SELECT count(id) total, nvl(sum(PAYABLE_AMOUNT),0) amount FROM (" +
+            "SELECT psd.id, psd.PAYABLE_AMOUNT, pi2.INVOICE_NUMBER, psd.CREATED_AT \n" +
+            "FROM PATIENT_INVOICES pi2 \n" +
+            "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
+            "JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID\n" +
+            "JOIN SERVICE_CATEGORIES sc ON sc.ID  = s.SERVICE_CATEGORY_ID \n" +
+            "WHERE sc.alias LIKE '%accessories%' AND pi2.HEALTH_CENTER_ID IN :centers\n" +
+            "AND TO_CHAR(psd.CREATED_AT,'YYYY-MM') = :yearMonth ) p",nativeQuery = true)
+    Optional<ServiceSaleStates> getOtherIncomeMonthlyStats(@Param("centers") List<Long> centers,
+                                                           @Param("yearMonth") String yearMonth);
+
+    @Query(value = "SELECT count(id) total, nvl(sum(PAYABLE_AMOUNT),0) amount FROM (" +
+            "SELECT psd.id, psd.PAYABLE_AMOUNT, pi2.INVOICE_NUMBER, psd.CREATED_AT \n" +
+    "FROM PATIENT_INVOICES pi2 \n" +
+    "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
+    "JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID\n" +
+    "JOIN SERVICE_CATEGORIES sc ON sc.ID  = s.SERVICE_CATEGORY_ID \n" +
+    "WHERE sc.alias LIKE '%accessories%' \n" +
+    "AND psd.CREATED_AT BETWEEN :startDate AND :endDate) p",nativeQuery = true)
+    Optional<ServiceSaleStates> getOtherIncomeStats(@Param("startDate") LocalDateTime fromDateLDT,
+                                                    @Param("endDate") LocalDateTime toDateLDT);
+
+    @Query(value = "SELECT count(id) total, nvl(sum(PAYABLE_AMOUNT),0) amount FROM (" +
+            "SELECT psd.id, psd.PAYABLE_AMOUNT, pi2.INVOICE_NUMBER, psd.CREATED_AT \n" +
+            "FROM PATIENT_INVOICES pi2 \n" +
+            "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID  = pi2.ID \n" +
+            "JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID\n" +
+            "JOIN SERVICE_CATEGORIES sc ON sc.ID  = s.SERVICE_CATEGORY_ID \n" +
+            "WHERE sc.alias LIKE '%accessories%' AND pi2.HEALTH_CENTER_ID IN :centers \n" +
+            "AND psd.CREATED_AT BETWEEN :startDate AND :endDate) p",nativeQuery = true)
+    Optional<ServiceSaleStates> getOtherIncomeStats(@Param("centers") List<Long> centers,
+                                                    @Param("startDate") LocalDateTime fromDateLDT,
+                                                    @Param("endDate") LocalDateTime toDateLDT);
+
     interface ServiceSaleStates{
         Integer getTotal();
         BigDecimal getAmount();
