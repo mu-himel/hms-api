@@ -10,8 +10,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "patient_invoices")
@@ -33,7 +32,7 @@ public class PatientInvoice {
     private HealthCenter center;
 
     @OneToMany(mappedBy = "patientInvoice")
-    private Set<PatientServiceDetail> patientServiceDetails;
+    private List<PatientServiceDetail> patientServiceDetails;
 
     @OneToMany(mappedBy = "patientInvoice")
     private Set<LabTest> labTests;
@@ -99,7 +98,7 @@ public class PatientInvoice {
         this.center = center;
     }
 
-    public Set<PatientServiceDetail> getPatientServiceDetails() {
+    public List<PatientServiceDetail> getPatientServiceDetails() {
         return patientServiceDetails;
     }
 
@@ -107,7 +106,7 @@ public class PatientInvoice {
 
         if(patientServiceDetail != null){
             if(this.patientServiceDetails == null){
-                this.patientServiceDetails = new HashSet<>();
+                this.patientServiceDetails = new ArrayList<>();
             }
             patientServiceDetail.setPatientInvoice(this);
             this.patientServiceDetails.add(patientServiceDetail);

@@ -182,9 +182,12 @@ public class PatientManageServiceImpl implements PatientManageService {
         if(req.getVillage() != null && req.getVillage().getLgVillageId() != null){
             village = req.getVillage();
         }
+
         patient.setVillage(village);
         patient.setStreetAddress(req.getStreetAddress());
         patient.setDetail(req.getDetail());
+        patient.setLegacy(false);
+
         if(req.getGb()!=null) {
             patient.setGB(req.getGb());
         }else{
@@ -440,6 +443,7 @@ public class PatientManageServiceImpl implements PatientManageService {
         patient.setDob(exPatient.getDob());
         patient.setCreatedBy(exPatient.getCreatedBy());
         patient.setVillage(exPatient.getVillage());
+        patient.setLegacy(true);
         Patient p = patientRepository.save(patient);
 
         return p;

@@ -100,8 +100,8 @@ public class PatientInvoiceServiceImpl implements PatientInvoiceService {
             EventRepository.EventEventEmployeeByInvoice eventEventEmployeeByInvoice = eventService
                     .getEventByInvoiceId(patientInvoice.getId()).orElse(null);
 
-            Set<PatientServiceDetail> patientServiceDetails = patientInvoice.getPatientServiceDetails();
-            patientServiceDetails.stream().forEach(patientServiceDetail->{
+            List<PatientServiceDetail> patientServiceDetails = patientInvoice.getPatientServiceDetails();
+            patientServiceDetails.forEach(patientServiceDetail->{
 
                 patientServiceDetail.setServiceQty(1);
                 patientServiceDetail.setReportGenerated(false);

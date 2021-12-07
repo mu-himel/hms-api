@@ -40,6 +40,8 @@ public class Patient {
 
     private LocalDate dob;
 
+    private Boolean isLegacy;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private HaHome home;
 
@@ -356,4 +358,13 @@ public class Patient {
     public void setSecondaryMobileNumber(String secondaryMobileNumber) {
         this.secondaryMobileNumber = secondaryMobileNumber;
     }
+
+    public Boolean getLegacy() {
+        return isLegacy;
+    }
+
+    public void setLegacy(Boolean legacy) {
+        isLegacy = legacy;
+    }
+
 }
