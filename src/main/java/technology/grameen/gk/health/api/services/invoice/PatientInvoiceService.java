@@ -7,6 +7,7 @@ import technology.grameen.gk.health.api.entity.Service;
 import technology.grameen.gk.health.api.projection.PatientInvoiceAutoComplete;
 import technology.grameen.gk.health.api.projection.PatientInvoiceDetail;
 import technology.grameen.gk.health.api.projection.PrescriptionInvoiceAutoComplete;
+import technology.grameen.gk.health.api.requests.InvoiceCreate;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.Set;
 
 public interface PatientInvoiceService {
 
-    PatientInvoice createInvoice(Patient patient) throws Exception;
+    PatientInvoice createInvoice(InvoiceCreate patient) throws Exception;
 
     Optional<PatientInvoiceDetail> getInvoiceById(Long id);
 

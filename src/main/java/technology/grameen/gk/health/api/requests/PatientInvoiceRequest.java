@@ -1,41 +1,30 @@
-package technology.grameen.gk.health.api.entity;
+package technology.grameen.gk.health.api.requests;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.jpa.repository.EntityGraph;
+import technology.grameen.gk.health.api.entity.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.Set;
 
-@Entity
-@Table(name = "patient_invoices")
-public class PatientInvoice {
+public class PatientInvoiceRequest {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String invoiceNumber;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
-    @JoinColumn(name = "patient_id", referencedColumnName = "id")
+
     private Patient patient;
 
-    @ManyToOne
-    @JoinColumn(name = "health_center_id",referencedColumnName = "id")
+
     private HealthCenter center;
 
-    @OneToMany(mappedBy = "patientInvoice")
-    @OrderBy("id ASC")
-    private Set<PatientServiceDetail> patientServiceDetails;
+    private List<PatientServiceDetail> patientServiceDetails;
 
-    @OneToMany(mappedBy = "patientInvoice")
     private Set<LabTest> labTests;
 
     private BigDecimal serviceAmount;
@@ -52,17 +41,16 @@ public class PatientInvoice {
 
     private String invoiceType;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+
     private Event event;
 
-    @ManyToOne
-    @JoinColumn(name = "created_by",referencedColumnName = "id")
+
     private Employee createdBy;
 
-    @CreationTimestamp
+
     private LocalDateTime createdAt;
 
-    @UpdateTimestamp
+
     private LocalDateTime lastUpdatedAt;
 
     public Long getId() {
@@ -81,7 +69,6 @@ public class PatientInvoice {
         this.invoiceNumber = invoiceNumber;
     }
 
-
     public Patient getPatient() {
         return patient;
     }
@@ -89,7 +76,6 @@ public class PatientInvoice {
     public void setPatient(Patient patient) {
         this.patient = patient;
     }
-
 
     public HealthCenter getCenter() {
         return center;
@@ -99,19 +85,20 @@ public class PatientInvoice {
         this.center = center;
     }
 
-    public Set<PatientServiceDetail> getPatientServiceDetails() {
+    public List<PatientServiceDetail> getPatientServiceDetails() {
         return patientServiceDetails;
     }
 
-    public void addPatientServiceDetail(PatientServiceDetail patientServiceDetail) {
+    public void setPatientServiceDetails(List<PatientServiceDetail> patientServiceDetails) {
+        this.patientServiceDetails = patientServiceDetails;
+    }
 
-        if(patientServiceDetail != null){
-            if(this.patientServiceDetails == null){
-                this.patientServiceDetails = new LinkedHashSet<>();
-            }
-            patientServiceDetail.setPatientInvoice(this);
-            this.patientServiceDetails.add(patientServiceDetail);
-        }
+    public Set<LabTest> getLabTests() {
+        return labTests;
+    }
+
+    public void setLabTests(Set<LabTest> labTests) {
+        this.labTests = labTests;
     }
 
     public BigDecimal getServiceAmount() {
@@ -154,8 +141,30 @@ public class PatientInvoice {
         this.dueAmount = dueAmount;
     }
 
-    @JsonBackReference
-    @JsonIgnore
+    public Boolean getPosted() {
+        return isPosted;
+    }
+
+    public void setPosted(Boolean posted) {
+        isPosted = posted;
+    }
+
+    public String getInvoiceType() {
+        return invoiceType;
+    }
+
+    public void setInvoiceType(String invoiceType) {
+        this.invoiceType = invoiceType;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
     public Employee getCreatedBy() {
         return createdBy;
     }
@@ -178,29 +187,5 @@ public class PatientInvoice {
 
     public void setLastUpdatedAt(LocalDateTime lastUpdatedAt) {
         this.lastUpdatedAt = lastUpdatedAt;
-    }
-
-    public Boolean getPosted() {
-        return isPosted;
-    }
-
-    public void setPosted(Boolean posted) {
-        isPosted = posted;
-    }
-
-    public void setInvoiceType(String invoiceType) {
-        this.invoiceType = invoiceType;
-    }
-
-    public void setEvent(Event event) {
-        this.event = event;
-    }
-
-    public String getInvoiceType() {
-        return invoiceType;
-    }
-
-    public Event getEvent() {
-        return event;
     }
 }

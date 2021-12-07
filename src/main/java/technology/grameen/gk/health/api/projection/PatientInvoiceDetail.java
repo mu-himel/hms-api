@@ -7,6 +7,7 @@ import technology.grameen.gk.health.api.entity.PatientServiceDetail;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 public interface PatientInvoiceDetail {
@@ -131,7 +132,7 @@ public interface PatientInvoiceDetail {
 
     Employee getCreatedBy();
 
-    Set<PatientServiceDetail> getPatientServiceDetails();
+    List<PatientServiceDetail> getPatientServiceDetails();
 
     interface HealthCenter{
         Long getId();

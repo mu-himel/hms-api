@@ -7,7 +7,7 @@ public class HaPatientServiceSell {
 
     private HaPatientService haPatientService;
 
-    private Patient patient;
+    private InvoiceCreate patient;
 
     public HaPatientService getHaPatientService() {
         return haPatientService;
@@ -17,11 +17,11 @@ public class HaPatientServiceSell {
         this.haPatientService = haPatientService;
     }
 
-    public Patient getPatient() {
+    public InvoiceCreate getPatient() {
         return patient;
     }
 
-    public void setPatient(Patient patient) {
+    public void setPatient(InvoiceCreate patient) {
         this.patient = patient;
     }
 }

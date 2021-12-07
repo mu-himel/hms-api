@@ -8,6 +8,8 @@ import technology.grameen.gk.health.api.projection.PrescriptionInvoiceAutoComple
 import technology.grameen.gk.health.api.repositories.EventRepository;
 import technology.grameen.gk.health.api.repositories.PatientInvoiceRepository;
 import technology.grameen.gk.health.api.repositories.patient.PatientServiceRepository;
+import technology.grameen.gk.health.api.requests.InvoiceCreate;
+import technology.grameen.gk.health.api.requests.PatientInvoiceRequest;
 import technology.grameen.gk.health.api.services.card_registration.CardRegistrationService;
 import technology.grameen.gk.health.api.services.event.EventService;
 
@@ -70,28 +72,38 @@ public class PatientInvoiceServiceImpl implements PatientInvoiceService {
 
     @Override
     @Transactional
-    public PatientInvoice createInvoice(Patient patient) throws Exception {
+    public PatientInvoice createInvoice(InvoiceCreate patient) throws Exception {
         this.patientNotFound = false;
-        PatientInvoice patientInvoice = patient.getPatientInvoices()
+        PatientInvoiceRequest pi = patient.getPatientInvoices()
                     .stream().filter(invoice-> invoice.getId()==null)
                             .findFirst().orElse(null);
+
+        PatientInvoice patientInvoice = new PatientInvoice();
+        Patient pat = new Patient();
+        pat.setId(patient.getId());
+        patientInvoice.setPatient(pat);
+        patientInvoice.setInvoiceType(pi.getInvoiceType());
+
 
         int maxInvoiceId = (invoiceRepository.getMaxInvoiceId()!=null)? invoiceRepository.getMaxInvoiceId()+1 : 1;
         String invoiceId = "INV-"+patient.getPid()+"-"+((maxInvoiceId<9)? "0"+maxInvoiceId : maxInvoiceId);
         patientInvoice.setInvoiceNumber(invoiceId);
 
+        patientInvoice.setDiscountAmount(pi.getDiscountAmount());
+        patientInvoice.setDueAmount(pi.getDueAmount());
+        patientInvoice.setServiceAmount(pi.getServiceAmount());
+        patientInvoice.setPayableAmount(pi.getPayableAmount());
+        patientInvoice.setPaidAmount(pi.getPaidAmount());
+        patientInvoice.setEvent(pi.getEvent());
+
         HealthCenter center = patient.getCenter();
         Employee employee = patient.getCreatedBy();
 
+
         center.addPatientInvoices(patientInvoice);
-        patient.addPatientInvoices(patientInvoice);
+
 
         employee.addPatientInvoice(patientInvoice);
-
-
-
-
-
 
         invoiceRepository.save(patientInvoice);
 
@@ -100,7 +112,7 @@ public class PatientInvoiceServiceImpl implements PatientInvoiceService {
             EventRepository.EventEventEmployeeByInvoice eventEventEmployeeByInvoice = eventService
                     .getEventByInvoiceId(patientInvoice.getId()).orElse(null);
 
-            List<PatientServiceDetail> patientServiceDetails = patientInvoice.getPatientServiceDetails();
+            List<PatientServiceDetail> patientServiceDetails = pi.getPatientServiceDetails();
             patientServiceDetails.forEach(patientServiceDetail->{
 
                 patientServiceDetail.setServiceQty(1);
@@ -118,7 +130,7 @@ public class PatientInvoiceServiceImpl implements PatientInvoiceService {
                         patientServiceDetail.getService().getCode().contains("card registration") ){
 
                     try {
-                        cardRegistrationService.register(patient);
+                        cardRegistrationService.register(patientInvoice.getPatient());
                     } catch (Exception e) {
                         this.patientNotFound = true;
                         this.patientNotFoundMessage = e.getMessage();

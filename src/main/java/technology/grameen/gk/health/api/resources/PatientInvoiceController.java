@@ -11,6 +11,7 @@ import technology.grameen.gk.health.api.projection.PatientInvoiceDetail;
 import technology.grameen.gk.health.api.entity.Patient;
 import technology.grameen.gk.health.api.projection.PatientInvoiceAutoComplete;
 import technology.grameen.gk.health.api.projection.PatientSearchResult;
+import technology.grameen.gk.health.api.requests.InvoiceCreate;
 import technology.grameen.gk.health.api.responses.EntityCollectionResponse;
 import technology.grameen.gk.health.api.responses.EntityResponse;
 import technology.grameen.gk.health.api.responses.IResponse;
@@ -50,7 +51,7 @@ public class PatientInvoiceController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<IResponse> createInvoice(@RequestBody Patient patient){
+    public ResponseEntity<IResponse> createInvoice(@RequestBody InvoiceCreate patient){
         try {
             Optional<PatientSearchResult> patient1 = null;
             PatientInvoice created = patientInvoiceService.createInvoice(patient);
