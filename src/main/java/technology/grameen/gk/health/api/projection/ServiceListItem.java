@@ -11,6 +11,7 @@ public interface ServiceListItem {
     interface ServiceCategory{
         Long getId();
         String getName();
+        String getAlias();
     }
 
     ServiceCategory getServiceCategory();
@@ -19,6 +20,7 @@ public interface ServiceListItem {
     BigDecimal getCurrentCost();
     BigDecimal getFieldCost();
     Boolean getFieldSaleable();
+    Boolean getNeedAccessories();
     Boolean getActive();
     Boolean getLabTest();
 }

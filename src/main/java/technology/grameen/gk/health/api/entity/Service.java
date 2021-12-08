@@ -53,6 +53,7 @@ public class Service {
     private Boolean fieldSaleable;
     private Boolean isGroupable;
     private BigDecimal fieldCost;
+    private Boolean needAccessories;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -267,5 +268,13 @@ public class Service {
 
     public void setGroupable(Boolean groupable) {
         isGroupable = groupable;
+    }
+
+    public Boolean getNeedAccessories() {
+        return needAccessories;
+    }
+
+    public void setNeedAccessories(Boolean needAccessories) {
+        this.needAccessories = needAccessories;
     }
 }
