@@ -34,6 +34,11 @@ public class InvoiceCreate {
 
     private Boolean isLegacy;
 
+    private String bloodPressure;
+    private String temperature;
+    private String pulse;
+    private String weight;
+
     private HaHome home;
 
     private HealthCenter center;
@@ -298,5 +303,37 @@ public class InvoiceCreate {
 
     public void setLastUpdatedAt(LocalDateTime lastUpdatedAt) {
         this.lastUpdatedAt = lastUpdatedAt;
+    }
+
+    public String getBloodPressure() {
+        return bloodPressure;
+    }
+
+    public void setBloodPressure(String bloodPressure) {
+        this.bloodPressure = bloodPressure;
+    }
+
+    public String getTemperature() {
+        return temperature;
+    }
+
+    public void setTemperature(String temperature) {
+        this.temperature = temperature;
+    }
+
+    public String getPulse() {
+        return pulse;
+    }
+
+    public void setPulse(String pulse) {
+        this.pulse = pulse;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
     }
 }

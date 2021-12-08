@@ -12,6 +12,7 @@ import technology.grameen.gk.health.api.requests.InvoiceCreate;
 import technology.grameen.gk.health.api.requests.PatientInvoiceRequest;
 import technology.grameen.gk.health.api.services.card_registration.CardRegistrationService;
 import technology.grameen.gk.health.api.services.event.EventService;
+import technology.grameen.gk.health.api.services.patient.PatientManageService;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -25,18 +26,21 @@ public class PatientInvoiceServiceImpl implements PatientInvoiceService {
     private PatientServiceRepository patientServiceRepository;
     private CardRegistrationService cardRegistrationService;
     private EventService eventService;
+    private PatientManageService patientManageService;
     private boolean patientNotFound = false;
     private String patientNotFoundMessage = null;
 
     PatientInvoiceServiceImpl(PatientInvoiceRepository invoiceRepository,
                               PatientServiceRepository patientServiceRepository,
                               CardRegistrationService cardRegistrationService,
-                              EventService eventService){
+                              EventService eventService,
+                              PatientManageService patientManageService){
 
         this.invoiceRepository = invoiceRepository;
         this.patientServiceRepository = patientServiceRepository;
         this.cardRegistrationService = cardRegistrationService;
         this.eventService = eventService;
+        this.patientManageService = patientManageService;
     }
 
     @Override
@@ -81,6 +85,10 @@ public class PatientInvoiceServiceImpl implements PatientInvoiceService {
         PatientInvoice patientInvoice = new PatientInvoice();
         Patient pat = new Patient();
         pat.setId(patient.getId());
+        pat.setBloodPressure(patient.getBloodPressure());
+        pat.setPulse(patient.getPulse());
+        pat.setWeight(patient.getWeight());
+        pat.setTemperature(patient.getTemperature());
         patientInvoice.setPatient(pat);
         patientInvoice.setInvoiceType(pi.getInvoiceType());
 
@@ -125,6 +133,10 @@ public class PatientInvoiceServiceImpl implements PatientInvoiceService {
                 service.addPatientService(patientServiceDetail);
                 patientInvoice.addPatientServiceDetail(patientServiceDetail);
                 patientServiceRepository.save(patientServiceDetail);
+
+                if(patientServiceDetail.getService().getCode().contains("prescription")){
+                    patientManageService.updatePatient(pat);
+                }
 
                 if(patientServiceDetail.getService().getCode().contains("card") ||
                         patientServiceDetail.getService().getCode().contains("card registration") ){

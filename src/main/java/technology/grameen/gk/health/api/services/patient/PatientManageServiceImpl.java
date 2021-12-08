@@ -458,4 +458,16 @@ public class PatientManageServiceImpl implements PatientManageService {
         }
         return patientRepository.findByFullNameAndMotherNameVillage(fullName,motherName,village);
     }
+
+    @Override
+    public Boolean updatePatient(Patient patient) {
+        Integer updated = patientRepository.updatePatientGE(patient.getId(),
+                patient.getBloodPressure(),patient.getPulse(),patient.getTemperature(),patient.getWeight());
+
+        if(updated>0){
+            return true;
+        }
+
+        return false;
+    }
 }

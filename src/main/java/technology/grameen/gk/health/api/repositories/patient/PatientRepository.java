@@ -3,6 +3,7 @@ package technology.grameen.gk.health.api.repositories.patient;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -252,4 +253,15 @@ public interface PatientRepository extends JpaRepository<Patient,Long> {
     Optional<Integer> findByFullNameAndMotherNameVillage(@Param("fullName") String fullName,
                                                            @Param("mName") String mName,
                                                            @Param("village") Village village);
+
+    @Modifying
+    @Query(value = "UPDATE patients set blood_pressure = :bloodPressure " +
+            ", pulse = :pulse , temperature = :temperature , weight = :weight " +
+            "WHERE id = :id",
+    nativeQuery = true)
+    Integer updatePatientGE(@Param("id") Long id,
+                            @Param("bloodPressure") String bloodPressure,
+                            @Param("pulse") String pulse,
+                            @Param("temperature") String temperature,
+                            @Param("weight") String weight);
 }

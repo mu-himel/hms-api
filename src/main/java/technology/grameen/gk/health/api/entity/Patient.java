@@ -42,6 +42,12 @@ public class Patient {
 
     private Boolean isLegacy;
 
+    private String bloodPressure;
+    private String temperature;
+    private String pulse;
+    private String weight;
+
+
     @ManyToOne(fetch = FetchType.LAZY)
     private HaHome home;
 
@@ -367,4 +373,35 @@ public class Patient {
         isLegacy = legacy;
     }
 
+    public String getBloodPressure() {
+        return bloodPressure;
+    }
+
+    public void setBloodPressure(String bloodPressure) {
+        this.bloodPressure = bloodPressure;
+    }
+
+    public String getTemperature() {
+        return temperature;
+    }
+
+    public void setTemperature(String temperature) {
+        this.temperature = temperature;
+    }
+
+    public String getPulse() {
+        return pulse;
+    }
+
+    public void setPulse(String pulse) {
+        this.pulse = pulse;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
+    }
 }
