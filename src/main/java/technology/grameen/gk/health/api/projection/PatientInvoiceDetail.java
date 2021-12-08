@@ -71,6 +71,10 @@ public interface PatientInvoiceDetail {
         String getMobileNumber();
         String getAge();
         Boolean getGB();
+        String getBloodPressure();
+        String getPulse();
+        String getTemperature();
+        String getWeight();
         CardRegistration getRegistration();
 
     }
