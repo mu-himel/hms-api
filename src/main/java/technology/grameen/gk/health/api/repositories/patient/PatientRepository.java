@@ -152,7 +152,7 @@ public interface PatientRepository extends JpaRepository<Patient,Long> {
 
     @Query(value = "SELECT p FROM Patient p LEFT JOIN FETCH p.registration r " +
             "LEFT JOIN FETCH p.patientInvoices pi " +
-            "JOIN FETCH pi.patientServiceDetails psd " +
+            "LEFT JOIN FETCH pi.patientServiceDetails psd " +
             "LEFT JOIN FETCH p.home h " +
             "LEFT JOIN FETCH pi.center c WHERE p.id = :number ORDER BY pi.id desc, psd.id DESC")
     Optional<PatientSearchResult> findPatientById(@Param("number") Long id);
