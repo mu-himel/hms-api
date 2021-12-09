@@ -1,10 +1,13 @@
 package technology.grameen.gk.health.api.services;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import technology.grameen.gk.health.api.entity.HaVillage;
 import technology.grameen.gk.health.api.entity.HealthCenter;
 import technology.grameen.gk.health.api.entity.Village;
+import technology.grameen.gk.health.api.exceptions.CustomException;
 import technology.grameen.gk.health.api.repositories.healthassistant.HaVillageRepository;
 
 import java.util.List;
@@ -32,5 +35,13 @@ public class HaServiceImpl implements HaService{
         Village village = new Village();
         village.setLgVillageId(Long.valueOf(villageId));
         return haVillageRepository.findByCenterAndVillage(center,village);
+    }
+
+    @Override
+    public Page<?> getPatientsByHealthAssistant(Long employeeId, Pageable pageable) throws CustomException {
+        if(employeeId == null){
+            throw new CustomException("Please Specify Employee Id");
+        }
+        return haVillageRepository.findPatientsByEmployeeId(employeeId,pageable);
     }
 }
