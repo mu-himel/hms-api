@@ -33,7 +33,7 @@ public interface PatientSearchResult {
                 BigDecimal getServiceAmount();
                 BigDecimal getDiscountAmount();
                 BigDecimal getPayableAmount();
-
+                Boolean getRefunded();
                 @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
                 LocalDateTime getCreatedAt();
                 Boolean getReportGenerated();

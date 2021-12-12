@@ -1,6 +1,7 @@
 package technology.grameen.gk.health.api.services.invoice;
 
 import org.springframework.transaction.annotation.Transactional;
+import technology.grameen.gk.health.api.exceptions.CustomException;
 import technology.grameen.gk.health.api.projection.PatientInvoiceAutoComplete;
 import technology.grameen.gk.health.api.projection.PatientInvoiceDetail;
 import technology.grameen.gk.health.api.entity.*;
@@ -212,5 +213,36 @@ public class PatientInvoiceServiceImpl implements PatientInvoiceService {
     @Override
     public Integer postInvoice() {
         return invoiceRepository.postInvoice();
+    }
+
+    @Override
+    public Optional<?> refund(PatientServiceDetail detail) throws CustomException {
+
+        Long psdId = detail.getId();
+        Long invoiceId = detail.getPatientInvoice().getId();
+
+        Optional<PatientServiceDetail> serviceDetailOp = patientServiceRepository.findById(psdId);
+        Optional<PatientInvoice> invoiceOp = invoiceRepository.findById(invoiceId);
+
+        if(invoiceOp.isPresent()) {
+            PatientInvoice patientInvoice = invoiceOp.get();
+            if(patientInvoice.getPosted()){
+                throw new CustomException("Sorry! Operation Denied, Invoice Already posted");
+            }
+            if (serviceDetailOp.isPresent()) {
+
+                PatientServiceDetail psd = serviceDetailOp.get();
+                psd.setRefunded(true);
+                patientServiceRepository.save(psd);
+                patientInvoice.setPayableAmount(patientInvoice.getPayableAmount().subtract(psd.getPayableAmount()));
+                patientInvoice.setServiceAmount(patientInvoice.getServiceAmount().subtract(psd.getServiceAmount()));
+                patientInvoice.setDiscountAmount(patientInvoice.getDiscountAmount().subtract(psd.getDiscountAmount()));
+                patientInvoice.setPaidAmount(patientInvoice.getPaidAmount().subtract(psd.getPayableAmount()));
+                invoiceRepository.save(patientInvoice);
+            }
+
+        }
+
+        return invoiceRepository.findByInvoiceId(invoiceId);
     }
 }

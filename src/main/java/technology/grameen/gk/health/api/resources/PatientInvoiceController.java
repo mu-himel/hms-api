@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import technology.grameen.gk.health.api.entity.GeneralSetting;
 import technology.grameen.gk.health.api.entity.PatientInvoice;
+import technology.grameen.gk.health.api.entity.PatientServiceDetail;
+import technology.grameen.gk.health.api.exceptions.CustomException;
 import technology.grameen.gk.health.api.notification.sms.SmsService;
 import technology.grameen.gk.health.api.projection.PatientInvoiceDetail;
 import technology.grameen.gk.health.api.entity.Patient;
@@ -109,5 +111,14 @@ public class PatientInvoiceController {
                 HttpStatus.OK.value(),
                 patientInvoiceService.getTotalUnPostedAmount()
         ), HttpStatus.OK);
+    }
+
+    @PutMapping("/refund")
+    public ResponseEntity<IResponse> refund(@RequestBody PatientServiceDetail detail) throws CustomException {
+
+        return new ResponseEntity<>(new EntityResponse<>(
+                HttpStatus.OK.value(), patientInvoiceService.refund(detail)
+        ), HttpStatus.OK);
+
     }
 }
