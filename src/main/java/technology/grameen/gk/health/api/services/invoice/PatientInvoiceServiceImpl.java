@@ -224,6 +224,10 @@ public class PatientInvoiceServiceImpl implements PatientInvoiceService {
         Optional<PatientServiceDetail> serviceDetailOp = patientServiceRepository.findById(psdId);
         Optional<PatientInvoice> invoiceOp = invoiceRepository.findById(invoiceId);
 
+        if(!invoiceOp.isPresent()){
+            throw new CustomException("Sorry! Invoice not found");
+        }
+
         if(invoiceOp.isPresent()) {
             PatientInvoice patientInvoice = invoiceOp.get();
             if(patientInvoice.getPosted()){
