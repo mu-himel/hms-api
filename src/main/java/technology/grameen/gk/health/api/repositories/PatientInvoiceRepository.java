@@ -142,4 +142,19 @@ public interface PatientInvoiceRepository extends JpaRepository<PatientInvoice,L
             "GROUP BY pi2.ID,pi2.INVOICE_NUMBER,p.full_name,p.pid,pi2.INVOICE_TYPE,pi2.event_id  \n" +
             "ORDER BY pi2.id ASC", nativeQuery = true)
     List<PrescriptionInvoiceAutoComplete> getCampPrescriptionInvoiceNumbersByDoctor(Long employeeId);
+
+    @Query(value = "SELECT pi FROM PatientInvoice pi JOIN FETCH pi.patient p " +
+            " LEFT JOIN FETCH pi.patientServiceDetails psd " +
+            " LEFT JOIN FETCH psd.service s JOIN FETCH s.serviceCategory sc" +
+            " JOIN FETCH p.center pc " +
+            " LEFT JOIN FETCH p.detail d" +
+            " LEFT JOIN FETCH p.registration r " +
+            " LEFT JOIN FETCH r.members m " +
+            " LEFT JOIN FETCH p.prescriptions ps" +
+            " LEFT JOIN FETCH s.labTestAttributes lta" +
+            " LEFT JOIN FETCH s.labTestGroup ltg" +
+            " LEFT JOIN FETCH lta.labTestUnit ltu" +
+            " LEFT JOIN FETCH p.createdBy createdBy where pi.invoiceNumber = :number" +
+            " ORDER BY psd.id asc")
+    Optional<PatientInvoiceDetail> findByInvoiceNumber(String number);
 }

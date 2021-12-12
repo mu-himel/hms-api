@@ -40,6 +40,8 @@ public class PatientServiceDetail {
 
     private Boolean isReportGenerated;
 
+    private Boolean refunded;
+
     @ManyToOne
     private Employee treatmentBy;
 
@@ -167,5 +169,13 @@ public class PatientServiceDetail {
 
     public void setTreatmentBy(Employee treatmentBy) {
         this.treatmentBy = treatmentBy;
+    }
+
+    public Boolean getRefunded() {
+        return refunded;
+    }
+
+    public void setRefunded(Boolean refunded) {
+        this.refunded = refunded;
     }
 }

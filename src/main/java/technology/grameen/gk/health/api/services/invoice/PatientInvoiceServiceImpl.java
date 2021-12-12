@@ -49,7 +49,12 @@ public class PatientInvoiceServiceImpl implements PatientInvoiceService {
     }
 
     @Override
-    public List<PatientInvoiceAutoComplete> getInvoiceByNumber(String number) {
+    public Optional<PatientInvoiceDetail> getInvoiceByNumber(String number) {
+        return invoiceRepository.findByInvoiceNumber(number);
+    }
+
+    @Override
+    public List<PatientInvoiceAutoComplete> getInvoiceByNumbers(String number) {
         return invoiceRepository.findByInvoiceNumberContainingIgnoreCase(number);
     }
 

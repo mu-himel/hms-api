@@ -114,6 +114,7 @@ public interface PatientInvoiceDetail {
         BigDecimal getServiceAmount();
         BigDecimal getDiscountAmount();
         BigDecimal getPayableAmount();
+        Boolean getRefunded();
         LocalDateTime getCreatedAt();
         LocalDateTime getLastUpdatedAt();
         Boolean getReportGenerated();

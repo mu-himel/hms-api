@@ -40,7 +40,7 @@ public class PatientInvoiceController {
 
     @GetMapping("/invoice-numbers/{invoiceNumber}")
     public ResponseEntity<IResponse> getByInvoiceNumber(@PathVariable("invoiceNumber") String invoiceNumber){
-        List<PatientInvoiceAutoComplete> invoiceNumbers = patientInvoiceService.getInvoiceByNumber(invoiceNumber);
+        List<PatientInvoiceAutoComplete> invoiceNumbers = patientInvoiceService.getInvoiceByNumbers(invoiceNumber);
         return new ResponseEntity<>(new EntityCollectionResponse<>(HttpStatus.OK.value(),
                 invoiceNumbers),HttpStatus.OK);
     }
@@ -48,6 +48,12 @@ public class PatientInvoiceController {
     @GetMapping("/by-id/{id}")
     public ResponseEntity<Optional<PatientInvoiceDetail>> getByInvoiceId(@PathVariable("id") Long invoiceId){
         return new ResponseEntity<>(patientInvoiceService.getInvoiceById(invoiceId),HttpStatus.OK);
+    }
+
+    @GetMapping("/by-number/{invoice-number}")
+    public ResponseEntity<Optional<PatientInvoiceDetail>> getByInvoiceId(
+                                            @PathVariable("invoice-number") String invoiceNumber){
+        return new ResponseEntity<>(patientInvoiceService.getInvoiceByNumber(invoiceNumber),HttpStatus.OK);
     }
 
     @PostMapping("/create")

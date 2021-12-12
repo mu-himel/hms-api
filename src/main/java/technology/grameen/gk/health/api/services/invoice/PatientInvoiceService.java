@@ -19,8 +19,9 @@ public interface PatientInvoiceService {
     PatientInvoice createInvoice(InvoiceCreate patient) throws Exception;
 
     Optional<PatientInvoiceDetail> getInvoiceById(Long id);
+    Optional<PatientInvoiceDetail> getInvoiceByNumber(String number);
 
-    List<PatientInvoiceAutoComplete> getInvoiceByNumber(String number);
+    List<PatientInvoiceAutoComplete> getInvoiceByNumbers(String number);
     List<PrescriptionInvoiceAutoComplete> getPrescriptionInvoiceByNumber(Integer centerId,
                                                                          Long employeeId);
 
