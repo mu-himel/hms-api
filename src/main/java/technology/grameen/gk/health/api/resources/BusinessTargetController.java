@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import technology.grameen.gk.health.api.entity.BusinessTarget;
+import technology.grameen.gk.health.api.requests.BusinessTargetRequest;
 import technology.grameen.gk.health.api.responses.EntityResponse;
 import technology.grameen.gk.health.api.responses.IResponse;
 import technology.grameen.gk.health.api.services.business_target.BusinessTargetService;
@@ -49,10 +50,10 @@ public class BusinessTargetController {
     }
 
     @GetMapping("/add")
-    public ResponseEntity<IResponse> add(@RequestBody BusinessTarget businessTarget){
+    public ResponseEntity<IResponse> add(@RequestBody BusinessTargetRequest businessTargetRequest){
         return new ResponseEntity<>(new EntityResponse<>(
                 HttpStatus.OK.value(),
-                businessTargetService.addBusinessTarget(businessTarget)
+                businessTargetService.addBusinessTarget(businessTargetRequest)
         ),
         HttpStatus.OK);
     }
