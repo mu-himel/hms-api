@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import technology.grameen.gk.health.api.entity.BusinessTarget;
 import technology.grameen.gk.health.api.requests.BusinessTargetRequest;
+import technology.grameen.gk.health.api.responses.EntityCollectionResponse;
 import technology.grameen.gk.health.api.responses.EntityResponse;
 import technology.grameen.gk.health.api.responses.IResponse;
 import technology.grameen.gk.health.api.services.business_target.BusinessTargetService;
@@ -47,6 +48,16 @@ public class BusinessTargetController {
                 businessTargetService.getAll(pageable)
         ), HttpStatus.OK);
         
+    }
+
+    @GetMapping("/detail")
+    public ResponseEntity<IResponse> getDetail(@RequestParam String yearMonth,
+                                               @RequestParam Long createdOfficeId){
+
+        return new ResponseEntity<>(new EntityCollectionResponse<>(
+                HttpStatus.OK.value(),
+                businessTargetService.getAllByYearMonthAndCreatedOffice(yearMonth,createdOfficeId)
+        ), HttpStatus.OK);
     }
 
     @PostMapping("/add")

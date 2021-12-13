@@ -5,16 +5,25 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import technology.grameen.gk.health.api.entity.BusinessTarget;
 import technology.grameen.gk.health.api.entity.Employee;
 import technology.grameen.gk.health.api.entity.HealthCenter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 public interface BusinessTargetRepository extends JpaRepository<BusinessTarget,Long> {
 
+    @Query(value = "SELECT bt FROM BusinessTarget bt " +
+            "JOIN FETCH bt.createdOffice co " +
+            "JOIN FETCH bt.forOffice fo " +
+            "JOIN FETCH bt.createdBy cb " +
+            "WHERE bt.createdOffice.id = :officeId AND bt.yearMonth = :yearMonth ")
+    List<?> findByCreatedOfficeAndYearMonth(@Param("officeId") Long createdOffice_id,
+                                            @Param("yearMonth") String yearMonth);
 
     interface BusinessTargetRow{
 

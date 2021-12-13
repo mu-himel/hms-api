@@ -12,4 +12,6 @@ public interface BusinessTargetService {
     List<BusinessTarget> addBusinessTarget(BusinessTargetRequest businessTargetRequest);
 
     Page<?> getAll(Pageable pageable);
+
+    List<?> getAllByYearMonthAndCreatedOffice(String yearMonth, Long createdOfficeId);
 }

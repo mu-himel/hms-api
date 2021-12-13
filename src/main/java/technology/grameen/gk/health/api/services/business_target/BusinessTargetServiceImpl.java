@@ -30,4 +30,9 @@ public class BusinessTargetServiceImpl implements BusinessTargetService{
     public Page<?> getAll(Pageable pageable) {
         return businessTargetRepository.findAllBusinessTarget(pageable);
     }
+
+    @Override
+    public List<?> getAllByYearMonthAndCreatedOffice(String yearMonth, Long createdOfficeId) {
+        return businessTargetRepository.findByCreatedOfficeAndYearMonth(createdOfficeId,yearMonth);
+    }
 }
