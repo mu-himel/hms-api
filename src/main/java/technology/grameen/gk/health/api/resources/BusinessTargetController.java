@@ -49,7 +49,7 @@ public class BusinessTargetController {
         
     }
 
-    @GetMapping("/add")
+    @PostMapping("/add")
     public ResponseEntity<IResponse> add(@RequestBody BusinessTargetRequest businessTargetRequest){
         return new ResponseEntity<>(new EntityResponse<>(
                 HttpStatus.OK.value(),
