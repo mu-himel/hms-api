@@ -236,6 +236,11 @@ public class PatientInvoiceServiceImpl implements PatientInvoiceService {
             if (serviceDetailOp.isPresent()) {
 
                 PatientServiceDetail psd = serviceDetailOp.get();
+
+                if(psd.getReportGenerated()){
+                    throw new CustomException("Sorry! Service Already given. Refund not applicable for the service");
+                }
+
                 psd.setRefunded(true);
                 patientServiceRepository.save(psd);
                 patientInvoice.setPayableAmount(patientInvoice.getPayableAmount().subtract(psd.getPayableAmount()));
