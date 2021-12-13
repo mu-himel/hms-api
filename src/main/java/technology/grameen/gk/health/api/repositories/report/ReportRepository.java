@@ -238,6 +238,7 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "   JOIN EVENT_CATEGORIES ec ON ec.ID  = e.EVENT_CATEGORY_ID \n" +
             "   WHERE TO_CHAR(e.EVENT_DATE,'YYYY-MM') = :yearMonth  \n" +
             "   AND pi2.INVOICE_TYPE = 'camp' AND NVL(hc.THIRD_LEVEL,'0') = :regionCode\n" +
+            "   AND psd.refunded = 0 \n" +
             "   GROUP BY pi2.PATIENT_ID,ec.id,ec.name,pi2.EVENT_ID, e.EVENT_DATE  ,pi2.HEALTH_CENTER_ID\n" +
             "   ) c GROUP BY c.name,c.id,c.EVENT_ID,c.center_id,c.event_date) t2\n" +
             "   ON t1.id = t2.id AND t1.center_id = t2.center_id",
@@ -266,6 +267,7 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "   JOIN EVENT_CATEGORIES ec ON ec.ID  = e.EVENT_CATEGORY_ID \n" +
             "   WHERE TO_CHAR(e.EVENT_DATE,'YYYY-MM') = :yearMonth  \n" +
             "   AND pi2.INVOICE_TYPE = 'camp' AND hc.OFFICE_TYPE_ID = 6 \n" +
+            "   AND psd.refunded = 0 \n" +
             "   GROUP BY pi2.PATIENT_ID,ec.id,ec.name,pi2.EVENT_ID, e.EVENT_DATE  ,pi2.HEALTH_CENTER_ID\n" +
             "   ) c GROUP BY c.name,c.id,c.EVENT_ID,c.center_id,c.event_date) t2\n" +
             "   ON t1.id = t2.id AND t1.center_id = t2.center_id",
@@ -293,6 +295,7 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "   JOIN EVENT_CATEGORIES ec ON ec.ID  = e.EVENT_CATEGORY_ID \n" +
             "   WHERE TO_CHAR(e.EVENT_DATE,'YYYY-MM') = :yearMonth  \n" +
             "   AND pi2.INVOICE_TYPE = 'camp' AND NVL(hc.CENTER_CODE,'0') = :centerCode\n" +
+            "   AND psd.refunded = 0 \n" +
             "   GROUP BY pi2.PATIENT_ID,ec.id,ec.name,pi2.EVENT_ID, e.EVENT_DATE  ,pi2.HEALTH_CENTER_ID\n" +
             "   ) c GROUP BY c.name,c.id,c.EVENT_ID,c.center_id,c.event_date) t2\n" +
             "   ON t1.id = t2.id AND t1.center_id = t2.center_id",
@@ -321,6 +324,7 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "   JOIN EVENT_CATEGORIES ec ON ec.ID  = e.EVENT_CATEGORY_ID \n" +
             "   WHERE e.EVENT_DATE BETWEEN :startDate AND :endDate  \n" +
             "   AND pi2.INVOICE_TYPE = 'camp' AND NVL(hc.THIRD_LEVEL,'0') = :regionCode\n" +
+            "   AND psd.refunded = 0 \n" +
             "   GROUP BY pi2.PATIENT_ID,ec.id,ec.name,pi2.EVENT_ID, e.EVENT_DATE  ,pi2.HEALTH_CENTER_ID\n" +
             "   ) c GROUP BY c.name,c.id,c.EVENT_ID,c.center_id,c.event_date) t2\n" +
             "   ON t1.id = t2.id AND t1.center_id = t2.center_id",
@@ -350,6 +354,7 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "   JOIN EVENT_CATEGORIES ec ON ec.ID  = e.EVENT_CATEGORY_ID \n" +
             "   WHERE e.EVENT_DATE BETWEEN :startDate AND :endDate  \n" +
             "   AND pi2.INVOICE_TYPE = 'camp' AND hc.OFFICE_TYPE_ID=6\n" +
+            "   AND psd.refunded = 0 \n" +
             "   GROUP BY pi2.PATIENT_ID,ec.id,ec.name,pi2.EVENT_ID, e.EVENT_DATE  ,pi2.HEALTH_CENTER_ID\n" +
             "   ) c GROUP BY c.name,c.id,c.EVENT_ID,c.center_id,c.event_date) t2\n" +
             "   ON t1.id = t2.id AND t1.center_id = t2.center_id",
@@ -379,6 +384,7 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "   JOIN EVENT_CATEGORIES ec ON ec.ID  = e.EVENT_CATEGORY_ID \n" +
             "   WHERE e.EVENT_DATE BETWEEN :startDate AND :endDate  \n" +
             "   AND pi2.INVOICE_TYPE = 'camp' AND NVL(hc.CENTER_CODE,'0') = :centerCode\n" +
+            "   AND psd.refunded = 0 \n" +
             "   GROUP BY pi2.PATIENT_ID,ec.id,ec.name,pi2.EVENT_ID, e.EVENT_DATE  ,pi2.HEALTH_CENTER_ID\n" +
             "   ) c GROUP BY c.name,c.id,c.EVENT_ID,c.center_id,c.event_date) t2\n" +
             "   ON t1.id = t2.id AND t1.center_id = t2.center_id",
