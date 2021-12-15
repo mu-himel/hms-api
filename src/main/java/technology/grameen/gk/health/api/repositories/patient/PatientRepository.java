@@ -146,7 +146,7 @@ public interface PatientRepository extends JpaRepository<Patient,Long> {
     @Query(value = "SELECT p FROM Patient p LEFT JOIN FETCH p.registration r " +
             "LEFT JOIN FETCH p.home h " +
             "LEFT JOIN FETCH p.patientInvoices pi " +
-            "JOIN FETCH pi.patientServiceDetails psd " +
+            "LEFT JOIN FETCH pi.patientServiceDetails psd " +
             "WHERE p.pid = :number ORDER BY pi.id desc, psd.id ASC")
     Optional<PatientSearchResult> findByPid(@Param("number") String id);
 
