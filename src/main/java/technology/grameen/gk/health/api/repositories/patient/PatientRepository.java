@@ -244,7 +244,7 @@ public interface PatientRepository extends JpaRepository<Patient,Long> {
     List<PatientNumberAutoComplete> findByFullNameContainingIgnoreCaseAndCenter(String pid, HealthCenter center);
 
 
-    @Query(value = "SELECT p.id, mobile_number mobileNumber,(full_name || '(' || pid || ')') fullName,pr.card_number pid " +
+    @Query(value = "SELECT p.id, mobile_number mobileNumber,(full_name || '(' || pr.card_number || ')') fullName, pid " +
             " From Patients p JOIN patient_registrations pr" +
             " ON pr.patient_id = p.id WHERE p.center_id = :center and pr.id in :registration",nativeQuery = true)
     List<PatientNumberAutoComplete> findByCenterAndRegistration(@Param("center") Long centerId,
