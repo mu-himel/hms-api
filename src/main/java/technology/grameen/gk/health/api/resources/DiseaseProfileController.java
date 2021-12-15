@@ -73,4 +73,12 @@ public class DiseaseProfileController {
                 diseaseProfileService.getAll(new DiseaseType(id))
         ), HttpStatus.OK);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<IResponse> getDetail(@PathVariable("id") Long id){
+        return new ResponseEntity<>(new EntityResponse<>(
+                HttpStatus.OK.value(),
+                diseaseProfileService.getDetail(id)
+        ), HttpStatus.OK);
+    }
 }

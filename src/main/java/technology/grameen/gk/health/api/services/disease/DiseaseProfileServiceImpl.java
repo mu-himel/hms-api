@@ -40,4 +40,9 @@ public class DiseaseProfileServiceImpl implements DiseaseProfileService{
     public Page<DiseaseProfileRepository.DiseaseProfileSimple> getAll(Pageable pageable) {
         return diseaseProfileRepository.findAllProfiles(pageable);
     }
+
+    @Override
+    public Object getDetail(Long id) {
+        return diseaseProfileRepository.findById(id);
+    }
 }

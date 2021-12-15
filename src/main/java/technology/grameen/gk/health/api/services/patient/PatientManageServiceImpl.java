@@ -19,10 +19,8 @@ import technology.grameen.gk.health.api.services.HealthCenterService;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Stream;
 
 @Service
 public class PatientManageServiceImpl implements PatientManageService {
@@ -235,7 +233,7 @@ public class PatientManageServiceImpl implements PatientManageService {
     }
 
     @Override
-    public List<PatientNumberAutoComplete> getPatientIds(String type, String pid, Long centerId) {
+    public List<?> getPatientIds(String type, String pid, Long centerId) {
         HealthCenter center = new HealthCenter();
         center.setId(centerId);
         if(type.equalsIgnoreCase("pid")){
@@ -247,10 +245,14 @@ public class PatientManageServiceImpl implements PatientManageService {
         }else if(type.equalsIgnoreCase("card")){
             List<CardRegistration> cards = cardRegistrationRepository.findByCardNumberContaining(pid);
             List<Long> cardIds = new ArrayList<>();
+
             cards.forEach(c->{
                 cardIds.add(c.getId());
             });
-            return patientRepository.findByCenterAndRegistration_idIn(center,cardIds);
+
+            List<PatientNumberAutoComplete> temp = patientRepository.findByCenterAndRegistration(center.getId(),cardIds);
+
+            return temp;
         }
         return null;
     }

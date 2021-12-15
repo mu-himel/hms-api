@@ -16,4 +16,6 @@ public interface DiseaseProfileService {
 
     List<DiseaseProfileRepository.DiseaseProfileSimple> getAll();
     Page<DiseaseProfileRepository.DiseaseProfileSimple> getAll(Pageable pageable);
+
+    Object getDetail(Long id);
 }
