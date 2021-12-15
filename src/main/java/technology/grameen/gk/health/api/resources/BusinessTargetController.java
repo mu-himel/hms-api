@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import technology.grameen.gk.health.api.entity.BusinessTarget;
+import technology.grameen.gk.health.api.exceptions.CustomException;
 import technology.grameen.gk.health.api.requests.BusinessTargetRequest;
 import technology.grameen.gk.health.api.responses.EntityCollectionResponse;
 import technology.grameen.gk.health.api.responses.EntityResponse;
@@ -61,7 +62,10 @@ public class BusinessTargetController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<IResponse> add(@RequestBody BusinessTargetRequest businessTargetRequest){
+    public ResponseEntity<IResponse> add(@RequestBody BusinessTargetRequest businessTargetRequest) throws CustomException {
+
+
+
         return new ResponseEntity<>(new EntityResponse<>(
                 HttpStatus.OK.value(),
                 businessTargetService.addBusinessTarget(businessTargetRequest)

@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import technology.grameen.gk.health.api.entity.BusinessTarget;
+import technology.grameen.gk.health.api.exceptions.CustomException;
 import technology.grameen.gk.health.api.repositories.BusinessTargetRepository;
 import technology.grameen.gk.health.api.requests.BusinessTargetRequest;
 
@@ -21,9 +22,15 @@ public class BusinessTargetServiceImpl implements BusinessTargetService{
 
     @Override
     @Transactional
-    public List<BusinessTarget> addBusinessTarget(BusinessTargetRequest businessTargetRequest) {
+    public Boolean addBusinessTarget(BusinessTargetRequest businessTargetRequest) throws CustomException {
         List<BusinessTarget> businessTargetList = businessTargetRequest.getBusinessTargets();
-        return businessTargetRepository.saveAll(businessTargetList);
+        if(businessTargetList.size()==0){
+            throw new CustomException("Sorry! cannot save blank data");
+        }
+        businessTargetRepository.saveAll(businessTargetList);
+        BusinessTarget businessTarget = businessTargetList.get(0);
+
+        return true;
     }
 
     @Override
