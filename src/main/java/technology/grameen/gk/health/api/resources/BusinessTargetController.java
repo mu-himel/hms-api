@@ -64,8 +64,6 @@ public class BusinessTargetController {
     @PostMapping("/add")
     public ResponseEntity<IResponse> add(@RequestBody BusinessTargetRequest businessTargetRequest) throws CustomException {
 
-
-
         return new ResponseEntity<>(new EntityResponse<>(
                 HttpStatus.OK.value(),
                 businessTargetService.addBusinessTarget(businessTargetRequest)
