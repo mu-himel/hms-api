@@ -1,11 +1,13 @@
 package technology.grameen.gk.health.api.services.report.statistics;
 
 import org.springframework.stereotype.Service;
+import technology.grameen.gk.health.api.repositories.report.BoardMemberReportRepository;
 import technology.grameen.gk.health.api.repositories.report.ReportRepository;
 import technology.grameen.gk.health.api.repositories.report.SummaryReportRepository;
 import technology.grameen.gk.health.api.services.report.ReportService;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -15,10 +17,13 @@ public class SummaryReportServiceImpl implements SummaryReportService{
 
     private SummaryReportRepository summaryReportRepository;
     private ReportRepository reportRepository;
+    private  BoardMemberReportRepository boardMemberReportRepository;
 
     public SummaryReportServiceImpl(SummaryReportRepository summaryReportRepository,
+                                    BoardMemberReportRepository boardMemberReportRepository,
                                     ReportRepository reportRepository) {
         this.summaryReportRepository = summaryReportRepository;
+        this.boardMemberReportRepository = boardMemberReportRepository;
         this.reportRepository = reportRepository;
     }
 
@@ -147,5 +152,12 @@ public class SummaryReportServiceImpl implements SummaryReportService{
             }
         }
         return Optional.empty();
+    }
+
+    @Override
+    public Optional<?> getBoardMemberReport(String fromMonth, String toMonth) {
+        Map<String,Object> map = new HashMap<>();
+        //map.put("region",boardMemberReportRepository.totalRegion());
+        return Optional.of(map);
     }
 }

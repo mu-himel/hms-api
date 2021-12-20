@@ -147,4 +147,14 @@ public class ReportController {
         ), HttpStatus.OK);
 
     }
+
+    @GetMapping(value = "/board-member-report")
+    public ResponseEntity<IResponse> getBoardReport(@RequestParam String fromMonth,
+                                                    @RequestParam String toMonth){
+
+        return new ResponseEntity<>(new EntityResponse<>(
+                HttpStatus.OK.value(),
+                summaryReportService.getBoardMemberReport(fromMonth,toMonth)
+        ), HttpStatus.OK);
+    }
 }
