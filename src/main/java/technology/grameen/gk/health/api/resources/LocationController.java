@@ -110,6 +110,11 @@ public class LocationController {
         ),HttpStatus.OK);
     }
 
+    /**
+     * Village and Center Mapping
+     * @param req
+     * @return
+     */
     @PostMapping(value = "/mapping")
     public ResponseEntity<IResponse> mapping(@RequestBody LocationMappingRequest req){
 

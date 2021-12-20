@@ -94,4 +94,7 @@ public interface SummaryReportRepository extends ReportRepository{
                                                 @Param("endDate") String endDate,
                                                 @Param("serviceCategory") String serviceCategory);
 
+
+
+
 }

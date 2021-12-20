@@ -157,7 +157,20 @@ public class SummaryReportServiceImpl implements SummaryReportService{
     @Override
     public Optional<?> getBoardMemberReport(String fromMonth, String toMonth) {
         Map<String,Object> map = new HashMap<>();
-        //map.put("region",boardMemberReportRepository.totalRegion());
+        map.put("region",boardMemberReportRepository.totalRegion());
+        map.put("center",boardMemberReportRepository.totalCenter());
+        map.put("patientTreatedAtHc",boardMemberReportRepository.getPatientTreadByHc(fromMonth,toMonth));
+        map.put("patientTreatedAtSat",boardMemberReportRepository.getPatientTreadBySat(fromMonth,toMonth));
+        map.put("satCampNo",boardMemberReportRepository.getSatCampNo(fromMonth,toMonth));
+        map.put("noOfVariousCamp",boardMemberReportRepository.getNoOfVariousCamp(fromMonth,toMonth));
+        map.put("patientTreatedAtVariousCamp",boardMemberReportRepository.getPatientTreatedAtVariousCamp(fromMonth,toMonth));
+        map.put("vaccineCount",boardMemberReportRepository.getServiceCount("vaccine",fromMonth,toMonth));
+        map.put("houseVisited",boardMemberReportRepository.getHouseVisit(fromMonth,toMonth));
+        map.put("patientCheckup",boardMemberReportRepository.getPatientCheckup(fromMonth,toMonth));
+        map.put("pregnantRegistered",boardMemberReportRepository.getPregnantRegistered(fromMonth,toMonth));
+        map.put("deliveryPerformed",boardMemberReportRepository.getDeliveryPerformed(fromMonth,toMonth));
+        map.put("diabeticCheckup",boardMemberReportRepository.getDiabeticCheckup(fromMonth,toMonth));
+
         return Optional.of(map);
     }
 }
