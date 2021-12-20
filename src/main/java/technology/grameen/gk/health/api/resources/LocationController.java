@@ -132,6 +132,14 @@ public class LocationController {
         return new ResponseEntity<>(new EntityResponse<>(HttpStatus.OK.value(), village), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/village/{id}")
+    public ResponseEntity<IResponse> getDetail(@PathVariable("id") Long villageId){
+        return new ResponseEntity<>(new EntityResponse<>(
+                HttpStatus.OK.value(),
+                locationService.findById(villageId)
+        ), HttpStatus.OK);
+    }
+
 
 
 

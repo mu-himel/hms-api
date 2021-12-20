@@ -11,11 +11,15 @@ import technology.grameen.gk.health.api.entity.Village;
 import technology.grameen.gk.health.api.projection.VillageListItem;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface VillageRepository extends JpaRepository<Village, Long> {
 
-    @Query(value = "select v from Village v join fetch v.center c where v.unionId=:unionId")
+    @Query(value = "SELECT v from Village v join fetch v.center c where v.id=:id")
+    Optional<Village> findById(@Param("id") Long villageId);
+
+    @Query(value = "select v from Village v LEFT join fetch v.center c where v.unionId=:unionId")
     List<Village> findByUnionId(@Param("unionId") Long unionId);
 
     @Query(value = "select v from Village v join fetch v.center c where c=:center")
