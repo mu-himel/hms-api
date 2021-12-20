@@ -11,6 +11,7 @@ import technology.grameen.gk.health.api.entity.HealthCenter;
 import technology.grameen.gk.health.api.entity.Village;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface HaVillageRepository extends JpaRepository<HaVillage,Long> {
@@ -24,6 +25,9 @@ public interface HaVillageRepository extends JpaRepository<HaVillage,Long> {
         String getVillage();
         String getAddress();
     }
+
+
+
 
     @Query(value = "SELECT e.FULL_NAME healthAssistant, p.FULL_NAME patient, p.pid,lv.VILLAGE_NAME village, " +
             "p.STREET_ADDRESS address \n" +
