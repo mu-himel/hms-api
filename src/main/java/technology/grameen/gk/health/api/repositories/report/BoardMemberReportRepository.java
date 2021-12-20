@@ -134,4 +134,25 @@ public interface BoardMemberReportRepository extends ReportRepository {
     nativeQuery = true)
     Optional<?> getDiabeticCheckup(@Param("fromMonth") String fromMonth,
                                    @Param("toMonth") String toMonth);
+
+
+    @Query(value = "SELECT COUNT(pi2.PAID_AMOUNT) as total \n" +
+            "            FROM patient_invoices pi2\n" +
+            "            JOIN HEALTH_CENTERS hc ON pi2.HEALTH_CENTER_ID = hc.ID \n" +
+            "            JOIN PATIENTS p ON p.id = pi2.PATIENT_ID \n" +
+            "            JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID = pi2.id \n" +
+            "            JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID \n" +
+            "            WHERE lower(s.NAME) LIKE 'free prescription'||'%'\n" +
+            "            AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM') BETWEEN :fromMonth AND :toMonth\n" +
+            "            AND GET_CURRENT_YEAR(p.CREATED_AT,p.age)>60",nativeQuery = true)
+    Optional<?> getpatientTreatedSaftyNate(@Param("fromMonth") String fromMonth,
+                                           @Param("toMonth") String toMonth);
+
+
+    @Query(value = "SELECT count(*) FROM PRESCRIPTIONS pr JOIN PATIENTS p \n" +
+            "ON pr.PRESCRIPTION_PATIENT_ID = p.ID\n" +
+            "WHERE TO_CHAR(pr.CREATED_AT,'YYYY-MM') BETWEEN :fromMonth AND :toMonth AND pr.IS_TELE_CALL = 1",
+    nativeQuery = true)
+    Optional<?> getTeleCallPatientCount(@Param("fromMonth") String fromMonth,
+                                        @Param("toMonth") String toMonth);
 }

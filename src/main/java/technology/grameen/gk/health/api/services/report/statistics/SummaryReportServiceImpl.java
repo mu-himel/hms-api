@@ -170,6 +170,8 @@ public class SummaryReportServiceImpl implements SummaryReportService{
         map.put("pregnantRegistered",boardMemberReportRepository.getPregnantRegistered(fromMonth,toMonth));
         map.put("deliveryPerformed",boardMemberReportRepository.getDeliveryPerformed(fromMonth,toMonth));
         map.put("diabeticCheckup",boardMemberReportRepository.getDiabeticCheckup(fromMonth,toMonth));
+        map.put("patientTreatedSafetyNet",boardMemberReportRepository.getpatientTreatedSaftyNate(fromMonth,toMonth));
+        map.put("teleCallPatientCount",boardMemberReportRepository.getTeleCallPatientCount(fromMonth,toMonth));
 
         return Optional.of(map);
     }
