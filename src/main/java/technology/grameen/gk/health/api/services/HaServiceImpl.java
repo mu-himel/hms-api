@@ -24,6 +24,7 @@ public class HaServiceImpl implements HaService{
     @Override
     @Transactional
     public HaVillage mapHaVillage(HaVillage haVillage) {
+
         return haVillageRepository.save(haVillage);
     }
 
@@ -43,5 +44,10 @@ public class HaServiceImpl implements HaService{
             throw new CustomException("Please Specify Employee Id");
         }
         return haVillageRepository.findPatientsByEmployeeId(employeeId,pageable);
+    }
+
+    public Boolean deleteById(Long id){
+        haVillageRepository.deleteById(id);
+        return true;
     }
 }

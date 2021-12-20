@@ -14,4 +14,6 @@ public interface HaService {
     List<HaVillage> getHaVillageBy(String centerId, String villageId);
 
     Page<?> getPatientsByHealthAssistant(Long employeeId, Pageable pageable) throws CustomException;
+
+    Boolean deleteById(Long id);
 }

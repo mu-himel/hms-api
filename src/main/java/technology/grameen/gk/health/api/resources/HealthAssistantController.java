@@ -70,7 +70,13 @@ public class HealthAssistantController {
         ), HttpStatus.OK);
     }
 
-
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<IResponse> delete(@PathVariable("id") Long id){
+        return new ResponseEntity<>(new EntityResponse<>(
+                HttpStatus.OK.value(),
+                haService.deleteById(id)
+        ), HttpStatus.OK);
+    }
 
 
 }
