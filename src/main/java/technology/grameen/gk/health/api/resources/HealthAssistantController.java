@@ -37,11 +37,11 @@ public class HealthAssistantController {
     }
 
     @GetMapping("")
-    public ResponseEntity<IResponse> getHaList(@RequestParam String centerId,
-                                               @RequestParam String villageId){
+    public ResponseEntity<IResponse> getHaList(@RequestParam Optional<String> centerId,
+                                               @RequestParam Optional<String> villageId){
         return new ResponseEntity<>(new EntityCollectionResponse<>(
                 HttpStatus.OK.value(),
-                haService.getHaVillageBy(centerId,villageId)
+                haService.getHaVillageBy(centerId.orElse(null),villageId.orElse(null))
         ), HttpStatus.OK);
     }
 

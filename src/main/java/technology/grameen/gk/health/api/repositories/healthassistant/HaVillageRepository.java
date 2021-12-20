@@ -16,6 +16,11 @@ import java.util.Optional;
 @Repository
 public interface HaVillageRepository extends JpaRepository<HaVillage,Long> {
 
+    @Query(value = "select hav from HaVillage hav LEFT JOIN FETCH hav.village v" +
+            " LEFT JOIN FETCH v.center c " +
+            " LEFT JOIN FETCH hav.center hc WHERE hav.center = :center")
+    List<HaVillage> findByCenter(@Param("center") HealthCenter center);
+
     List<HaVillage> findByCenterAndVillage(HealthCenter center, Village village);
 
     interface HaPatient{

@@ -31,10 +31,16 @@ public class HaServiceImpl implements HaService{
     @Override
     public List<HaVillage> getHaVillageBy(String centerId, String villageId) {
         HealthCenter center = new HealthCenter();
-        center.setId(Long.valueOf(centerId));
-
         Village village = new Village();
-        village.setLgVillageId(Long.valueOf(villageId));
+        if(centerId !=null) {
+            center.setId(Long.valueOf(centerId));
+        }
+        if(villageId != null) {
+            village.setLgVillageId(Long.valueOf(villageId));
+        }
+        if(centerId!=null && villageId==null){
+            return haVillageRepository.findByCenter(center);
+        }
         return haVillageRepository.findByCenterAndVillage(center,village);
     }
 
