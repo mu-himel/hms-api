@@ -12,6 +12,7 @@ import technology.grameen.gk.health.api.services.patient.PatientManageService;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public interface ReportService {
 
@@ -33,4 +34,6 @@ public interface ReportService {
                                                                         String dateTime);
 
     Map<?,?> getSummaryReportStats(String type, String startDate ,String endDate, String regionCode);
+
+    Map<?,?> getRangeStatisticalReport(String startDate, String endDate, String regionCode);
 }

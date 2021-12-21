@@ -344,4 +344,48 @@ public class ReportServiceImpl implements ReportService{
 
         return result;
     }
+
+    @Override
+    public Map<?, ?> getRangeStatisticalReport(String startDate, String endDate, String regionCode) {
+        Map<String, Object> report = new HashMap<>();
+        report.put("stats",reportRepository.getRangeStatisticalReport(startDate,endDate,regionCode));
+        report.put("homeVisitCount",haReportRepository.getMonthWiseHomeVisitCount(startDate,endDate,regionCode));
+        report.put("personCheckupCount",haReportRepository.getMonthWisePersonCheckupCount(startDate,endDate,regionCode));
+        report.put("DiabeticVisitCount",haReportRepository.getMonthWiseDiabeticVisitCount(startDate,endDate,regionCode));
+        report.put("campNo",reportRepository.getCampNoCenterWiseEvent(startDate,endDate,regionCode));
+        report.put("cardMember",reportRepository.getCardMemberCenterWiseEvent(startDate,endDate,regionCode));
+        report.put("nonCardMember",reportRepository.getNonCardMemberCenterWiseEvent(startDate,endDate,regionCode));
+
+        report.put("usgCampNo",reportRepository.getCampNo("usg",regionCode,startDate,endDate));
+        report.put("usgCardMember",reportRepository.getCardMemberCount("usg",regionCode,startDate,endDate));
+        report.put("usgNonCardMember",reportRepository.getNonCardMemberCount("usg",regionCode,startDate,endDate));
+
+        report.put("xRayCampNo",reportRepository.getCampNo("x-ray",regionCode,startDate,endDate));
+        report.put("xRayCardMember",reportRepository.getCardMemberCount("x-ray",regionCode,startDate,endDate));
+        report.put("xRayNonCardMember",reportRepository.getNonCardMemberCount("x-ray",regionCode,startDate,endDate));
+
+        report.put("schoolVisitCampNo",schoolVisitReportService.getSchoolVisitCampNo(regionCode,startDate,endDate));
+        report.put("schoolVisitPatientNo",schoolVisitReportService.getSchoolVisitPatientNo(regionCode,startDate,endDate));
+        report.put("schoolVisitBloodGrouping",schoolVisitReportService.getSchoolVisitServiceCount("blood",
+                regionCode,startDate,endDate));
+
+        report.put("incomeStats",reportRepository.getCenterAndSatelliteIncomes(regionCode,startDate,endDate));
+        report.put("campIncomeStats",reportRepository.getCenterCampIncomes(regionCode,startDate,endDate));
+        report.put("vaccineIncomeStats",reportRepository.getIncomeByServiceCategory(regionCode,startDate,endDate,"vaccine"));
+        report.put("surgeryIncomeStats",reportRepository.getIncomeByServiceCategory(regionCode,startDate,endDate,"surgery"));
+        report.put("deliveryIncomeStats",reportRepository.getIncomeByServiceCategory(regionCode,startDate,endDate,"mother & child care"));
+        report.put("serviceRentIncomeStats",reportRepository.getIncomeByServiceCategory(regionCode,startDate,endDate,"rent"));
+        report.put("usgIncomeStats",reportRepository.getIncomeByServiceCategory(regionCode,startDate,endDate,"ultrasonogram"));
+        report.put("ecgIncomeStats",reportRepository.getIncomeByServiceCategory(regionCode,startDate,endDate,"ecg"));
+
+        report.put("safetyNetStats",reportRepository.getSafetyNetCount(regionCode,startDate,endDate));
+        report.put("deliveryCountStats",reportRepository.getCenterWiseDeliveryCount(regionCode,startDate,endDate));
+
+        report.put("pregnantRegisterCount",reportRepository.getMonthWisePregnantRegistered(startDate,endDate,regionCode));
+        report.put("adultVaccineCountStats",reportRepository.getCenterWiseAdultVaccinationCount(regionCode,startDate,endDate));
+        report.put("childVaccineCountStats",reportRepository.getCenterWiseChildVaccinationCount(regionCode,startDate,endDate));
+        report.put("referCenterCount",reportRepository.getReferCenterCount(regionCode,startDate,endDate));
+
+        return report;
+    }
 }

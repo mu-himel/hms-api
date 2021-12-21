@@ -21,9 +21,20 @@ public class SchoolVisitReportServiceImpl implements SchoolVisitReportService{
     }
 
     @Override
+    public List<ReportRepository.SchoolVisitCampStats> getSchoolVisitCampNo(String regionCode, String sdt, String edt) {
+        return reportRepository.getSchoolVisitCampNo(regionCode, sdt,edt);
+    }
+
+    @Override
     public List<ReportRepository.SchoolVisitCampStats> getSchoolVisitPatientNo(String regionCode,
                                                                                String yearMonth) {
         return reportRepository.getSchoolVisitPatientNo(regionCode,yearMonth);
+    }
+
+    @Override
+    public List<ReportRepository.SchoolVisitCampStats> getSchoolVisitPatientNo(String regionCode,
+                                                                               String sdt, String edt) {
+        return reportRepository.getSchoolVisitPatientNo(regionCode,sdt, edt);
     }
 
     @Override
@@ -31,5 +42,12 @@ public class SchoolVisitReportServiceImpl implements SchoolVisitReportService{
                                                                                       String regionCode,
                                                                                       String yearMonth) {
         return reportRepository.getSchoolVisitServiceCount(serviceName,regionCode,yearMonth);
+    }
+
+    @Override
+    public List<ReportRepository.SchoolVisitCampStats> getSchoolVisitServiceCount(String serviceName,
+                                                                                  String regionCode,
+                                                                                  String sdt, String edt) {
+        return reportRepository.getSchoolVisitServiceCount(serviceName,regionCode,sdt, edt);
     }
 }

@@ -117,6 +117,20 @@ public class ReportController {
         );
     }
 
+    @GetMapping("/range-statistics")
+    public ResponseEntity<IResponse> getRangeDetailReport(@RequestParam Optional<String> startDate,
+                                                          @RequestParam Optional<String> endDate,
+                                                          @RequestParam Optional<String> regionCode){
+        return new ResponseEntity<>(
+                new EntityResponse<>(
+                        HttpStatus.OK.value(),
+                        reportService.getRangeStatisticalReport(startDate.orElse(null),
+                                endDate.orElse(null),regionCode.orElse(null))
+                ),
+                HttpStatus.OK
+        );
+    }
+
     @GetMapping("/lab-report")
     public ResponseEntity<IResponse> getLabReport(@RequestParam Optional<String> regionCode,
                                                          @RequestParam Optional<String> type,
