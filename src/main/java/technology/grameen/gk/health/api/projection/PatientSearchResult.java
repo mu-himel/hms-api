@@ -102,6 +102,8 @@ public interface PatientSearchResult {
                 Patient getPatient();
                 String getGender();
                 String getAge();
+                @JsonFormat(pattern = "yyyy-MM-dd")
+                LocalDate getDob();
                 String getRelationWithPatient();
 
         }
