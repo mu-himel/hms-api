@@ -51,6 +51,7 @@ public class PatientRequest {
     public PatientRequest(Patient cardMember){
         this.fullName = cardMember.getFullName();
         this.age = (cardMember.getAge()!=null)?Integer.parseInt(cardMember.getAge()):null;
+        this.dob = cardMember.getDob();
         this.gender = cardMember.getGender();
         this.mobileNumber = cardMember.getMobileNumber();
         this.center = cardMember.getCenter();
