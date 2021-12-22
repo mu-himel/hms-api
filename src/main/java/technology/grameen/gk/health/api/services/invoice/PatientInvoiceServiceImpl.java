@@ -95,6 +95,8 @@ public class PatientInvoiceServiceImpl implements PatientInvoiceService {
         pat.setPulse(patient.getPulse());
         pat.setWeight(patient.getWeight());
         pat.setTemperature(patient.getTemperature());
+        pat.setRegistration(patient.getRegistration());
+        pat.setCenter(patient.getCenter());
         patientInvoice.setPatient(pat);
         patientInvoice.setInvoiceType(pi.getInvoiceType());
 
@@ -148,7 +150,7 @@ public class PatientInvoiceServiceImpl implements PatientInvoiceService {
                         patientServiceDetail.getService().getCode().contains("card registration") ){
 
                     try {
-                        cardRegistrationService.register(patientInvoice.getPatient());
+                        cardRegistrationService.register(pat);
                     } catch (Exception e) {
                         this.patientNotFound = true;
                         this.patientNotFoundMessage = e.getMessage();
