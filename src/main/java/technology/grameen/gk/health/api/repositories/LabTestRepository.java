@@ -474,7 +474,11 @@ public interface LabTestRepository extends JpaRepository<LabTest,Long> {
     @Query("Select l from LabTest l where l.id = :id")
     Optional<LabTestDetailItem> findByLabTest(@Param("id") Long id);
 
-    Optional<LabTestDetailItem> findByPatientAndPatientInvoice(Patient patient,
-                                                                         PatientInvoice patientInvoice);
+    @Query(value = "select l from LabTest l JOIN FETCH l.services s" +
+            " WHERE l.patient = :patient AND l.patientInvoice = :patientInvoice" +
+            " AND s = :service")
+    Optional<LabTestDetailItem> findByPatientAndPatientInvoiceAndService(@Param("patient") Patient patient,
+                                                                         @Param("patientInvoice") PatientInvoice patientInvoice,
+                                                                         @Param("service") Service service);
 
 }

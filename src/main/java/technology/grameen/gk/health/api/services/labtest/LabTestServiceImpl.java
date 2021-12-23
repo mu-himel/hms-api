@@ -181,6 +181,8 @@ public class LabTestServiceImpl implements LabTestService {
     public Optional<LabTestDetailItem> getLabTestReportByPatientInvoiceService(
             Patient patient, PatientInvoice patientInvoice,
             technology.grameen.gk.health.api.entity.Service service) {
-        return labTestRepository.findByPatientAndPatientInvoice(patient, patientInvoice);
+
+        return labTestRepository.findByPatientAndPatientInvoiceAndService(patient,
+                patientInvoice,service);
     }
 }
