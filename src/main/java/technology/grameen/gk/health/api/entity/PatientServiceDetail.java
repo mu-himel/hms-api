@@ -43,6 +43,9 @@ public class PatientServiceDetail {
     private Boolean refunded;
 
     @ManyToOne
+    private Employee healthAssistant;
+
+    @ManyToOne
     private Employee treatmentBy;
 
     @ManyToOne
@@ -177,5 +180,13 @@ public class PatientServiceDetail {
 
     public void setRefunded(Boolean refunded) {
         this.refunded = refunded;
+    }
+
+    public Employee getHealthAssistant() {
+        return healthAssistant;
+    }
+
+    public void setHealthAssistant(Employee healthAssistant) {
+        this.healthAssistant = healthAssistant;
     }
 }
