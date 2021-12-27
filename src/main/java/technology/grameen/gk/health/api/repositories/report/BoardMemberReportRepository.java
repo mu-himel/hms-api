@@ -50,7 +50,7 @@ public interface BoardMemberReportRepository extends ReportRepository {
             "    JOIN EVENT_CATEGORIES ec ON ec.ID  = e.EVENT_CATEGORY_ID\n" +
             "    JOIN HEALTH_CENTERS hc ON hc.ID = e.CENTER_ID \n" +
             "        WHERE   hc.OFFICE_TYPE_ID = 6 AND\n" +
-            "            \tTO_CHAR(e.EVENT_DATE,'YYYY-MM') BETWEEN '2021-07' AND '2021-08'\n" +
+            "            \tTO_CHAR(e.EVENT_DATE,'YYYY-MM') BETWEEN :fromMonth AND :toMonth\n" +
             "            \tAND e.EVENT_TYPE = 'camp' \n" +
             "            \tGROUP BY ec.name,ec.id,e.EVENT_DATE,e.CENTER_ID) c \n" +
             "            \tGROUP BY c.name",nativeQuery = true)
