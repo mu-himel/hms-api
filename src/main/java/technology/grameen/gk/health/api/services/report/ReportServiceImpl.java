@@ -381,11 +381,22 @@ public class ReportServiceImpl implements ReportService{
         report.put("safetyNetStats",reportRepository.getSafetyNetCount(regionCode,startDate,endDate));
         report.put("deliveryCountStats",reportRepository.getCenterWiseDeliveryCount(regionCode,startDate,endDate));
 
-        report.put("pregnantRegisterCount",reportRepository.getMonthWisePregnantRegistered(startDate,endDate,regionCode));
+        report.put("pregnantRegisterCount",reportRepository.getDateRangeWisePregnantRegistered(startDate,endDate,regionCode));
         report.put("adultVaccineCountStats",reportRepository.getCenterWiseAdultVaccinationCount(regionCode,startDate,endDate));
         report.put("childVaccineCountStats",reportRepository.getCenterWiseChildVaccinationCount(regionCode,startDate,endDate));
         report.put("referCenterCount",reportRepository.getReferCenterCount(regionCode,startDate,endDate));
 
+        return report;
+    }
+
+    @Override
+    public Map<?, ?> getMonthWiseDeliveryReport(String lastMonth, String currentMonth) {
+        Map<String, Object> report = new HashMap<>();
+        report.put("pr_till_last_month",reportRepository.getPregnantRegisteredTillLastMonth(currentMonth+"-01"));
+        report.put("pr_this_month",reportRepository.getPregnantRegisteredThisMonth(currentMonth));
+        report.put("delivery_till_last_month",reportRepository.getDeliveryCountTillLastMonth(currentMonth+"-01"));
+        report.put("delivery_last_month",reportRepository.getDeliveryCountByMonth(lastMonth));
+        report.put("delivery_probability",reportRepository.getDeliveryProbabilityCount(currentMonth));
         return report;
     }
 }

@@ -687,6 +687,26 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
                                                    @Param("sdt") String sdt,
                                                    @Param("edt") String edt);
 
+    @Query(value = "SELECT COUNT(pi2.PAID_AMOUNT) as total,pi2.HEALTH_CENTER_ID as centerId,s.SERVICE_ID as serviceId\n" +
+            "FROM patient_invoices pi2\n" +
+            "JOIN PATIENTS p ON p.id = pi2.PATIENT_ID \n" +
+            "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID = pi2.id \n" +
+            "JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID \n" +
+            "WHERE lower(s.NAME) LIKE 'delivery'||'%'\n" +
+            "AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM-DD') < :edt \n" +
+            "GROUP BY pi2.HEALTH_CENTER_ID , s.SERVICE_ID",nativeQuery = true)
+    List<DeliveryCount> getDeliveryCountTillLastMonth(@Param("edt") String edt);
+
+    @Query(value = "SELECT COUNT(pi2.PAID_AMOUNT) as total,pi2.HEALTH_CENTER_ID as centerId,s.SERVICE_ID as serviceId\n" +
+            "FROM patient_invoices pi2\n" +
+            "JOIN PATIENTS p ON p.id = pi2.PATIENT_ID \n" +
+            "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID = pi2.id \n" +
+            "JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID \n" +
+            "WHERE lower(s.NAME) LIKE 'delivery'||'%'\n" +
+            "AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM') = :month \n" +
+            "GROUP BY pi2.HEALTH_CENTER_ID , s.SERVICE_ID",nativeQuery = true)
+    List<DeliveryCount> getDeliveryCountByMonth(@Param("month") String month);
+
     interface PregnantRegistered {
         Long getTotal();
         Long getCenterId();
@@ -702,11 +722,32 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
 
     @Query(value = "SELECT count(*) total, pdp.CENTER_ID centerId FROM PATIENT_DISEASE_PROFILES pdp \n" +
             "JOIN DISEASE_PROFILES dp ON dp.ID = pdp.DISEASE_PROFILE_ID \n" +
+            "WHERE dp.ALIAS = 'pregnant' " +
+            "AND TO_CHAR(pdp.CREATED_AT,'YYYY-MM-DD') < :endMonth \n" +
+            "GROUP BY pdp.CENTER_ID ",nativeQuery = true)
+    List<PregnantRegistered> getPregnantRegisteredTillLastMonth(@Param("endMonth") String endMonth);
+
+    @Query(value = "SELECT count(*) total, pdp.CENTER_ID centerId FROM PATIENT_DISEASE_PROFILES pdp \n" +
+            "JOIN DISEASE_PROFILES dp ON dp.ID = pdp.DISEASE_PROFILE_ID \n" +
+            "WHERE dp.ALIAS = 'pregnant' " +
+            "AND TO_CHAR(pdp.END_DATE,'YYYY-MM') = :month \n" +
+            "GROUP BY pdp.CENTER_ID ",nativeQuery = true)
+    List<PregnantRegistered> getDeliveryProbabilityCount(@Param("month") String month);
+
+    @Query(value = "SELECT count(*) total, pdp.CENTER_ID centerId FROM PATIENT_DISEASE_PROFILES pdp \n" +
+            "JOIN DISEASE_PROFILES dp ON dp.ID = pdp.DISEASE_PROFILE_ID \n" +
+            "WHERE dp.ALIAS = 'pregnant' " +
+            "AND TO_CHAR(pdp.CREATED_AT,'YYYY-MM') = :endMonth \n" +
+            "GROUP BY pdp.CENTER_ID ",nativeQuery = true)
+    List<PregnantRegistered> getPregnantRegisteredThisMonth(@Param("endMonth") String endMonth);
+
+    @Query(value = "SELECT count(*) total, pdp.CENTER_ID centerId FROM PATIENT_DISEASE_PROFILES pdp \n" +
+            "JOIN DISEASE_PROFILES dp ON dp.ID = pdp.DISEASE_PROFILE_ID \n" +
             "JOIN HEALTH_CENTERS hc ON hc.ID = pdp.CENTER_ID \n" +
             "WHERE NVL(hc.THIRD_LEVEL,'0')=:regionCode AND dp.ALIAS = 'pregnant' " +
             "AND TO_CHAR(pdp.CREATED_AT,'YYYY-MM-DD') BETWEEN :sdt AND :edt \n" +
             "GROUP BY pdp.CENTER_ID ",nativeQuery = true)
-    List<PregnantRegistered> getMonthWisePregnantRegistered(@Param("sdt") String sdt,
+    List<PregnantRegistered> getDateRangeWisePregnantRegistered(@Param("sdt") String sdt,
                                                             @Param("edt") String edt,
                                                             @Param("regionCode") String regionCode);
 

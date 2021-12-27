@@ -171,4 +171,13 @@ public class ReportController {
                 summaryReportService.getBoardMemberReport(fromMonth,toMonth)
         ), HttpStatus.OK);
     }
+
+    @GetMapping(value = "/delivery-report")
+    public ResponseEntity<IResponse> getDeliveryReport(@RequestParam String lastMonth,
+                                                       @RequestParam String currentMonth){
+        return new ResponseEntity<>(new EntityResponse<>(
+                HttpStatus.OK.value(),
+                reportService.getMonthWiseDeliveryReport(lastMonth,currentMonth)
+        ), HttpStatus.OK);
+    }
 }
