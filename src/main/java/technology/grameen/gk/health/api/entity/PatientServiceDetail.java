@@ -40,7 +40,7 @@ public class PatientServiceDetail {
 
     private Boolean isReportGenerated;
 
-    private Boolean refunded;
+    private Boolean refunded = false;
 
     @ManyToOne
     private Employee healthAssistant;
