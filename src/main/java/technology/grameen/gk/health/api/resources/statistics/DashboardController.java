@@ -76,4 +76,18 @@ public class DashboardController {
                             regionCode,centerCode)
         ), HttpStatus.OK);
     }
+
+    @GetMapping("/service-stats/all")
+    public ResponseEntity<IResponse> getServiceSaleStats(@RequestParam String regionCode,
+                                                         @RequestParam String centerCode,
+                                                         @RequestParam String type,
+                                                         @RequestParam String fromDate,
+                                                         @RequestParam String toDate){
+
+        return new ResponseEntity<>(new EntityResponse<>(
+                HttpStatus.OK.value(),
+                statisticService.getAllServiceStats(regionCode,centerCode,type,fromDate,toDate)
+        ), HttpStatus.OK);
+
+    }
 }

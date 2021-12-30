@@ -421,4 +421,62 @@ public interface ServiceSaleReportRepository extends ReportRepository{
     Optional<ServiceSaleStates> getCardRegStats(@Param("centers") List<Long> centers,
                                                   @Param("fromDate") LocalDateTime fromDateLDT,
                                                   @Param("toDate") LocalDateTime toDateLDT);
+
+
+    interface AllServiceSaleStates{
+
+            Integer getTotal();
+            BigDecimal getAmount();
+            String getName();
+    }
+
+    @Query(value = "SELECT count(psd.id) total, s.name, sum(psd.PAYABLE_AMOUNT) amount\n" +
+            "                FROM PATIENT_INVOICES pi2 \n" +
+            "                INNER JOIN PATIENT_SERVICE_DETAILS psd \n" +
+            "                ON psd.PATIENT_INVOICE_ID  = pi2.ID\n" +
+            "                INNER JOIN SERVICE s \n" +
+            "                ON s.SERVICE_ID = psd.SERVICE_ID \n" +
+            "                WHERE pi2.HEALTH_CENTER_ID IN :centers AND \n" +
+            "                TO_CHAR(pi2.CREATED_AT,'YYYY-MM-DD') BETWEEN :startDate\n" +
+            "                AND :endDate GROUP BY s.name" +
+            "               ORDER BY s.name ASC", nativeQuery = true)
+    List<AllServiceSaleStates> getServiceSaleStatesByRange(@Param("centers") List<Long> centers,
+                                                        @Param("startDate") String startDate,
+                                                        @Param("endDate") String endDate);
+
+    @Query(value = "SELECT count(psd.id) total, s.name, sum(psd.PAYABLE_AMOUNT) amount\n" +
+            "                FROM PATIENT_INVOICES pi2 \n" +
+            "                INNER JOIN PATIENT_SERVICE_DETAILS psd \n" +
+            "                ON psd.PATIENT_INVOICE_ID  = pi2.ID\n" +
+            "                INNER JOIN SERVICE s \n" +
+            "                ON s.SERVICE_ID = psd.SERVICE_ID \n" +
+            "                WHERE TO_CHAR(pi2.CREATED_AT,'YYYY-MM-DD') BETWEEN :startDate\n" +
+            "                AND :endDate GROUP BY s.name" +
+            "               ORDER BY s.name ASC", nativeQuery = true)
+    List<AllServiceSaleStates> getServiceSaleStatesByRange(@Param("startDate") String startDate,
+                                                        @Param("endDate") String endDate);
+
+    @Query(value = "SELECT count(psd.id) total, s.name, sum(psd.PAYABLE_AMOUNT) amount\n" +
+            "                FROM PATIENT_INVOICES pi2 \n" +
+            "                INNER JOIN PATIENT_SERVICE_DETAILS psd \n" +
+            "                ON psd.PATIENT_INVOICE_ID  = pi2.ID\n" +
+            "                INNER JOIN SERVICE s \n" +
+            "                ON s.SERVICE_ID = psd.SERVICE_ID \n" +
+            "                WHERE pi2.HEALTH_CENTER_ID IN :centers AND \n" +
+            "                TO_CHAR(pi2.CREATED_AT,'YYYY-MM-DD') = :date GROUP BY s.name" +
+            "                ORDER BY s.name ASC",
+    nativeQuery = true)
+    List<AllServiceSaleStates> getServiceSaleStatesByDate(@Param("centers") List<Long> centers,
+                                                       @Param("date") String date);
+
+    @Query(value = "SELECT count(psd.id) total, s.name, sum(psd.PAYABLE_AMOUNT) amount\n" +
+            "                FROM PATIENT_INVOICES pi2 \n" +
+            "                INNER JOIN PATIENT_SERVICE_DETAILS psd \n" +
+            "                ON psd.PATIENT_INVOICE_ID  = pi2.ID\n" +
+            "                INNER JOIN SERVICE s \n" +
+            "                ON s.SERVICE_ID = psd.SERVICE_ID \n" +
+            "                WHERE TO_CHAR(pi2.CREATED_AT,'YYYY-MM-DD') = :date GROUP BY s.name" +
+            "                ORDER BY s.name ASC",
+            nativeQuery = true)
+    List<AllServiceSaleStates> getServiceSaleStatesByDate(@Param("date") String date);
 }

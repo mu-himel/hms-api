@@ -176,7 +176,7 @@ public class DashboardStatisticServiceImpl implements DashboardStatisticService{
             fromDate = fromDate.substring(0,10);
             if(centers.size()==0){
 
-                fromDate = fromDate.substring(0,10);
+//                fromDate = fromDate.substring(0,10);
                 map.put("prescription",ssReportRepository.getPrescriptionStats(fromDate));
                 map.put("labtest",ssReportRepository.getLabTestStats(fromDate));
                 map.put("ultrasono",ssReportRepository.getUltraSonoStats(fromDate));
@@ -228,5 +228,34 @@ public class DashboardStatisticServiceImpl implements DashboardStatisticService{
             }
         }
         return map;
+    }
+
+    @Override
+    public List<?> getAllServiceStats(String regionCode,  String centerCode,
+                                        String type,  String fromDate, String toDate) {
+        List<Long> centers = getCenters(regionCode,centerCode);
+
+        if(type.equalsIgnoreCase("daily")){
+            fromDate = fromDate.substring(0,10);
+
+            if(centers.size()==0){
+                return ssReportRepository.getServiceSaleStatesByDate(fromDate);
+            }else{
+                return ssReportRepository.getServiceSaleStatesByDate(centers,fromDate);
+            }
+
+        } else if(type.equalsIgnoreCase("range")){
+            fromDate = fromDate.substring(0,10);
+            toDate = toDate.substring(0,10);
+
+            if(centers.size()==0){
+                return ssReportRepository.getServiceSaleStatesByRange(fromDate,toDate);
+            }else{
+                return ssReportRepository.getServiceSaleStatesByRange(centers,fromDate,toDate);
+            }
+
+        }else{
+            return new ArrayList<>();
+        }
     }
 }
