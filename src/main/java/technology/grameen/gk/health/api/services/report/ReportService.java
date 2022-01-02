@@ -37,5 +37,5 @@ public interface ReportService {
 
     Map<?,?> getRangeStatisticalReport(String startDate, String endDate, String regionCode);
 
-    Map<?,?> getMonthWiseDeliveryReport(String lastMonth, String currentMonth);
+    Map<?,?> getMonthWiseDeliveryReport(String lastMonth, String currentMonth,String regionCode);
 }

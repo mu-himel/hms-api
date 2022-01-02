@@ -174,10 +174,11 @@ public class ReportController {
 
     @GetMapping(value = "/delivery-report")
     public ResponseEntity<IResponse> getDeliveryReport(@RequestParam String lastMonth,
-                                                       @RequestParam String currentMonth){
+                                                       @RequestParam String currentMonth,
+                                                       @RequestParam Optional<String> regionCode){
         return new ResponseEntity<>(new EntityResponse<>(
                 HttpStatus.OK.value(),
-                reportService.getMonthWiseDeliveryReport(lastMonth,currentMonth)
+                reportService.getMonthWiseDeliveryReport(lastMonth,currentMonth,regionCode.orElse(""))
         ), HttpStatus.OK);
     }
 }

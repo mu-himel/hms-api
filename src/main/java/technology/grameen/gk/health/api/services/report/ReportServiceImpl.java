@@ -389,14 +389,50 @@ public class ReportServiceImpl implements ReportService{
         return report;
     }
 
+    private List<Long> getCenters(String regionCode, String centerCode){
+        List<Long> centers = new ArrayList<>();
+        if(regionCode != "" && centerCode==""){
+            centers = healthCenterService.getCenterIdByThirdLevel(regionCode);
+
+        }else if(regionCode =="" && centerCode!=""){
+            HealthCenter center = healthCenterService.getCenterByCenterCode(centerCode).get();
+            if(center!=null){
+                centers.add(center.getId());
+            }
+        }else if(regionCode !="" && centerCode!=""){
+            HealthCenter center = healthCenterService.getCenterByCenterCode(centerCode).get();
+            if(center!=null){
+                centers.add(center.getId());
+            }
+
+        }else{
+            centers = new ArrayList<>();
+        }
+
+        return centers;
+    }
+
     @Override
-    public Map<?, ?> getMonthWiseDeliveryReport(String lastMonth, String currentMonth) {
+    public Map<?, ?> getMonthWiseDeliveryReport(String lastMonth, String currentMonth,String regionCode) {
+
+        List<Long> centers= getCenters(regionCode,"");
+
         Map<String, Object> report = new HashMap<>();
-        report.put("pr_till_last_month",reportRepository.getPregnantRegisteredTillLastMonth(currentMonth+"-01"));
-        report.put("pr_this_month",reportRepository.getPregnantRegisteredThisMonth(currentMonth));
-        report.put("delivery_till_last_month",reportRepository.getDeliveryCountTillLastMonth(currentMonth+"-01"));
-        report.put("delivery_last_month",reportRepository.getDeliveryCountByMonth(lastMonth));
-        report.put("delivery_probability",reportRepository.getDeliveryProbabilityCount(currentMonth));
+        if(centers.size()>0){
+            report.put("pr_till_last_month",reportRepository.getPregnantRegisteredTillLastMonth(currentMonth+"-01",centers));
+            report.put("pr_this_month",reportRepository.getPregnantRegisteredThisMonth(currentMonth,centers));
+            report.put("delivery_till_last_month",reportRepository.getDeliveryCountTillLastMonth(currentMonth+"-01",centers));
+            report.put("delivery_last_month",reportRepository.getDeliveryCountByMonth(lastMonth,centers));
+            report.put("delivery_probability",reportRepository.getDeliveryProbabilityCount(currentMonth,centers));
+
+        }else{
+            report.put("pr_till_last_month",reportRepository.getPregnantRegisteredTillLastMonth(currentMonth+"-01"));
+            report.put("pr_this_month",reportRepository.getPregnantRegisteredThisMonth(currentMonth));
+            report.put("delivery_till_last_month",reportRepository.getDeliveryCountTillLastMonth(currentMonth+"-01"));
+            report.put("delivery_last_month",reportRepository.getDeliveryCountByMonth(lastMonth));
+            report.put("delivery_probability",reportRepository.getDeliveryProbabilityCount(currentMonth));
+        }
+
         return report;
     }
 }
