@@ -24,6 +24,10 @@ public class Event {
 
     private String eventType;
 
+    private String startTime;
+
+    private String endTime;
+
 
     @OneToMany(mappedBy = "event")
     private Set<EventPersonnel> eventPersonnels;
@@ -125,4 +129,19 @@ public class Event {
     }
 
 
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
 }
