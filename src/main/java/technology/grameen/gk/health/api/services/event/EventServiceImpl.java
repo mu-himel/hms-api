@@ -85,7 +85,7 @@ public class EventServiceImpl implements EventService{
 
     @Override
     public List<EventRepository.EventLite> hasEventOnCenterAt(HealthCenter center, LocalDateTime eventDate) {
-        return eventRepository.findByCenterAndEventDate(center, eventDate);
+        return eventRepository.findByCenterAndEventDateAndEventType(center, eventDate,EventService.CAMP);
     }
 
     @Override
@@ -110,7 +110,7 @@ public class EventServiceImpl implements EventService{
 
     @Override
     public Optional<EventRepository.LiveEvent> hasCampEventOnCenterAt(HealthCenter center, LocalDateTime eventDate) {
-        return eventRepository.findByCenterAndEventDateAndEventTypeAndStatus(center,eventDate,EventService.CAMP,EventService.APPROVED);
+        return eventRepository.findByCenterAndEventDateAndStatus(center,eventDate,EventService.APPROVED);
     }
 
     @Override
