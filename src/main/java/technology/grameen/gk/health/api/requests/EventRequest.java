@@ -3,9 +3,11 @@ package technology.grameen.gk.health.api.requests;
 import technology.grameen.gk.health.api.entity.Event;
 import technology.grameen.gk.health.api.entity.EventPersonnel;
 
+import java.util.List;
+
 public class EventRequest {
     private Event event;
-    private EventPersonnel eventPersonnel;
+    private List<EventPersonnel> eventPersonnel;
     private Integer regionOfficeId;
 
     public Event getEvent() {
@@ -16,11 +18,11 @@ public class EventRequest {
         this.event = event;
     }
 
-    public EventPersonnel getEventPersonnel() {
+    public List<EventPersonnel> getEventPersonnel() {
         return eventPersonnel;
     }
 
-    public void setEventPersonnel(EventPersonnel eventPersonnel) {
+    public void setEventPersonnel(List<EventPersonnel> eventPersonnel) {
         this.eventPersonnel = eventPersonnel;
     }
 

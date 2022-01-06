@@ -67,19 +67,27 @@ public class EventServiceImpl implements EventService{
             if (hasEvent.size() > 0) {
                 throw new CustomException("Sorry! Event exist on the date");
             }
-
-            hasEvent = hasEventForDoctorAt(er.getEventPersonnel().getEmployee(), event.getEventDate());
-            if(hasEvent.size()>0){
-                throw new CustomException("Sorry! This Doctor has schedule on this date");
+            if(er.getEventPersonnel().size()==0){
+                throw new CustomException("Sorry! Event Personnel not found");
+            }
+            for(EventPersonnel ep : er.getEventPersonnel()) {
+                hasEvent = hasEventForDoctorAt(ep.getEmployee(), event.getEventDate());
+                if (hasEvent.size() > 0) {
+                    throw new CustomException("Sorry! This Doctor has schedule on this date");
+                }
             }
         }
 
 
         event.setRegionOfficeId(er.getRegionOfficeId());
-        EventPersonnel eventPersonnel = er.getEventPersonnel();
+
         eventRepository.save(event);
-        eventPersonnel.setEvent(event);
-        eventPersonnelService.addEventPersonnel(eventPersonnel);
+        er.getEventPersonnel().stream().forEach(ep->{
+            ep.setEvent(event);
+            eventPersonnelService.addEventPersonnel(ep);
+        });
+
+
         return event;
     }
 
