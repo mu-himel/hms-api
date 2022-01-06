@@ -94,8 +94,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeItem> getEmployeeByDesignation(String designation) {
-        return employeeRepository.findAllByRoleContainingIgnoreCase(designation);
+    public List<EmployeeItem> getEmployeeByRole(String role) {
+        return employeeRepository.findAllByRole(role);
+    }
+
+    @Override
+    public List<EmployeeItem> getEmployeeByRoles(List<String> role) {
+        return employeeRepository.findAllByRoleIn(role);
     }
 
     @Override

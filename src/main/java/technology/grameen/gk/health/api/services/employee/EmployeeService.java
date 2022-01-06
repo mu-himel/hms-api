@@ -28,7 +28,9 @@ public interface EmployeeService {
 
     IResponse getEmployeeByApiEmployeeId(Long id);
 
-    List<EmployeeItem> getEmployeeByDesignation(String designation);
+    List<EmployeeItem> getEmployeeByRole(String role);
+
+    List<EmployeeItem> getEmployeeByRoles(List<String> role);
 
     Optional<EmployeeDetailInfo> getEmployeeById(Long employeeId);
 

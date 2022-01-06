@@ -174,10 +174,18 @@ public class EmployeeController {
     }
 
     @GetMapping("/{designation}")
-    public ResponseEntity<IResponse> getByDesignation(@PathVariable("designation") String designation){
+    public ResponseEntity<IResponse> getByDesignation(@PathVariable("designation") String role){
         return new ResponseEntity<>(new EntityCollectionResponse<>(
                 HttpStatus.OK.value(),
-                employeeService.getEmployeeByDesignation(designation)
+                employeeService.getEmployeeByRole(role)
+        ), HttpStatus.OK);
+    }
+
+    @GetMapping("/sonographer")
+    public ResponseEntity<IResponse> getByDesignation(@RequestParam("roles") List<String> role){
+        return new ResponseEntity<>(new EntityCollectionResponse<>(
+                HttpStatus.OK.value(),
+                employeeService.getEmployeeByRoles(role)
         ), HttpStatus.OK);
     }
 
