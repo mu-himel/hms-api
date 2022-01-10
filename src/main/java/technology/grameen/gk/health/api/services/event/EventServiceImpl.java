@@ -72,7 +72,7 @@ public class EventServiceImpl implements EventService{
             if (hasEvent.size() > 0) {
                 throw new CustomException("Sorry! Event exist on the date");
             }
-            if(er.getEventPersonnel().size()==0){
+            if(er.getEvent().getEventType() == EventService.CAMP && er.getEventPersonnel().size()==0){
                 throw new CustomException("Sorry! Event Personnel not found");
             }
             for(EventPersonnel ep : er.getEventPersonnel()) {
