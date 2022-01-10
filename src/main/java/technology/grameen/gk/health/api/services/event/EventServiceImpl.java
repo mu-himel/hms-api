@@ -38,21 +38,26 @@ public class EventServiceImpl implements EventService{
                                                      String toDate,
                                                      Pageable pageable) {
 
+        String type = null;
+        if(eventType == EventService.CAMP){
+            type = "main";
+        }
+
         if(centerId.isEmpty() && eventCategoryId.isEmpty() && eventType.isEmpty() &&
         doctor.isEmpty() && fromDate.isEmpty() && toDate.isEmpty()){
-            return eventRepository.findAllEvents(pageable);
+            return eventRepository.findAllEvents(type,pageable);
         }
 
         if(!fromDate.isEmpty() && !toDate.isEmpty()) {
             LocalDateTime _fromDate = LocalDateTime.parse(fromDate);
             LocalDateTime _toDate = LocalDateTime.parse(toDate);
             return eventRepository.findAllByfilter(centerId,eventCategoryId,
-                    eventType,doctor,_fromDate,_toDate,pageable);
+                    eventType,doctor,_fromDate,_toDate,type,pageable);
         }
 
 
         return eventRepository.findAllByfilter(centerId,eventCategoryId,
-                                    eventType,doctor,pageable);
+                                    eventType,doctor,type,pageable);
 
     }
 

@@ -29,7 +29,7 @@ public interface EventRepository extends JpaRepository<Event,Long> {
 
     @Query(value = "SELECT e.id, hc.NAME as center , e.event_date as eventDate, ec.NAME as eventCategory , " +
             "e.EVENT_TYPE as eventType,e.start_time startTime,e.end_time endTime, e2.FULL_NAME as doctor, e.status FROM Events e\n" +
-            "JOIN EVENT_PERSONNEL ep ON ep.EVENT_ID = e.ID \n" +
+            "LEFT JOIN EVENT_PERSONNEL ep ON ep.EVENT_ID = e.ID \n" +
             "LEFT JOIN EMPLOYEES e2 ON e2.ID  = ep.EMPLOYEE_ID \n" +
             "JOIN HEALTH_CENTERS hc ON hc.ID = e.CENTER_ID \n" +
             "JOIN EVENT_CATEGORIES ec ON ec.ID  = e.EVENT_CATEGORY_ID \n" +
@@ -39,9 +39,9 @@ public interface EventRepository extends JpaRepository<Event,Long> {
             "AND (:eventType IS NULL OR e.event_type = :eventType) "+
             "AND (:doctor IS NULL OR ep.employee_id = :doctor) "+
             "AND (e.event_date BETWEEN :fromDate AND :toDate) \n" +
-            "AND ep.PERSONNEL_TYPE ='main'",
+            "AND (:type IS NULL OR ep.PERSONNEL_TYPE =:type)",
             countQuery = "SELECT count(*) FROM Events e"+
-                    " JOIN EVENT_PERSONNEL ep ON ep.EVENT_ID = e.ID \n" +
+                    " LEFT JOIN EVENT_PERSONNEL ep ON ep.EVENT_ID = e.ID \n" +
                     " LEFT JOIN EMPLOYEES e2 ON e2.ID  = ep.EMPLOYEE_ID \n" +
                     " JOIN HEALTH_CENTERS hc ON hc.ID = e.CENTER_ID \n" +
                     " JOIN EVENT_CATEGORIES ec ON ec.ID  = e.EVENT_CATEGORY_ID \n" +
@@ -51,18 +51,19 @@ public interface EventRepository extends JpaRepository<Event,Long> {
                     " AND (:eventType IS NULL OR e.event_type = :eventType) "+
                     " AND (:doctor IS NULL OR ep.employee_id = :doctor) "+
                     " AND (e.event_date BETWEEN :fromDate AND :toDate) \n" +
-                    "AND ep.PERSONNEL_TYPE='main'", nativeQuery = true)
+                    "AND (:type IS NULL OR ep.PERSONNEL_TYPE=:type)", nativeQuery = true)
     Page<EventItem> findAllByfilter(@Param("centerId") String centerId,
                                     @Param("eventCategoryId") String eventCategoryId,
                                     @Param("eventType") String eventType,
                                     @Param("doctor") String doctor,
                                     @Param("fromDate") LocalDateTime fromDate,
                                     @Param("toDate") LocalDateTime toDate,
+                                    @Param("type") String type,
                                     Pageable pageable);
 
     @Query(value = "SELECT e.id, hc.NAME as center , e.event_date as eventDate, ec.NAME as eventCategory , " +
             "e.EVENT_TYPE as eventType,e.start_time startTime,e.end_time endTime, e2.FULL_NAME as doctor, e.status FROM Events e\n" +
-            "JOIN EVENT_PERSONNEL ep ON ep.EVENT_ID = e.ID \n" +
+            "LEFT JOIN EVENT_PERSONNEL ep ON ep.EVENT_ID = e.ID \n" +
             "LEFT JOIN EMPLOYEES e2 ON e2.ID  = ep.EMPLOYEE_ID \n" +
             "JOIN HEALTH_CENTERS hc ON hc.ID = e.CENTER_ID \n" +
             "JOIN EVENT_CATEGORIES ec ON ec.ID  = e.EVENT_CATEGORY_ID \n" +
@@ -71,9 +72,9 @@ public interface EventRepository extends JpaRepository<Event,Long> {
             "AND (:eventCategoryId IS NULL OR e.event_category_id = :eventCategoryId) "+
             "AND (:eventType IS NULL OR e.event_type = :eventType) "+
             "AND (:doctor IS NULL OR ep.employee_id = :doctor) \n" +
-            "AND ep.PERSONNEL_TYPE='main'",
+            "AND (:type IS NULL OR  ep.PERSONNEL_TYPE=:type)",
             countQuery = "SELECT count(*) FROM Events e" +
-                    " JOIN EVENT_PERSONNEL ep ON ep.EVENT_ID = e.ID" +
+                    " LEFT JOIN EVENT_PERSONNEL ep ON ep.EVENT_ID = e.ID" +
                     " LEFT JOIN EMPLOYEES e2 ON e2.ID = ep.EMPLOYEE_ID" +
                     " JOIN HEALTH_CENTERS hc ON hc.ID = e.CENTER_ID" +
                     " JOIN EVENT_CATEGORIES ec ON ec.ID = e.EVENT_CATEGORY_ID" +
@@ -82,11 +83,12 @@ public interface EventRepository extends JpaRepository<Event,Long> {
                     " AND (:eventCategoryId IS NULL OR e.event_category_id = :eventCategoryId)" +
                     " AND (:eventType IS NULL OR e.event_type = :eventType) " +
                     " AND (:doctor IS NULL OR ep.employee_id = :doctor)" +
-                    " AND ep.PERSONNEL_TYPE='main'", nativeQuery = true)
+                    " AND (:type IS NULL OR ep.PERSONNEL_TYPE=:type)", nativeQuery = true)
     Page<EventItem> findAllByfilter(@Param("centerId") String centerId,
                                     @Param("eventCategoryId") String eventCategoryId,
                                     @Param("eventType") String eventType,
                                     @Param("doctor") String doctor,
+                                    @Param("type") String type,
                                     Pageable pageable);
 
     @Query(value = "SELECT e.id, hc.NAME as center , e.event_date as eventDate, ec.NAME as eventCategory , " +
@@ -148,20 +150,20 @@ public interface EventRepository extends JpaRepository<Event,Long> {
     @Query(value = "SELECT e.id, hc.NAME as center , e.event_date as eventDate, ec.NAME as eventCategory , " +
             "e.EVENT_TYPE as eventType,e.start_time startTime,e.end_time endTime, e2.FULL_NAME as doctor, e.status " +
             "FROM Events e\n" +
-            "JOIN EVENT_PERSONNEL ep ON ep.EVENT_ID = e.ID \n" +
+            "LEFT JOIN EVENT_PERSONNEL ep ON ep.EVENT_ID = e.ID \n" +
             "LEFT JOIN EMPLOYEES e2 ON e2.ID  = ep.EMPLOYEE_ID \n" +
             "JOIN HEALTH_CENTERS hc ON hc.ID = e.CENTER_ID \n" +
             "JOIN EVENT_CATEGORIES ec ON ec.ID  = e.EVENT_CATEGORY_ID \n" +
             "LEFT JOIN LG_VILLAGES lv ON lv.LG_VILLAGE_ID  = e.VILLAGE_LG_VILLAGE_ID\n" +
-            "WHERE ep.PERSONNEL_TYPE ='main'",
+            "WHERE (:type IS NULL OR ep.PERSONNEL_TYPE =:type)",
     countQuery = "SELECT count(*) FROM Events e"+
-            " JOIN EVENT_PERSONNEL ep ON ep.EVENT_ID = e.ID \n" +
+            " LEFT JOIN EVENT_PERSONNEL ep ON ep.EVENT_ID = e.ID \n" +
             " LEFT JOIN EMPLOYEES e2 ON e2.ID  = ep.EMPLOYEE_ID \n" +
             " JOIN HEALTH_CENTERS hc ON hc.ID = e.CENTER_ID \n" +
             " JOIN EVENT_CATEGORIES ec ON ec.ID  = e.EVENT_CATEGORY_ID \n" +
             " LEFT JOIN LG_VILLAGES lv ON lv.LG_VILLAGE_ID  = e.VILLAGE_LG_VILLAGE_ID\n" +
-            "WHERE ep.PERSONNEL_TYPE ='main'",nativeQuery = true)
-    Page<EventItem> findAllEvents(Pageable pageable);
+            "WHERE (:type IS NULL OR ep.PERSONNEL_TYPE =:type",nativeQuery = true)
+    Page<EventItem> findAllEvents(@Param("type") String type,Pageable pageable);
 
     @Query(value = "SELECT e.id, hc.NAME as center , e.event_date as eventDate, ec.NAME as eventCategory , " +
             "e.EVENT_TYPE as eventType, e2.FULL_NAME as doctor, e.status FROM Events e\n" +
