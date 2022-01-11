@@ -221,8 +221,9 @@ public interface EventRepository extends JpaRepository<Event,Long> {
             String getName();
         }
     }
+
     @Query(value = "SELECT e FROM Event e JOIN FETCH e.eventCategory ec " +
-            " JOIN FETCH e.eventPersonnels ep " +
+            " LEFT JOIN FETCH e.eventPersonnels ep " +
             " LEFT JOIN FETCH ep.employee emp " +
             " JOIN FETCH e.center c " +
             " LEFT JOIN FETCH e.village v " +

@@ -39,7 +39,8 @@ public class EventServiceImpl implements EventService{
                                                      Pageable pageable) {
 
         String type = null;
-        if(eventType == EventService.CAMP){
+
+        if(eventType.equalsIgnoreCase(EventService.CAMP)){
             type = "main";
         }
 
