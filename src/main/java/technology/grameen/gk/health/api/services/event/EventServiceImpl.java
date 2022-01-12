@@ -123,7 +123,7 @@ public class EventServiceImpl implements EventService{
     }
 
     @Override
-    public Optional<EventRepository.LiveEvent> hasCampEventOnCenterAt(HealthCenter center, LocalDateTime eventDate) {
+    public List<EventRepository.LiveEvent> hasCampEventOnCenterAt(HealthCenter center, LocalDateTime eventDate) {
         return eventRepository.findByCenterAndEventDateAndStatus(center,eventDate,EventService.APPROVED);
     }
 

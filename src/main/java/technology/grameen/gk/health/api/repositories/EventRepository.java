@@ -129,7 +129,7 @@ public interface EventRepository extends JpaRepository<Event,Long> {
     Optional<LiveEvent> findByEventTypeAndCenterAndEventDateAndStatus(String camp, HealthCenter center, LocalDateTime eventDate,
                                                                       String status);
 
-    Optional<LiveEvent> findByCenterAndEventDateAndStatus(HealthCenter center, LocalDateTime eventDate,
+    List<LiveEvent> findByCenterAndEventDateAndStatus(HealthCenter center, LocalDateTime eventDate,
                                                                       String status);
 
     List<EventLite> findByCenterAndEventDateAndEventType(HealthCenter center, LocalDateTime eventDate,String eventType);
