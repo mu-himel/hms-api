@@ -121,6 +121,8 @@ public interface EventRepository extends JpaRepository<Event,Long> {
     interface LiveEvent{
         Long getId();
         String getEventType();
+        String getStartTime();
+        String getEndTime();
         EventDetail.EventCategory getEventCategory();
         @JsonFormat(pattern = "yyyy-MM-dd")
         LocalDateTime getEventDate();
