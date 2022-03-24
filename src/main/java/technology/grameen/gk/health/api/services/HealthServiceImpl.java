@@ -69,7 +69,7 @@ public class HealthServiceImpl implements HealthServiceInterface {
             return serviceRepository.findAllServices(serviceName, pageable);
         }
         if(!serviceCode.isEmpty()) {
-            return serviceRepository.findAllServices(serviceCode, pageable);
+            return serviceRepository.findAllByServiceCode(serviceCode, pageable);
         }
 
         if(serviceName.isEmpty() && serviceCode.isEmpty()){
