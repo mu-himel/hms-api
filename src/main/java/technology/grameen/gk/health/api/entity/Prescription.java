@@ -60,6 +60,10 @@ public class Prescription {
     @OrderBy("id ASC")
     private List<RecommendedMedicine> recommendedMedicines;
 
+    @OneToMany(mappedBy = "prescription")
+    @OrderBy("id ASC")
+    private List<PrescriptionAdvice> advices;
+
     private Boolean isNew;
     private Boolean isTeleCall = false;
     private Boolean isRefer = false;
@@ -255,6 +259,20 @@ public class Prescription {
                 this.recommendedMedicines = new ArrayList<>();
             }
             this.recommendedMedicines.add(recommendedMedicine);
+        }
+
+    }
+
+    public List<PrescriptionAdvice> getAdvices() {
+        return advices;
+    }
+
+    public void addAdvice(PrescriptionAdvice advice) {
+        if(advice != null){
+            if(this.advices == null){
+                this.advices = new ArrayList<>();
+            }
+            this.advices.add(advice);
         }
 
     }

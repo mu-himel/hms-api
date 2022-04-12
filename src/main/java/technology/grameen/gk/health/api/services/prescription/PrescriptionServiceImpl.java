@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import technology.grameen.gk.health.api.entity.*;
-import technology.grameen.gk.health.api.projection.PatientInvoiceDetail;
 import technology.grameen.gk.health.api.projection.PrescriptionDetail;
 import technology.grameen.gk.health.api.projection.PrescriptionListItem;
 import technology.grameen.gk.health.api.repositories.*;
@@ -15,10 +14,7 @@ import technology.grameen.gk.health.api.services.invoice.PatientInvoiceService;
 
 import java.time.LocalDateTime;
 import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class PrescriptionServiceImpl implements PrescriptionService {
@@ -31,6 +27,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     private GeneralExaminationRepository generalExaminationRepository;
     private RecommendedTestRepository recommendedTestRepository;
     private RecommendedMedicineRepository recommendedMedicineRepository;
+    private PrescriptionAdviceRepository prescriptionAdviceRepository;
     private PatientInvoiceService patientInvoiceService;
 
     PrescriptionServiceImpl(PrescriptionRepository prescriptionRepository,
@@ -39,6 +36,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
                             GeneralExaminationRepository generalExaminationRepository,
                             RecommendedTestRepository recommendedTestRepository,
                             RecommendedMedicineRepository recommendedMedicineRepository,
+                            PrescriptionAdviceRepository prescriptionAdviceRepository,
                             PatientInvoiceService patientInvoiceService){
 
         this.prescriptionRepository = prescriptionRepository;
@@ -47,6 +45,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         this.generalExaminationRepository = generalExaminationRepository;
         this.recommendedTestRepository = recommendedTestRepository;
         this.recommendedMedicineRepository = recommendedMedicineRepository;
+        this.prescriptionAdviceRepository = prescriptionAdviceRepository;
         this.patientInvoiceService = patientInvoiceService;
     }
 
@@ -113,6 +112,12 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
             }
 
+            if (prescription.getAdvices().size() > 0) {
+                prescription.getAdvices().forEach((advice) ->{
+                    advice.setPrescription(prescription);
+                    prescriptionAdviceRepository.save(advice);
+                });
+            }
 
             Optional<PatientServiceDetail> _patientServiceDetail=null;
 
