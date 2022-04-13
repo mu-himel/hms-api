@@ -93,6 +93,7 @@ public interface PrescriptionDetail {
 
     List<RecommendedMedicine> getRecommendedMedicines();
     List<RecommendedTest> getRecommendedTests();
+    List<PrescriptionAdvice> getAdvices();
     String getSymptoms();
     String getDiseaseProfile();
 
