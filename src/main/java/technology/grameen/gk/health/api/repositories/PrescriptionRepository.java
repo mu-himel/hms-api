@@ -234,7 +234,7 @@ public interface PrescriptionRepository extends JpaRepository<Prescription,Long>
 
     Optional<PrescriptionDetail> findByPrescriptionPatientAndPatientInvoice(Patient patient, PatientInvoice invoice);
 
-    @Query(value = "SELECT count(p.id) from prescriptions p WHERE p.created_at LIKE :today||'%' AND p.center_id=:centerId", nativeQuery = true)
+    @Query(value = "SELECT count(p.id) from prescriptions p WHERE to_char(p.created_at,'YYYY-MM-DD') = :today AND p.center_id=:centerId", nativeQuery = true)
     Long getMaxId(@Param("centerId") Long centerId, @Param("today") String toDate);
 
 }
