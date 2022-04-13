@@ -54,7 +54,7 @@ public class FeedingRuleController{
     }
 
     @PostMapping
-    public ResponseEntity<IResponse> addRule(FeedingRule rule){
+    public ResponseEntity<IResponse> addRule(@RequestBody FeedingRule rule){
         return new ResponseEntity<>(
                 new EntityResponse<>(
                         HttpStatus.CREATED.value(),
