@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import technology.grameen.gk.health.api.entity.Patient;
 import technology.grameen.gk.health.api.entity.PatientInvoice;
 import technology.grameen.gk.health.api.entity.Prescription;
+import technology.grameen.gk.health.api.exceptions.CustomException;
 import technology.grameen.gk.health.api.projection.PrescriptionDetail;
 import technology.grameen.gk.health.api.projection.PrescriptionListItem;
 
@@ -13,7 +14,7 @@ import java.util.Optional;
 
 public interface PrescriptionService {
 
-    Prescription savePrescription(Prescription prescription);
+    Prescription savePrescription(Prescription prescription) throws CustomException;
 
     Page<PrescriptionListItem> getPrescriptions(Pageable pageable);
     Page<PrescriptionListItem> getPrescriptions(String pNumber,String fullName, String date, Pageable pageable);

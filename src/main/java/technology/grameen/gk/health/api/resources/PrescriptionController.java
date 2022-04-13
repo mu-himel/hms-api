@@ -10,6 +10,7 @@ import technology.grameen.gk.health.api.entity.Patient;
 import technology.grameen.gk.health.api.entity.PatientDiseaseProfile;
 import technology.grameen.gk.health.api.entity.PatientInvoice;
 import technology.grameen.gk.health.api.entity.Prescription;
+import technology.grameen.gk.health.api.exceptions.CustomException;
 import technology.grameen.gk.health.api.requests.PrescriptionCreateRequest;
 import technology.grameen.gk.health.api.responses.EntityResponse;
 import technology.grameen.gk.health.api.responses.IResponse;
@@ -36,7 +37,7 @@ public class PrescriptionController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<IResponse> addPrescription(@RequestBody PrescriptionCreateRequest createRequest){
+    public ResponseEntity<IResponse> addPrescription(@RequestBody PrescriptionCreateRequest createRequest) throws CustomException {
         Prescription prescription = createRequest.getPrescription();
         List<PatientDiseaseProfile> patientDiseaseProfile = createRequest.getPatientDiseaseProfile();
         Prescription newPrescription = prescriptionService.savePrescription(createRequest.getPrescription());

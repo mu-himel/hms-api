@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import technology.grameen.gk.health.api.entity.*;
+import technology.grameen.gk.health.api.exceptions.CustomException;
 import technology.grameen.gk.health.api.projection.PrescriptionDetail;
 import technology.grameen.gk.health.api.projection.PrescriptionListItem;
 import technology.grameen.gk.health.api.repositories.*;
@@ -51,7 +52,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
     @Override
     @Transactional
-    public Prescription savePrescription(Prescription prescription) {
+    public Prescription savePrescription(Prescription prescription) throws CustomException {
 
         if(prescription.getId()==null) {
             prescription.setpNumber(getPrescriptionNumber(prescription.getCenter()));
@@ -204,14 +205,20 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     }
 
     @Transactional
-    String getPrescriptionNumber(HealthCenter center){
+    String getPrescriptionNumber(HealthCenter center) throws CustomException {
+        if(center.getId() == null){
+            throw new CustomException("Center Not found");
+        }
         Calendar calendar = Calendar.getInstance();
         int year = (calendar.get(Calendar.YEAR));
         int month = (calendar.get(Calendar.MONTH));
         int date = (calendar.get(Calendar.DATE));
+        String todayDate = String.valueOf(year);
+        todayDate += "-" + (((month+1)<10)? "0"+(month+1) : String.valueOf(month+1));
+        todayDate += "-" + ((date<10)? "0"+date : String.valueOf(date));
         Long maxId = 0L;
         try {
-            maxId = prescriptionRepository.getMaxId(center.getId());
+            maxId = prescriptionRepository.getMaxId(center.getId(),todayDate);
             maxId++;
         }catch(Exception ex){
             logger.error(ex.getLocalizedMessage());
