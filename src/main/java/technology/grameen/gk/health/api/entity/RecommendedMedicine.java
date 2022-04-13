@@ -23,7 +23,9 @@ public class RecommendedMedicine {
 
     private String dose;
 
-    private Integer duration;
+    private String instruction;
+
+    private String duration;
 
     private String durationUnit;
 
@@ -54,11 +56,19 @@ public class RecommendedMedicine {
         this.medicine = medicine;
     }
 
-    public Integer getDuration() {
+    public String getInstruction() {
+        return instruction;
+    }
+
+    public void setInstruction(String instruction) {
+        this.instruction = instruction;
+    }
+
+    public String getDuration() {
         return duration;
     }
 
-    public void setDuration(Integer duration) {
+    public void setDuration(String duration) {
         this.duration = duration;
     }
 

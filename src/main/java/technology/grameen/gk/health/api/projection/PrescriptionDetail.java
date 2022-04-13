@@ -41,7 +41,8 @@ public interface PrescriptionDetail {
     interface RecommendedMedicine{
         Long getId();
         Medicine getMedicine();
-        Integer getDuration();
+        String getInstruction();
+        String getDuration();
         String getDurationUnit();
         Integer getRule();
         String getDose();
