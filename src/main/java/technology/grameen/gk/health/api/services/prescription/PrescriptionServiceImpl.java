@@ -173,7 +173,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
             if(pNumber.isEmpty() && fullName.isEmpty() && !date.isEmpty()){
                 result = prescriptionRepository.findAllPrescriptionsByDate(regionCode,date,pageable);
             }
-        }else if(regionCode.isEmpty() && !centerCode.isEmpty()){
+        }else if((regionCode.isEmpty() || !regionCode.isEmpty()) && !centerCode.isEmpty()){
             if(pNumber.isEmpty() && fullName.isEmpty() && date.isEmpty()){
                 result = prescriptionRepository.findAllPrescriptionsByCenter(centerCode,pageable);
             }
