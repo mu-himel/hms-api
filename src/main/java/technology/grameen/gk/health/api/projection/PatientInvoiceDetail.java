@@ -39,6 +39,9 @@ public interface PatientInvoiceDetail {
         String getFullName();
         CardMemberCardRegistration getCardRegistration();
         Patient getPatient();
+        Integer getAge();
+        String getAgeMonth();
+        String getAgeDays();
 
     }
 
@@ -70,6 +73,8 @@ public interface PatientInvoiceDetail {
         String getGender();
         String getMobileNumber();
         String getAge();
+        String getAgeMonth();
+        String getAgeDays();
         Boolean getGB();
         String getBloodPressure();
         String getPulse();
