@@ -35,6 +35,8 @@ public class Patient {
     private String secondaryMobileNumber;
     private String email;
     private String age;
+    private String ageMonth;
+    private String ageDays;
 
     private Boolean isGB;
 
@@ -403,5 +405,21 @@ public class Patient {
 
     public void setWeight(String weight) {
         this.weight = weight;
+    }
+
+    public String getAgeMonth() {
+        return ageMonth;
+    }
+
+    public void setAgeMonth(String ageMonth) {
+        this.ageMonth = ageMonth;
+    }
+
+    public String getAgeDays() {
+        return ageDays;
+    }
+
+    public void setAgeDays(String ageDays) {
+        this.ageDays = ageDays;
     }
 }
