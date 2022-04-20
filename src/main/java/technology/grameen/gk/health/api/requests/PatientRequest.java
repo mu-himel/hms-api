@@ -30,6 +30,8 @@ public class PatientRequest {
     private String secondaryMobileNumber;
     private String email;
     private Integer age;
+    private String ageMonth;
+    private String ageDays;
     private LocalDate dob;
 
     private HealthCenter center;
@@ -235,5 +237,21 @@ public class PatientRequest {
 
     public void setSecondaryMobileNumber(String secondaryMobileNumber) {
         this.secondaryMobileNumber = secondaryMobileNumber;
+    }
+
+    public String getAgeMonth() {
+        return ageMonth;
+    }
+
+    public void setAgeMonth(String ageMonth) {
+        this.ageMonth = ageMonth;
+    }
+
+    public String getAgeDays() {
+        return ageDays;
+    }
+
+    public void setAgeDays(String ageDays) {
+        this.ageDays = ageDays;
     }
 }

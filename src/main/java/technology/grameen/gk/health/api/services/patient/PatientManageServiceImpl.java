@@ -176,6 +176,8 @@ public class PatientManageServiceImpl implements PatientManageService {
         patient.setMaritalStatus(req.getMaritalStatus());
         patient.setGender(req.getGender());
         patient.setAge(String.valueOf(req.getAge()));
+        patient.setAgeMonth(req.getAgeMonth());
+        patient.setAgeDays(req.getAgeDays());
         patient.setDob(req.getDob());
         Village village = null;
         if(req.getVillage() != null && req.getVillage().getLgVillageId() != null){
@@ -448,6 +450,8 @@ public class PatientManageServiceImpl implements PatientManageService {
             patient.setGB(false);
         }
         patient.setAge(String.valueOf(exPatient.getAge()));
+        patient.setAgeMonth(exPatient.getAgeMonth());
+        patient.setAgeDays(exPatient.getAgeDays());
         patient.setDob(exPatient.getDob());
         patient.setCreatedBy(exPatient.getCreatedBy());
         patient.setVillage(exPatient.getVillage());

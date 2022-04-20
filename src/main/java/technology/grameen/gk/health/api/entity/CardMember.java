@@ -18,6 +18,8 @@ public class CardMember {
 
     private String fullName;
     private Integer age;
+    private String ageMonth;
+    private String ageDays;
     private LocalDate dob;
     private String gender;
     private String bloodGroup;
@@ -168,5 +170,21 @@ public class CardMember {
 
     public void setDob(LocalDate dob) {
         this.dob = dob;
+    }
+
+    public String getAgeMonth() {
+        return ageMonth;
+    }
+
+    public void setAgeMonth(String ageMonth) {
+        this.ageMonth = ageMonth;
+    }
+
+    public String getAgeDays() {
+        return ageDays;
+    }
+
+    public void setAgeDays(String ageDays) {
+        this.ageDays = ageDays;
     }
 }

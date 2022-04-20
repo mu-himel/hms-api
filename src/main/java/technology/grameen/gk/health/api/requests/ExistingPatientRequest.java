@@ -11,6 +11,8 @@ import java.util.List;
 public class ExistingPatientRequest {
 
     private Integer age;
+    private String ageMonth;
+    private String ageDays;
     private HealthCenter center;
     private Village village;
     private LocalDate dob;
@@ -116,4 +118,21 @@ public class ExistingPatientRequest {
     public void setVillage(Village village) {
         this.village = village;
     }
+
+    public String getAgeMonth() {
+        return ageMonth;
+    }
+
+    public void setAgeMonth(String ageMonth) {
+        this.ageMonth = ageMonth;
+    }
+
+    public String getAgeDays() {
+        return ageDays;
+    }
+
+    public void setAgeDays(String ageDays) {
+        this.ageDays = ageDays;
+    }
+
 }

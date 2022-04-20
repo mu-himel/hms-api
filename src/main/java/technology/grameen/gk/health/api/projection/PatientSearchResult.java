@@ -102,6 +102,8 @@ public interface PatientSearchResult {
                 Patient getPatient();
                 String getGender();
                 String getAge();
+                String getAgeMonth();
+                String getAgeDays();
                 @JsonFormat(pattern = "yyyy-MM-dd")
                 LocalDate getDob();
                 String getRelationWithPatient();
@@ -129,6 +131,8 @@ public interface PatientSearchResult {
         String getSecondaryMobileNumber();
         String getEmail();
         String getAge();
+        String getAgeMonth();
+        String getAgeDays();
         @JsonFormat(pattern = "yyyy-MM-dd")
         LocalDate getDob();
         CardRegistration getRegistration();
