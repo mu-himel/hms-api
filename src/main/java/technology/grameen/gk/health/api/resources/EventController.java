@@ -40,6 +40,7 @@ public class EventController {
 
     @GetMapping("")
     public ResponseEntity<IResponse> getEvents(
+            @RequestParam Optional<String> regionCode,
              @RequestParam Optional<String> centerId,
              @RequestParam Optional<String> eventCategoryId,
                                                @RequestParam Optional<String> eventType,
@@ -66,6 +67,7 @@ public class EventController {
         return new ResponseEntity<>(new EntityResponse<>(
                 HttpStatus.OK.value(),
                 eventService.getEvents(
+                        regionCode.orElse(null),
                         centerId.orElse(null),
                         eventCategoryId.orElse(null),
                         eventType.orElse(null),

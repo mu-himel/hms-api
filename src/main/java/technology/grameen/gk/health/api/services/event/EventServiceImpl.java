@@ -11,6 +11,7 @@ import technology.grameen.gk.health.api.entity.HealthCenter;
 import technology.grameen.gk.health.api.exceptions.CustomException;
 import technology.grameen.gk.health.api.repositories.EventRepository;
 import technology.grameen.gk.health.api.requests.EventRequest;
+import technology.grameen.gk.health.api.services.HealthCenterService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -22,21 +23,25 @@ public class EventServiceImpl implements EventService{
 
     private EventRepository eventRepository;
     private EventPersonnelService eventPersonnelService;
+    private HealthCenterService healthCenterService;
 
-    public EventServiceImpl(EventRepository eventRepository, EventPersonnelService eventPersonnelService) {
+    public EventServiceImpl(EventRepository eventRepository,
+                            EventPersonnelService eventPersonnelService,
+                            HealthCenterService healthCenterService) {
         this.eventRepository = eventRepository;
         this.eventPersonnelService = eventPersonnelService;
+        this.healthCenterService = healthCenterService;
     }
 
     @Override
     public Page<EventRepository.EventItem> getEvents(
-                                                     String centerId,
-                                                     String eventCategoryId,
-                                                     String eventType,
-                                                     String doctor,
-                                                     String fromDate,
-                                                     String toDate,
-                                                     Pageable pageable) {
+            String regionCode, String centerId,
+            String eventCategoryId,
+            String eventType,
+            String doctor,
+            String fromDate,
+            String toDate,
+            Pageable pageable) {
 
         String type = null;
 
@@ -44,14 +49,23 @@ public class EventServiceImpl implements EventService{
             type = "main";
         }
 
-        if(centerId.isEmpty() && eventCategoryId.isEmpty() && eventType.isEmpty() &&
+
+
+        if(regionCode.isEmpty() && centerId.isEmpty() && eventCategoryId.isEmpty() && eventType.isEmpty() &&
         doctor.isEmpty() && fromDate.isEmpty() && toDate.isEmpty()){
             return eventRepository.findAllEvents(type,pageable);
         }
 
+
+
         if(!fromDate.isEmpty() && !toDate.isEmpty()) {
             LocalDateTime _fromDate = LocalDateTime.parse(fromDate);
             LocalDateTime _toDate = LocalDateTime.parse(toDate);
+            if(!regionCode.isEmpty() && centerId.isEmpty()){
+                List<Long> centerIds = healthCenterService.getCenterIdByThirdLevel(regionCode);
+                return eventRepository.findAllByfilter(centerIds,eventCategoryId,
+                        eventType,doctor,_fromDate,_toDate,type,pageable);
+            }
             return eventRepository.findAllByfilter(centerId,eventCategoryId,
                     eventType,doctor,_fromDate,_toDate,type,pageable);
         }

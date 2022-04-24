@@ -27,7 +27,7 @@ public interface EventService {
 
     List<EventRepository.EventLite> hasEventForDoctorAt(Employee doctor, LocalDateTime eventDate);
 
-    Page<EventRepository.EventItem> getEvents(String centerId,
+    Page<EventRepository.EventItem> getEvents(String regionCode, String centerId,
                                               String eventCategoryId,
                                               String eventType,
                                               String doctor,
