@@ -70,7 +70,11 @@ public class EventServiceImpl implements EventService{
                     eventType,doctor,_fromDate,_toDate,type,pageable);
         }
 
-
+        if(!regionCode.isEmpty() && centerId.isEmpty()){
+            List<Long> centerIds = healthCenterService.getCenterIdByThirdLevel(regionCode);
+            return eventRepository.findAllByfilter(centerIds,eventCategoryId,
+                    eventType,doctor,type,pageable);
+        }
         return eventRepository.findAllByfilter(centerId,eventCategoryId,
                                     eventType,doctor,type,pageable);
 
