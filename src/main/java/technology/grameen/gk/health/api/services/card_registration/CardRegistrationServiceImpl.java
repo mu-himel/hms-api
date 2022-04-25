@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import technology.grameen.gk.health.api.entity.CardRegistration;
 import technology.grameen.gk.health.api.entity.HealthCenter;
 import technology.grameen.gk.health.api.entity.Patient;
+import technology.grameen.gk.health.api.exceptions.CustomException;
 import technology.grameen.gk.health.api.repositories.CardMemberRepository;
 import technology.grameen.gk.health.api.repositories.CardRegistrationRepository;
 import technology.grameen.gk.health.api.services.patient.PatientManageService;
@@ -86,6 +87,13 @@ public class CardRegistrationServiceImpl  implements  CardRegistrationService{
 
         CardRegistration cardRegistration = patient.getRegistration();
         if(cardRegistration != null) {
+
+            List<CardRegistration> cardRegistrations = getCardRegistrationsByNumber(cardRegistration.getCardNumber());
+
+            if(cardRegistrations.size()>0) {
+                throw new CustomException("Card number already exist with number "+cardRegistration.getCardNumber());
+            }
+
             Patient _patient = patientService.getReference(patient.getId());
 
 
