@@ -88,12 +88,6 @@ public class CardRegistrationServiceImpl  implements  CardRegistrationService{
         CardRegistration cardRegistration = patient.getRegistration();
         if(cardRegistration != null) {
 
-            List<CardRegistration> cardRegistrations = getCardRegistrationsByNumber(cardRegistration.getCardNumber());
-
-            if(cardRegistrations.size()>0) {
-                throw new CustomException("Card number already exist with number "+cardRegistration.getCardNumber());
-            }
-
             Patient _patient = patientService.getReference(patient.getId());
 
 
