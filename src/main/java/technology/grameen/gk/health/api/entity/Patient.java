@@ -40,6 +40,7 @@ public class Patient {
 
     private Boolean isGB;
 
+    @Column(nullable = true)
     private LocalDate dob;
 
     private Boolean isLegacy;
