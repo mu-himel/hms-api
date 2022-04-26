@@ -67,7 +67,9 @@ public class ExistingPatientRequest {
     }
 
     public void setDob(String dob) {
-        this.dob = LocalDate.parse(dob);
+        if(dob != null) {
+            this.dob = LocalDate.parse(dob);
+        }
     }
 
 
