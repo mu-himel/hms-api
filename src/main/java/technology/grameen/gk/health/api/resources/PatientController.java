@@ -58,8 +58,8 @@ public class PatientController {
     @PostMapping(value = "/add")
     public ResponseEntity<IResponse>addPatient(@RequestBody PatientRequest patient) throws Exception {
 
-            Patient newPatient = patientManageService.addPatient(patient);
-            return new ResponseEntity<>(new PatientCreationResponse(HttpStatus.OK.value(),newPatient), HttpStatus.OK);
+        Patient newPatient = patientManageService.addPatient(patient);
+        return new ResponseEntity<>(new PatientCreationResponse(HttpStatus.OK.value(),newPatient), HttpStatus.OK);
     }
 
     @PostMapping(value = "/add/from-member")

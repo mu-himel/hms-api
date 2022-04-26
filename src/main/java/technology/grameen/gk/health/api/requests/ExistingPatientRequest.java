@@ -1,9 +1,6 @@
 package technology.grameen.gk.health.api.requests;
 
-import technology.grameen.gk.health.api.entity.CardRegistration;
-import technology.grameen.gk.health.api.entity.Employee;
-import technology.grameen.gk.health.api.entity.HealthCenter;
-import technology.grameen.gk.health.api.entity.Village;
+import technology.grameen.gk.health.api.entity.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,6 +16,7 @@ public class ExistingPatientRequest {
     private String fullName;
     private Boolean gb;
     private String gender;
+    private HaHome home;
 
     private CardRegistration registration;
 
@@ -135,4 +133,11 @@ public class ExistingPatientRequest {
         this.ageDays = ageDays;
     }
 
+    public HaHome getHome() {
+        return home;
+    }
+
+    public void setHome(HaHome home) {
+        this.home = home;
+    }
 }

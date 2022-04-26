@@ -456,6 +456,7 @@ public class PatientManageServiceImpl implements PatientManageService {
         patient.setCreatedBy(exPatient.getCreatedBy());
         patient.setVillage(exPatient.getVillage());
         patient.setLegacy(true);
+        patient.setHome(exPatient.getHome());
         Patient p = patientRepository.save(patient);
 
         return p;
