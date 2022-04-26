@@ -17,6 +17,8 @@ public class ExistingPatientRequest {
     private Boolean gb;
     private String gender;
     private HaHome home;
+    private String guardianName;
+    private String mobileNumber;
 
     private CardRegistration registration;
 
@@ -139,5 +141,21 @@ public class ExistingPatientRequest {
 
     public void setHome(HaHome home) {
         this.home = home;
+    }
+
+    public String getGuardianName() {
+        return guardianName;
+    }
+
+    public void setGuardianName(String guardianName) {
+        this.guardianName = guardianName;
+    }
+
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
+
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
     }
 }
