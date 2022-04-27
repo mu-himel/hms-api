@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface UnionRepository extends JpaRepository<Union, Long> {
-    @Query(value = "SELECT u FROM Union u WHERE u.thanaId = : thanaId " +
+    @Query(value = "SELECT u FROM Union u WHERE u.thanaId = :thanaId " +
             "ORDER BY u.unionName ASC")
     List<Union> findByThanaId(@Param("thanaId") Long thanaId);
 }
