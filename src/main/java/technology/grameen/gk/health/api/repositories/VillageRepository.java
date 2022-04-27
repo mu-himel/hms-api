@@ -19,7 +19,8 @@ public interface VillageRepository extends JpaRepository<Village, Long> {
     @Query(value = "SELECT v from Village v left join fetch v.center c where v.id=:id")
     Optional<Village> findById(@Param("id") Long villageId);
 
-    @Query(value = "select v from Village v LEFT join fetch v.center c where v.unionId=:unionId")
+    @Query(value = "select v from Village v LEFT join fetch v.center c where v.unionId=:unionId " +
+            "ORDER BY v.villageName ASC")
     List<Village> findByUnionId(@Param("unionId") Long unionId);
 
     @Query(value = "select v from Village v join fetch v.center c where c=:center")
