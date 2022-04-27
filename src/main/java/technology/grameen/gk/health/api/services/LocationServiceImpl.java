@@ -46,7 +46,7 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public List<Division> getDivisionList() {
-        return divisionRepository.findAll();
+        return divisionRepository.findAllByOrderByDivisionNameAsc();
     }
 
     @Override
