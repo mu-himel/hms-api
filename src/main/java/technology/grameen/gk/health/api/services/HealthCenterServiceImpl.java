@@ -97,7 +97,7 @@ public class HealthCenterServiceImpl implements HealthCenterService {
 
     @Override
     public List<HealthCenter> getCentersByThirdLevel(String thirdLevel) {
-        return healthCenterRepository.findByThirdLevel(thirdLevel);
+        return healthCenterRepository.findByThirdLevelAndIsActive(thirdLevel,true);
     }
 
     @Override

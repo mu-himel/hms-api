@@ -49,4 +49,6 @@ public interface EmployeeRepository extends JpaRepository<Employee,Long> {
     List<EmployeeItem> findAllByRoleIn(List<String> role);
 
     List<EmployeeItem> findAllByRoleContainingIgnoreCaseAndCenter(String role, HealthCenter healthCenter);
+
+    List<EmployeeItem> findAllByRoleInAndCenter_IdIn(List<String> role, List<Long> centerIds);
 }

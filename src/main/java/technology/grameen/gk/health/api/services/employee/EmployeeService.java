@@ -35,4 +35,6 @@ public interface EmployeeService {
     Optional<EmployeeDetailInfo> getEmployeeById(Long employeeId);
 
     List<EmployeeItem> getEmployeeByDesignationAndCenter(String designation, Long centerId);
+
+    List<EmployeeItem> getEmployeeByRolesAndThirdLevelCode(List<String> role, Optional<String> thirdLevelCode);
 }

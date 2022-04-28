@@ -13,6 +13,7 @@ import technology.grameen.gk.health.api.responses.EmployeeDetailInfo;
 import technology.grameen.gk.health.api.responses.EntityResponse;
 import technology.grameen.gk.health.api.responses.IResponse;
 import technology.grameen.gk.health.api.responses.SimpleResponse;
+import technology.grameen.gk.health.api.services.HealthCenterService;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,13 +24,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     private EmployeeRepository employeeRepository;
     private JobHistoryService jobHistoryService;
     private EmployeeDetailService employeeDetailService;
+    private HealthCenterService healthCenterService;
 
     public EmployeeServiceImpl(EmployeeRepository employeeRepository,
                                JobHistoryService jobHistoryService,
-                               EmployeeDetailService employeeDetailService) {
+                               EmployeeDetailService employeeDetailService,
+                               HealthCenterService healthCenterService) {
         this.employeeRepository = employeeRepository;
         this.jobHistoryService = jobHistoryService;
         this.employeeDetailService = employeeDetailService;
+        this.healthCenterService = healthCenterService;
     }
 
     @Override
@@ -100,6 +104,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<EmployeeItem> getEmployeeByRoles(List<String> role) {
+        return employeeRepository.findAllByRoleIn(role);
+    }
+
+    @Override
+    public List<EmployeeItem> getEmployeeByRolesAndThirdLevelCode(List<String> role, Optional<String> thirdLevelCode) {
+        if(thirdLevelCode.isPresent()) {
+            List<Long> centerIds = healthCenterService.getCenterIdByThirdLevel(thirdLevelCode.get());
+            return employeeRepository.findAllByRoleInAndCenter_IdIn(role, centerIds);
+        }
         return employeeRepository.findAllByRoleIn(role);
     }
 

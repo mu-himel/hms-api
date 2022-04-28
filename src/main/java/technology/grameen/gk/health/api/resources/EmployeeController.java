@@ -182,10 +182,11 @@ public class EmployeeController {
     }
 
     @GetMapping("/sonographer")
-    public ResponseEntity<IResponse> getByDesignation(@RequestParam("roles") List<String> role){
+    public ResponseEntity<IResponse> getByDesignation(@RequestParam("roles") List<String> role,
+                                                      @RequestParam("thirdLevelCode") Optional<String> thirdLevelCode){
         return new ResponseEntity<>(new EntityCollectionResponse<>(
                 HttpStatus.OK.value(),
-                employeeService.getEmployeeByRoles(role)
+                employeeService.getEmployeeByRolesAndThirdLevelCode(role,thirdLevelCode)
         ), HttpStatus.OK);
     }
 

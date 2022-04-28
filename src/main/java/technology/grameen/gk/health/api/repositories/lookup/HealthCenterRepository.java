@@ -38,6 +38,7 @@ public interface HealthCenterRepository extends JpaRepository<HealthCenter,Long>
     List<HealthCenter> findByNameContainingIgnoreCase(String keyword);
 
     List<HealthCenter> findByThirdLevel(String thirdLevel);
+    List<HealthCenter> findByThirdLevelAndIsActive(String thirdLevel, Boolean isActive);
 
     List<HealthCenter> findByOfficeTypeId(Integer officeTypeId);
 
