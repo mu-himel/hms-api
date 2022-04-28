@@ -11,14 +11,15 @@ import technology.grameen.gk.health.api.repositories.PatientInvoiceRepository;
 import technology.grameen.gk.health.api.repositories.patient.PatientServiceRepository;
 import technology.grameen.gk.health.api.requests.InvoiceCreate;
 import technology.grameen.gk.health.api.requests.PatientInvoiceRequest;
+import technology.grameen.gk.health.api.services.HealthCenterService;
 import technology.grameen.gk.health.api.services.card_registration.CardRegistrationService;
 import technology.grameen.gk.health.api.services.event.EventService;
 import technology.grameen.gk.health.api.services.patient.PatientManageService;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @org.springframework.stereotype.Service
 public class PatientInvoiceServiceImpl implements PatientInvoiceService {
@@ -28,6 +29,7 @@ public class PatientInvoiceServiceImpl implements PatientInvoiceService {
     private CardRegistrationService cardRegistrationService;
     private EventService eventService;
     private PatientManageService patientManageService;
+    private HealthCenterService healthCenterService;
     private boolean patientNotFound = false;
     private String patientNotFoundMessage = null;
 
@@ -35,13 +37,15 @@ public class PatientInvoiceServiceImpl implements PatientInvoiceService {
                               PatientServiceRepository patientServiceRepository,
                               CardRegistrationService cardRegistrationService,
                               EventService eventService,
-                              PatientManageService patientManageService){
+                              PatientManageService patientManageService,
+                              HealthCenterService healthCenterService){
 
         this.invoiceRepository = invoiceRepository;
         this.patientServiceRepository = patientServiceRepository;
         this.cardRegistrationService = cardRegistrationService;
         this.eventService = eventService;
         this.patientManageService = patientManageService;
+        this.healthCenterService = healthCenterService;
     }
 
     @Override
@@ -78,6 +82,27 @@ public class PatientInvoiceServiceImpl implements PatientInvoiceService {
     @Override
     public List<PrescriptionInvoiceAutoComplete> getLabTestInvoiceByNumbers(Integer centerId) {
         return invoiceRepository.getLabTestInvoiceNumbers(centerId);
+    }
+
+    @Override
+    public List<PrescriptionInvoiceAutoComplete> getLabTestInvoiceByCenterAndRole(Optional<Integer> officeTypeId,
+                                                                                  Optional<Long> centerId,
+                                                                                  Optional<String> role) {
+
+        if(officeTypeId.isPresent() && centerId.isPresent() && role.isPresent()) {
+            if(officeTypeId.get() == 5 && role.get().toLowerCase().contains("sonographer")) {
+               Optional<HealthCenter> healthCenterOptional = healthCenterService.findById(centerId.get());
+               if(healthCenterOptional.isPresent()) {
+                   List<Long> centerIds = healthCenterService.getCenterIdByThirdLevel(healthCenterOptional
+                                                                                                .get()
+                                                                                                .getThirdLevel());
+                   return invoiceRepository.getLabTestInvoiceNumbersForUsg(centerIds);
+               }
+            }else{
+               return getLabTestInvoiceByNumbers(centerId.get().intValue());
+            }
+        }
+        return new ArrayList<>();
     }
 
     @Override

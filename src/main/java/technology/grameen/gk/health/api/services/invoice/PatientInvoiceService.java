@@ -1,6 +1,5 @@
 package technology.grameen.gk.health.api.services.invoice;
 
-import technology.grameen.gk.health.api.entity.Patient;
 import technology.grameen.gk.health.api.entity.PatientInvoice;
 import technology.grameen.gk.health.api.entity.PatientServiceDetail;
 import technology.grameen.gk.health.api.entity.Service;
@@ -13,7 +12,6 @@ import technology.grameen.gk.health.api.requests.InvoiceCreate;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public interface PatientInvoiceService {
 
@@ -40,4 +38,8 @@ public interface PatientInvoiceService {
     List<PrescriptionInvoiceAutoComplete> getLabTestInvoiceByNumbers(Integer centerId);
 
     Optional<?> refund(PatientServiceDetail detail) throws CustomException;
+
+    List<PrescriptionInvoiceAutoComplete> getLabTestInvoiceByCenterAndRole(Optional<Integer> officeTypeId,
+                                                                           Optional<Long> centerId,
+                                                                           Optional<String> role);
 }

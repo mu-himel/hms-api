@@ -97,11 +97,13 @@ public class PatientInvoiceController {
         ),HttpStatus.OK);
     }
 
-    @GetMapping("/lab-test-invoice-numbers/{centerId}")
-    public ResponseEntity<IResponse> getLabTestInvoice(@PathVariable("centerId") Integer centerId){
+    @GetMapping("/lab-test-invoice-numbers")
+    public ResponseEntity<IResponse> getLabTestInvoice(@RequestParam("centerId") Optional<Long> centerId,
+                                                       @RequestParam("officeTypeId") Optional<Integer> officeTypeId,
+                                                       @RequestParam("role") Optional<String> role){
         return new ResponseEntity<>(new EntityCollectionResponse<>(
                 HttpStatus.OK.value(),
-                patientInvoiceService.getLabTestInvoiceByNumbers(centerId)
+                patientInvoiceService.getLabTestInvoiceByCenterAndRole(officeTypeId, centerId, role)
         ), HttpStatus.OK);
     }
 
