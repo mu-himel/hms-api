@@ -182,7 +182,7 @@ public class DashboardStatisticServiceImpl implements DashboardStatisticService{
                 map.put("ultrasono",ssReportRepository.getUltraSonoStats(fromDate));
                 map.put("card",ssReportRepository.getCardRegStats(fromDate));
                 map.put("other",ssReportRepository.getOtherIncomeStats(fromDate));
-
+                map.put("centerCount",0);
             }else{
 
                 map.put("prescription",ssReportRepository.getPrescriptionStats(centers,  fromDate));
@@ -190,7 +190,7 @@ public class DashboardStatisticServiceImpl implements DashboardStatisticService{
                 map.put("ultrasono",ssReportRepository.getUltraSonoStats(centers, fromDate));
                 map.put("card",ssReportRepository.getCardRegStats(centers, fromDate));
                 map.put("other",ssReportRepository.getOtherIncomeStats(centers,fromDate));
-
+                map.put("centerCount",centers.size());
             }
 
         }else if(type.equalsIgnoreCase("monthly")){
@@ -200,14 +200,14 @@ public class DashboardStatisticServiceImpl implements DashboardStatisticService{
                 map.put("ultrasono", ssReportRepository.getUltraSonoMonthlyStats(fromDate));
                 map.put("card", ssReportRepository.getCardRegMonthlyStats(fromDate));
                 map.put("other",ssReportRepository.getOtherIncomeMonthlyStats(fromDate));
-
+                map.put("centerCount",0);
             }else{
                 map.put("prescription", ssReportRepository.getPrescriptionMonthlyStats(centers, fromDate));
                 map.put("labtest", ssReportRepository.getLabTestMonthlyStats(centers,fromDate));
                 map.put("ultrasono", ssReportRepository.getUltraSonoMonthlyStats(centers, fromDate));
                 map.put("card", ssReportRepository.getCardRegMonthlyStats(centers, fromDate));
                 map.put("other",ssReportRepository.getOtherIncomeMonthlyStats(centers,fromDate));
-
+                map.put("centerCount",centers.size());
             }
         }else if(type.equalsIgnoreCase("range")){
             LocalDateTime fromDateLDT = LocalDateTime.parse(fromDate);
@@ -218,13 +218,13 @@ public class DashboardStatisticServiceImpl implements DashboardStatisticService{
                 map.put("ultrasono", ssReportRepository.getUltraSonoStats(fromDateLDT, toDateLDT));
                 map.put("card", ssReportRepository.getCardRegStats(fromDateLDT, toDateLDT));
                 map.put("other",ssReportRepository.getOtherIncomeStats(fromDateLDT, toDateLDT));
-
+                map.put("centerCount",0);
             }else {
                 map.put("prescription", ssReportRepository.getPrescriptionStats(centers, fromDateLDT, toDateLDT));
                 map.put("labtest", ssReportRepository.getLabTestStats(centers, fromDateLDT, toDateLDT));
                 map.put("ultrasono", ssReportRepository.getUltraSonoStats(centers,fromDateLDT, toDateLDT));
                 map.put("other",ssReportRepository.getOtherIncomeStats(centers,fromDateLDT, toDateLDT));
-
+                map.put("centerCount",centers.size());
             }
         }
         return map;
