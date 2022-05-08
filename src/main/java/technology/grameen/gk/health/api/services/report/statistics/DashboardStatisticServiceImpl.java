@@ -48,7 +48,11 @@ public class DashboardStatisticServiceImpl implements DashboardStatisticService{
             }
 
         }else{
-            centers = new ArrayList<>();
+            List<HealthCenter> _centers = healthCenterService.getCenters();
+            for(HealthCenter _c : _centers){
+                centers.add(_c.getId());
+            };
+//            centers = new ArrayList<>();
         }
 
         return centers;
