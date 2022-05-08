@@ -77,7 +77,7 @@ public class HealthCenterServiceImpl implements HealthCenterService {
 
     @Override
     public List<HealthCenter> getRaCenters() {
-        return healthCenterRepository.findByOfficeTypeId(5);
+        return healthCenterRepository.findByOfficeTypeIdAndIsActive(5,true);
     }
 
     @Override

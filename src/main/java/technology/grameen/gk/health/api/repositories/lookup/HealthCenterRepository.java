@@ -42,6 +42,8 @@ public interface HealthCenterRepository extends JpaRepository<HealthCenter,Long>
 
     List<HealthCenter> findByOfficeTypeId(Integer officeTypeId);
 
+    List<HealthCenter> findByOfficeTypeIdAndIsActive(Integer officeTypeId, Boolean isActive);
+
     List<HealthCenter> findByOfficeLevel(Integer officeLevel);
 
     @Query("SELECT c FROM HealthCenter c WHERE c.id = :centerId")
