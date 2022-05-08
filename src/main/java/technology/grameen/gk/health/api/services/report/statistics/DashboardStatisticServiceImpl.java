@@ -190,7 +190,7 @@ public class DashboardStatisticServiceImpl implements DashboardStatisticService{
                 map.put("ultrasono",ssReportRepository.getUltraSonoStats(centers, fromDate));
                 map.put("card",ssReportRepository.getCardRegStats(centers, fromDate));
                 map.put("other",ssReportRepository.getOtherIncomeStats(centers,fromDate));
-                map.put("centerCount",centers.size());
+                map.put("centerCount",ssReportRepository.getNumberOfCenterWorked(centers,fromDate).size());
             }
 
         }else if(type.equalsIgnoreCase("monthly")){
@@ -207,7 +207,7 @@ public class DashboardStatisticServiceImpl implements DashboardStatisticService{
                 map.put("ultrasono", ssReportRepository.getUltraSonoMonthlyStats(centers, fromDate));
                 map.put("card", ssReportRepository.getCardRegMonthlyStats(centers, fromDate));
                 map.put("other",ssReportRepository.getOtherIncomeMonthlyStats(centers,fromDate));
-                map.put("centerCount",centers.size());
+                map.put("centerCount",ssReportRepository.getNumberOfCenterWorkedMonthly(centers,fromDate).size());
             }
         }else if(type.equalsIgnoreCase("range")){
             LocalDateTime fromDateLDT = LocalDateTime.parse(fromDate);
@@ -224,7 +224,8 @@ public class DashboardStatisticServiceImpl implements DashboardStatisticService{
                 map.put("labtest", ssReportRepository.getLabTestStats(centers, fromDateLDT, toDateLDT));
                 map.put("ultrasono", ssReportRepository.getUltraSonoStats(centers,fromDateLDT, toDateLDT));
                 map.put("other",ssReportRepository.getOtherIncomeStats(centers,fromDateLDT, toDateLDT));
-                map.put("centerCount",centers.size());
+                map.put("centerCount",ssReportRepository.getNumberOfCenterWorkedBetween(centers,
+                        fromDateLDT, toDateLDT).size());
             }
         }
         return map;

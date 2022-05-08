@@ -479,4 +479,21 @@ public interface ServiceSaleReportRepository extends ReportRepository{
             "                ORDER BY s.name ASC",
             nativeQuery = true)
     List<AllServiceSaleStates> getServiceSaleStatesByDate(@Param("date") String date);
+
+    @Query(value = "SELECT count(*) FROM (SELECT DISTINCT HEALTH_CENTER_ID FROM PATIENT_INVOICES pi2 \n" +
+            "WHERE pi2.HEALTH_CENTER_ID IN :centerIds AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM-DD') = :fromDate) ",
+            nativeQuery = true)
+    List<Long> getNumberOfCenterWorked(@Param("centerIds") List<Long> centerIds, @Param("fromDate") String fromDate);
+
+    @Query(value = "SELECT count(*) FROM (SELECT DISTINCT HEALTH_CENTER_ID FROM PATIENT_INVOICES pi2 \n" +
+            "WHERE pi2.HEALTH_CENTER_ID IN :centerIds AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM') = :yearMonth) ",
+            nativeQuery = true)
+    List<Long> getNumberOfCenterWorkedMonthly(@Param("centerIds") List<Long> centerIds, @Param("yearMonth") String fromDate);
+
+    @Query(value = "SELECT count(*) FROM (SELECT DISTINCT HEALTH_CENTER_ID FROM PATIENT_INVOICES pi2 \n" +
+            "WHERE pi2.HEALTH_CENTER_ID IN :centerIds AND (pi2.CREATED_AT BETWEEN :startDate AND :endDate)) ",
+            nativeQuery = true)
+    List<Long> getNumberOfCenterWorkedBetween(@Param("centerIds") List<Long> centerIds,
+                                              @Param("startDate") LocalDateTime fromDateLDT,
+                                              @Param("endDate") LocalDateTime toDateLDT);
 }
