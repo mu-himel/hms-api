@@ -436,7 +436,7 @@ public interface ServiceSaleReportRepository extends ReportRepository{
             "                ON psd.PATIENT_INVOICE_ID  = pi2.ID\n" +
             "                INNER JOIN SERVICE s \n" +
             "                ON s.SERVICE_ID = psd.SERVICE_ID \n" +
-            "                WHERE pi2.HEALTH_CENTER_ID IN :centers AND \n" +
+            "                WHERE psd.refunded=0 AND pi2.HEALTH_CENTER_ID IN :centers AND \n" +
             "                TO_CHAR(pi2.CREATED_AT,'YYYY-MM-DD') BETWEEN :startDate\n" +
             "                AND :endDate GROUP BY s.name" +
             "               ORDER BY s.name ASC", nativeQuery = true)
@@ -450,7 +450,7 @@ public interface ServiceSaleReportRepository extends ReportRepository{
             "                ON psd.PATIENT_INVOICE_ID  = pi2.ID\n" +
             "                INNER JOIN SERVICE s \n" +
             "                ON s.SERVICE_ID = psd.SERVICE_ID \n" +
-            "                WHERE TO_CHAR(pi2.CREATED_AT,'YYYY-MM-DD') BETWEEN :startDate\n" +
+            "                WHERE psd.refunded=0 AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM-DD') BETWEEN :startDate\n" +
             "                AND :endDate GROUP BY s.name" +
             "               ORDER BY s.name ASC", nativeQuery = true)
     List<AllServiceSaleStates> getServiceSaleStatesByRange(@Param("startDate") String startDate,
@@ -462,7 +462,7 @@ public interface ServiceSaleReportRepository extends ReportRepository{
             "                ON psd.PATIENT_INVOICE_ID  = pi2.ID\n" +
             "                INNER JOIN SERVICE s \n" +
             "                ON s.SERVICE_ID = psd.SERVICE_ID \n" +
-            "                WHERE pi2.HEALTH_CENTER_ID IN :centers AND \n" +
+            "                WHERE psd.refunded = 0 AND pi2.HEALTH_CENTER_ID IN :centers AND \n" +
             "                TO_CHAR(pi2.CREATED_AT,'YYYY-MM-DD') = :date GROUP BY s.name" +
             "                ORDER BY s.name ASC",
     nativeQuery = true)
@@ -475,7 +475,7 @@ public interface ServiceSaleReportRepository extends ReportRepository{
             "                ON psd.PATIENT_INVOICE_ID  = pi2.ID\n" +
             "                INNER JOIN SERVICE s \n" +
             "                ON s.SERVICE_ID = psd.SERVICE_ID \n" +
-            "                WHERE TO_CHAR(pi2.CREATED_AT,'YYYY-MM-DD') = :date GROUP BY s.name" +
+            "                WHERE psd.refunded = 0 AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM-DD') = :date GROUP BY s.name" +
             "                ORDER BY s.name ASC",
             nativeQuery = true)
     List<AllServiceSaleStates> getServiceSaleStatesByDate(@Param("date") String date);
