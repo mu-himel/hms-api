@@ -48,6 +48,17 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employee;
     }
 
+    @Override
+    @Transactional
+    public Employee addEmployee(Employee employee, boolean b) {
+        HealthCenter center = employee.getCenter();
+        if(center != null) {
+            center.addEmployee(employee);
+            employeeRepository.save(employee);
+        }
+        return employee;
+    }
+
     public JobHistoryService getJobHistoryService() {
         return jobHistoryService;
     }

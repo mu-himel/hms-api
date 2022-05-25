@@ -13,6 +13,7 @@ import java.util.Optional;
 public interface EmployeeService {
 
     Employee addEmployee(Employee employee);
+    Employee addEmployee(Employee employee, boolean b);
 
     JobHistoryService getJobHistoryService();
 

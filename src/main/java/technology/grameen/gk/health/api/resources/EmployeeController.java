@@ -42,7 +42,7 @@ public class EmployeeController {
         this.centerService = centerService;
     }
 
-    @RequestMapping("")
+    @GetMapping("")
     public ResponseEntity<IResponse> list(
             @RequestParam Optional<Long> centerId,
             @RequestParam Optional<String> employeeCode,
@@ -75,13 +75,9 @@ public class EmployeeController {
         ), HttpStatus.OK);
     }
 
-    @RequestMapping("/add")
-    public ResponseEntity<IResponse> addEmployee(@RequestBody Employee req,
-                                                @RequestHeader("Authorization") String authorization){
-//        if(authorization.isEmpty()){
-//            return new ResponseEntity<>(new ExceptionResponse(HttpStatus.UNAUTHORIZED.value(), "Token not exist"),
-//                    HttpStatus.UNAUTHORIZED);
-//        }
+    @PostMapping("/add")
+    public ResponseEntity<IResponse> addEmployee(@RequestBody Employee req){
+
         Optional<HealthCenter> center = centerService.findById(req.getCenter().getId());
 
         if(!center.isPresent()){
@@ -91,7 +87,22 @@ public class EmployeeController {
         }
 
         return new ResponseEntity<>(new EntityResponse<>(HttpStatus.OK.value(),
-                    employeeService.addEmployee(req)),HttpStatus.OK);
+                    employeeService.addEmployee(req, true)),HttpStatus.OK);
+    }
+
+    @PutMapping("/add")
+    public ResponseEntity<IResponse> updateEmployee(@RequestBody Employee req){
+
+        Optional<HealthCenter> center = centerService.findById(req.getCenter().getId());
+
+        if(!center.isPresent()){
+            return new ResponseEntity<>(new ExceptionResponse(HttpStatus.UNPROCESSABLE_ENTITY.value(),
+                    "Sorry! Center/Office not found"),
+                    HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        return new ResponseEntity<>(new EntityResponse<>(HttpStatus.OK.value(),
+                employeeService.addEmployee(req,true)),HttpStatus.OK);
     }
 
     @PostMapping("/update-detail")
