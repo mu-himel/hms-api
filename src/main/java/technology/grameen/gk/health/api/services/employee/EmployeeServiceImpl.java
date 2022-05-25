@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import technology.grameen.gk.health.api.entity.Employee;
+import technology.grameen.gk.health.api.entity.EmployeeDetail;
 import technology.grameen.gk.health.api.entity.HealthCenter;
 import technology.grameen.gk.health.api.projection.EmployeeItem;
 import technology.grameen.gk.health.api.repositories.employee.EmployeeRepository;
@@ -53,8 +54,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee addEmployee(Employee employee, boolean b) {
         HealthCenter center = employee.getCenter();
         if(center != null) {
+            EmployeeDetail employeeDetail = employee.getEmployeeDetail();
             center.addEmployee(employee);
+
+            employee.setEmployeeDetail(null);
             employeeRepository.save(employee);
+
+            employeeDetail.setEmployee(employee);
+            employeeDetailService.save(employeeDetail);
+
         }
         return employee;
     }
