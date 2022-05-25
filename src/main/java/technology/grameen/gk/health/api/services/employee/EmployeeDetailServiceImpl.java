@@ -18,7 +18,6 @@ public class EmployeeDetailServiceImpl implements EmployeeDetailService{
     @Transactional
     public EmployeeDetail save(EmployeeDetail employeeDetail) {
         EmployeeDetail detail = employeeDetailRepository.save(employeeDetail);
-        detail.setEmployee(null);
         return detail;
     }
 }
