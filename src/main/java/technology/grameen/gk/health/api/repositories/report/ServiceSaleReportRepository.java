@@ -149,8 +149,9 @@ public interface ServiceSaleReportRepository extends ReportRepository{
                                                     @Param("endDate") LocalDateTime toDateLDT);
 
 
-    @Query(value = "SELECT hc2.id,hc2.name,hc3.NAME ro,CASE when(r.id IS null) THEN 0 ELSE 1 END AS status, nvl(r.amount,0) amount, r.firstEntryTime,r.lastEntryTime FROM HEALTH_CENTERS hc2 \n" +
+    @Query(value = "SELECT hc2.id,e.FULL_NAME centerDirector ,e.CONTACT_NUMBER contactNumber, hc2.name,hc3.NAME ro,CASE when(r.id IS null) THEN 0 ELSE 1 END AS status, nvl(r.amount,0) amount, r.firstEntryTime,r.lastEntryTime FROM HEALTH_CENTERS hc2 \n" +
             "JOIN HEALTH_CENTERS hc3 ON hc3.CENTER_CODE = hc2.THIRD_LEVEL \n" +
+            "LEFT JOIN EMPLOYEES e ON e.CENTER_ID = hc2.ID AND (e.\"ROLE\" = 'DMF' OR e.\"ROLE\" = 'DOCTOR') \n"+
             "LEFT JOIN (SELECT max(hc.id) id,hc.name, sum(pi2.PAID_AMOUNT) amount, min(pi2.CREATED_AT) firstEntryTime, max(pi2.CREATED_AT) lastEntryTime\n" +
             "FROM HEALTH_CENTERS hc \n" +
             "RIGHT JOIN PATIENT_INVOICES pi2 ON pi2.HEALTH_CENTER_ID  = hc.ID\n" +
@@ -165,6 +166,8 @@ public interface ServiceSaleReportRepository extends ReportRepository{
     interface CenterServiceSellStatus{
         Long getId();
         String getName();
+        String getCenterDirector();
+        String getContactNumber();
         String getRo();
         BigDecimal getAmount();
         Short getStatus();
