@@ -90,4 +90,12 @@ public class DashboardController {
         ), HttpStatus.OK);
 
     }
+
+    @GetMapping("/center-activity-status")
+    public  ResponseEntity<?> getCenterActivityStatus(@RequestParam String date){
+        return new ResponseEntity<>(
+                statisticService.getCenterActivityStatus(date),
+                HttpStatus.OK
+        );
+    }
 }

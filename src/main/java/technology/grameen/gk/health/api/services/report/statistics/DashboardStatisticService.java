@@ -23,4 +23,6 @@ public interface DashboardStatisticService {
 
     List<?> getAllServiceStats(String regionCode, String centerCode, String type,
                                String fromDate, String toDate);
+
+    List<?> getCenterActivityStatus(String date);
 }

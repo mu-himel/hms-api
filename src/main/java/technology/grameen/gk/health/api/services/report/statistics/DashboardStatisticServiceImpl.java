@@ -263,4 +263,9 @@ public class DashboardStatisticServiceImpl implements DashboardStatisticService{
             return new ArrayList<>();
         }
     }
+
+    @Override
+    public List<?> getCenterActivityStatus(String date) {
+        return ssReportRepository.getCenterServiceSellStatus(date);
+    }
 }

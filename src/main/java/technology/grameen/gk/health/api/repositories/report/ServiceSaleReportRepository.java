@@ -1,5 +1,6 @@
 package technology.grameen.gk.health.api.repositories.report;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -146,6 +147,33 @@ public interface ServiceSaleReportRepository extends ReportRepository{
     Optional<ServiceSaleStates> getOtherIncomeStats(@Param("centers") List<Long> centers,
                                                     @Param("startDate") LocalDateTime fromDateLDT,
                                                     @Param("endDate") LocalDateTime toDateLDT);
+
+
+    @Query(value = "SELECT hc2.id,hc2.name,hc3.NAME ro,CASE when(r.id IS null) THEN 0 ELSE 1 END AS status, nvl(r.amount,0) amount, r.firstEntryTime,r.lastEntryTime FROM HEALTH_CENTERS hc2 \n" +
+            "JOIN HEALTH_CENTERS hc3 ON hc3.CENTER_CODE = hc2.THIRD_LEVEL \n" +
+            "LEFT JOIN (SELECT max(hc.id) id,hc.name, sum(pi2.PAID_AMOUNT) amount, min(pi2.CREATED_AT) firstEntryTime, max(pi2.CREATED_AT) lastEntryTime\n" +
+            "FROM HEALTH_CENTERS hc \n" +
+            "RIGHT JOIN PATIENT_INVOICES pi2 ON pi2.HEALTH_CENTER_ID  = hc.ID\n" +
+            "WHERE hc.IS_ACTIVE = 1 \n" +
+            "AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM-DD') = :date\n" +
+            "GROUP BY hc.name) r\n" +
+            "ON hc2.id = r.id \n" +
+            "WHERE hc2.IS_ACTIVE = 1 AND hc2.OFFICE_TYPE_ID = 6\n" +
+            "ORDER BY hc3.name,hc2.NAME ASC",nativeQuery = true)
+    List<CenterServiceSellStatus> getCenterServiceSellStatus(@Param("date") String date);
+
+    interface CenterServiceSellStatus{
+        Long getId();
+        String getName();
+        String getRo();
+        BigDecimal getAmount();
+        Short getStatus();
+        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+        LocalDateTime getFirstEntryTime();
+
+        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+        LocalDateTime getLastEntryTime();
+    }
 
     interface ServiceSaleStates{
         Integer getTotal();
