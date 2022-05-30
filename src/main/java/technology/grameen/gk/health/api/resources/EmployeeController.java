@@ -82,12 +82,12 @@ public class EmployeeController {
 
         if(!center.isPresent()){
             return new ResponseEntity<>(new ExceptionResponse(HttpStatus.UNPROCESSABLE_ENTITY.value(),
-                    "Sorry! Center/Office not found"),
+                    "Sorry! Center/OffEmployeeice not found"),
                     HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
         return new ResponseEntity<>(new EntityResponse<>(HttpStatus.OK.value(),
-                    employeeService.addEmployee(req, true)),HttpStatus.OK);
+                    employeeService.addEmployee(req)),HttpStatus.OK);
     }
 
     @PutMapping("/add")
