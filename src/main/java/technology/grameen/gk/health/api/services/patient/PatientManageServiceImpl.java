@@ -434,13 +434,15 @@ public class PatientManageServiceImpl implements PatientManageService {
     public Patient addPatient(ExistingPatientRequest exPatient) throws Exception {
         Patient patient = new Patient();
 
-        Optional<CardRegistration> cardRegistration = cardRegistrationRepository.findByCardNumber(exPatient.getRegistration().getCardNumber());
-        if(cardRegistration.isPresent()){
-            throw new CustomException("Sorry! Card Already Exist with that Card Number");
-        }
         Optional<HealthCenter> center = this.centerService.findById(exPatient.getCenter().getId());
         if(center.isPresent() == false){
             throw new Exception("Sorry! Center not found");
+        }
+        exPatient.getRegistration()
+                .setCardNumber(exPatient.getCenter().getId()+'-'+exPatient.getRegistration().getCardNumber());
+        Optional<CardRegistration> cardRegistration = cardRegistrationRepository.findByCardNumber(exPatient.getRegistration().getCardNumber());
+        if(cardRegistration.isPresent()){
+            throw new CustomException("Sorry! Card Already Exist with that Card Number");
         }
         patient.setPid(getPid(center.get()));
         patient.setCenter(center.get());

@@ -227,6 +227,7 @@ public class DashboardStatisticServiceImpl implements DashboardStatisticService{
                 map.put("prescription", ssReportRepository.getPrescriptionStats(centers, fromDateLDT, toDateLDT));
                 map.put("labtest", ssReportRepository.getLabTestStats(centers, fromDateLDT, toDateLDT));
                 map.put("ultrasono", ssReportRepository.getUltraSonoStats(centers,fromDateLDT, toDateLDT));
+                map.put("card", ssReportRepository.getCardRegStats(centers, fromDateLDT, toDateLDT));
                 map.put("other",ssReportRepository.getOtherIncomeStats(centers,fromDateLDT, toDateLDT));
                 map.put("centerCount",ssReportRepository.getNumberOfCenterWorkedBetween(centers,
                         fromDateLDT, toDateLDT));
