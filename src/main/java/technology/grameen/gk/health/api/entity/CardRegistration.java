@@ -35,8 +35,6 @@ public class CardRegistration {
     private LocalDateTime cardReceivedDate;
     private Integer totalServiceTaken;
     private Integer validityDuration;
-    @OneToOne
-    private HealthCenter center;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
