@@ -28,7 +28,7 @@ public class ExistingPatientController {
     @PostMapping("/add")
     public ResponseEntity<IResponse> addExistingPatient(@RequestBody ExistingPatientRequest patientRequest) throws Exception {
         Patient p = patientManageService.addPatient(patientRequest);
-        p.addRegistration(patientRequest.getRegistration());
+        //p.addRegistration(patientRequest.getRegistration());
         cardRegistrationService.register(p,true);
         return new ResponseEntity<>(new EntityResponse<>(
                 HttpStatus.OK.value(),

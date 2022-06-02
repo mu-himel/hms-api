@@ -438,9 +438,10 @@ public class PatientManageServiceImpl implements PatientManageService {
         if(center.isPresent() == false){
             throw new Exception("Sorry! Center not found");
         }
-        exPatient.getRegistration()
-                .setCardNumber(exPatient.getCenter().getId()+'-'+exPatient.getRegistration().getCardNumber());
-        Optional<CardRegistration> cardRegistration = cardRegistrationRepository.findByCardNumber(exPatient.getRegistration().getCardNumber());
+        String cardNumber = exPatient.getRegistration().getCardNumber();
+        cardNumber = center.get().getCenterCode()+"-"+cardNumber;
+
+        Optional<CardRegistration> cardRegistration = cardRegistrationRepository.findByCardNumber(cardNumber);
         if(cardRegistration.isPresent()){
             throw new CustomException("Sorry! Card Already Exist with that Card Number");
         }
@@ -466,7 +467,9 @@ public class PatientManageServiceImpl implements PatientManageService {
         patient.setGuardianName(exPatient.getGuardianName());
         patient.setMobileNumber(exPatient.getMobileNumber());
         Patient p = patientRepository.save(patient);
-
+        CardRegistration cardRegistration1 = exPatient.getRegistration();
+        cardRegistration1.setCardNumber(cardNumber);
+        p.addRegistration(cardRegistration1);
         return p;
     }
 
