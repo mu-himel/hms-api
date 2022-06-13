@@ -263,44 +263,48 @@ public class PatientManageServiceImpl implements PatientManageService {
     }
 
     @Override
-    public Page<PatientListItem> getPatientsBySearch(Long centerId, String field, String value, Pageable pageable) {
+    public Page<PatientListItem> getPatientsBySearch(Long centerId, String field, String value,
+                                                     String from, String to, Pageable pageable) {
+
+        LocalDateTime fromDt = !from.isEmpty() ? LocalDateTime.parse(from) : LocalDateTime.now();
+        LocalDateTime toDt = !to.isEmpty() ? LocalDateTime.parse(to) : LocalDateTime.now();
 
         if(centerId != null && field != null && value != null){
 
             if(field.equalsIgnoreCase("fullName")){
-                return patientRepository.findByCenterAndFullName(centerId,value,pageable);
+                return patientRepository.findByCenterAndFullName(centerId,value,fromDt,toDt,pageable);
             }
             if(field.equalsIgnoreCase("mobileNumber")){
-                return patientRepository.findByCenterAndMobileNo(centerId,value,pageable);
+                return patientRepository.findByCenterAndMobileNo(centerId,value,fromDt,toDt, pageable);
             }
             if(field.equalsIgnoreCase("pid")){
-                return patientRepository.findByCenterAndPid(centerId,value,pageable);
+                return patientRepository.findByCenterAndPid(centerId,value,fromDt,toDt,pageable);
             }
             if(field.equalsIgnoreCase("guardianName")){
-                return patientRepository.findByCenterAndGuardianName(centerId,value,pageable);
+                return patientRepository.findByCenterAndGuardianName(centerId,value,fromDt, toDt, pageable);
             }
         }
 
         if(centerId == null && (field != null && value != null)){
             if(field.equalsIgnoreCase("fullName")){
-                return patientRepository.findByFullName(value,pageable);
+                return patientRepository.findByFullName(value,fromDt, toDt, pageable);
             }
             if(field.equalsIgnoreCase("mobileNumber")){
-                return patientRepository.findByMobileNumber(value,pageable);
+                return patientRepository.findByMobileNumber(value, fromDt, toDt, pageable);
             }
             if(field.equalsIgnoreCase("pid")){
-                return patientRepository.findByPid(value,pageable);
+                return patientRepository.findByPid(value,fromDt, toDt, pageable);
             }
             if(field.equalsIgnoreCase("guardianName")){
-                return patientRepository.findByGuardianName(value,pageable);
+                return patientRepository.findByGuardianName(value,fromDt, toDt, pageable);
             }
         }
 
         if(centerId!=null && (field == null || value==null)) {
-            return patientRepository.findByCenter(centerId, pageable);
+            return patientRepository.findByCenter(centerId,fromDt,toDt, pageable);
         }
 
-        return patientRepository.findAllPatients(pageable);
+        return patientRepository.findAllPatients(fromDt,toDt,pageable);
 
     }
 

@@ -118,6 +118,8 @@ public class PatientController {
     public ResponseEntity<IResponse> getPatientsBySearch(@RequestParam Optional<Long> centerId,
                                                          @RequestParam Optional<String> field,
                                                          @RequestParam Optional<String> value,
+                                                         @RequestParam Optional<String> from,
+                                                         @RequestParam Optional<String> to,
                                                          @RequestParam Optional<Integer> page,
                                                          @RequestParam Optional<Integer> size,
                                                          @RequestParam Optional<String> sortBy,
@@ -137,7 +139,8 @@ public class PatientController {
 
         return new ResponseEntity<>(new EntityResponse(HttpStatus.OK.value(),
                 patientManageService.getPatientsBySearch(centerId.orElse(null),
-                                field.orElse(null), value.orElse(null), pageable)),
+                                field.orElse(null), value.orElse(null),
+                        from.orElse(""), to.orElse(""), pageable)),
                                     HttpStatus.OK);
     }
 

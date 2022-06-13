@@ -40,7 +40,10 @@ public interface PatientManageService {
    List<?> getPatientIds(String type,String pid,Long centerId);
 
 
-   Page<PatientListItem> getPatientsBySearch(Long centerId, String field, String value, Pageable pageable);
+   Page<PatientListItem> getPatientsBySearch(Long centerId, String field, String value,
+                                             String from, String to, Pageable pageable);
+
+
 
    Optional<BigDecimal> getTotalAmount(HealthCenter center, String fromDate, String toDate);
    Optional<BigDecimal> getTotalAmountUptoLastDay(HealthCenter center,  String toDate);
