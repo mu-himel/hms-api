@@ -19,6 +19,7 @@ public interface PrescriptionDetail {
         Long getId();
         String getBmdcRegNumber();
         String getPrescriptionDegreeInst();
+
     }
 
     interface Doctor{
@@ -26,6 +27,7 @@ public interface PrescriptionDetail {
         String getFullName();
         String getDesignation();
         EmployeeDetail getEmployeeDetail();
+        Center getCenter();
     }
 
     interface Service{
