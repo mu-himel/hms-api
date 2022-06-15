@@ -36,6 +36,7 @@ public interface PatientInvoiceRepository extends JpaRepository<PatientInvoice,L
             " LEFT JOIN FETCH s.labTestGroup ltg" +
             " LEFT JOIN FETCH lta.labTestUnit ltu" +
             " LEFT JOIN FETCH p.createdBy createdBy where pi.id = :number" +
+            " AND psd.refunded = 0 " +
             " ORDER BY psd.id asc")
     Optional<PatientInvoiceDetail> findByInvoiceId(@Param("number") Long number);
 
@@ -166,6 +167,7 @@ public interface PatientInvoiceRepository extends JpaRepository<PatientInvoice,L
             " LEFT JOIN FETCH s.labTestGroup ltg" +
             " LEFT JOIN FETCH lta.labTestUnit ltu" +
             " LEFT JOIN FETCH p.createdBy createdBy where pi.invoiceNumber = :number" +
+            " AND psd.refunded = 0 " +
             " ORDER BY psd.id asc")
     Optional<PatientInvoiceDetail> findByInvoiceNumber(String number);
 }
