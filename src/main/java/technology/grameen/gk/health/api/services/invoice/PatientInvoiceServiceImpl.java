@@ -90,7 +90,7 @@ public class PatientInvoiceServiceImpl implements PatientInvoiceService {
                                                                                   Optional<String> role) {
 
         if(officeTypeId.isPresent() && centerId.isPresent() && role.isPresent()) {
-            if(officeTypeId.get() == 5 && role.get().toLowerCase().contains("sonographer")) {
+            if(officeTypeId.get() == 5 && role.get().toLowerCase().contains("sono")) {
                Optional<HealthCenter> healthCenterOptional = healthCenterService.findById(centerId.get());
                if(healthCenterOptional.isPresent()) {
                    List<Long> centerIds = healthCenterService.getCenterIdByThirdLevel(healthCenterOptional
