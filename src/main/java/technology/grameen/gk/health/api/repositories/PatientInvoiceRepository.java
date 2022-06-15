@@ -105,7 +105,7 @@ public interface PatientInvoiceRepository extends JpaRepository<PatientInvoice,L
             "JOIN PATIENTS p ON p.ID = pi2.PATIENT_ID " +
             "JOIN SERVICE s ON psd.SERVICE_ID = s.SERVICE_ID " +
             "WHERE (upper(s.NAME) LIKE upper('%prescription%') OR upper(s.name) LIKE upper('%doctor%')) " +
-            "AND psd.IS_REPORT_GENERATED = 0 AND pi2.health_center_id=:centerId " +
+            "AND psd.IS_REPORT_GENERATED = 0 AND psd.refunded=0 AND pi2.health_center_id=:centerId " +
             "GROUP BY pi2.ID,pi2.INVOICE_NUMBER,p.full_name,p.pid,pi2.invoice_type,pi2.event_id "+
             " ORDER BY pi2.id ASC ", nativeQuery = true)
     List<PrescriptionInvoiceAutoComplete> getPrescriptionInvoiceNumbers(@Param("centerId") Integer centerId);
@@ -125,7 +125,7 @@ public interface PatientInvoiceRepository extends JpaRepository<PatientInvoice,L
             "JOIN PATIENTS p ON p.ID = pi2.PATIENT_ID " +
             "JOIN SERVICE s ON psd.SERVICE_ID = s.SERVICE_ID " +
             "WHERE s.IS_LAB_TEST = 1 AND pi2.health_center_id=:centerId " +
-            "AND psd.IS_REPORT_GENERATED = 0 " +
+            "AND psd.IS_REPORT_GENERATED = 0 AND psd.refunded=0 " +
             "GROUP BY pi2.ID,pi2.INVOICE_NUMBER,p.full_name,p.pid "+
             "ORDER BY pi2.id ASC ", nativeQuery = true)
     List<PrescriptionInvoiceAutoComplete> getLabTestInvoiceNumbers(@Param("centerId") Integer centerId);
@@ -136,7 +136,7 @@ public interface PatientInvoiceRepository extends JpaRepository<PatientInvoice,L
             "JOIN PATIENTS p ON p.ID = pi2.PATIENT_ID " +
             "JOIN SERVICE s ON psd.SERVICE_ID = s.SERVICE_ID " +
             "WHERE s.IS_LAB_TEST = 1 AND pi2.health_center_id in :centerId " +
-            "AND psd.IS_REPORT_GENERATED = 0 AND s.code LIKE '%usg%' " +
+            "AND psd.IS_REPORT_GENERATED = 0 AND psd.refunded=0 AND s.code LIKE '%usg%' " +
             "GROUP BY pi2.ID,pi2.INVOICE_NUMBER,p.full_name,p.pid "+
             "ORDER BY pi2.id ASC ", nativeQuery = true)
     List<PrescriptionInvoiceAutoComplete> getLabTestInvoiceNumbersForUsg(@Param("centerId") List<Long> centerId);
@@ -148,7 +148,7 @@ public interface PatientInvoiceRepository extends JpaRepository<PatientInvoice,L
             "JOIN SERVICE s ON psd.SERVICE_ID = s.SERVICE_ID\n" +
             "JOIN EVENTS e ON e.ID = pi2.EVENT_ID \n" +
             "JOIN EVENT_PERSONNEL ep ON ep.EVENT_ID = e.ID \n" +
-            "WHERE ep.EMPLOYEE_ID = :employeeId AND (upper(s.NAME) LIKE upper('%prescription%') OR upper(s.name) LIKE upper('%doctor%')) \n" +
+            "WHERE psd.refunded=0 AND ep.EMPLOYEE_ID = :employeeId AND (upper(s.NAME) LIKE upper('%prescription%') OR upper(s.name) LIKE upper('%doctor%')) \n" +
             "AND pi2.EVENT_ID IS NOT NULL AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM-DD') = to_char(sysdate,'YYYY-MM-DD')\n" +
             "GROUP BY pi2.ID,pi2.INVOICE_NUMBER,p.full_name,p.pid,pi2.INVOICE_TYPE,pi2.event_id  \n" +
             "ORDER BY pi2.id ASC", nativeQuery = true)
