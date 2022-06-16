@@ -149,12 +149,12 @@ public interface VillageRepository extends JpaRepository<Village, Long> {
             "ON lv.CENTER_ID = hc.ID " +
             "where lv.division_id = :divisionId AND " +
             "lv.district_id = :districtId AND " +
-            "lv.thana_id = :thanaId AND " +
-            "lv.union_id = :unionId", countQuery = "select count(*) from lg_villages lv where" +
-            "lv.division_id = :divisionId AND " +
-            "lv.district_id = :districtId AND " +
-            "lv.thana_id = :thanaId AND " +
-            "lv.union_id = :unionId", nativeQuery = true)
+            "lv.thana_id = :thanaId AND lv.union_id = :unionId",
+            countQuery = "select count(*) from lg_villages lv where " +
+                    "lv.division_id = :divisionId AND " +
+                    "lv.district_id = :districtId AND " +
+                    "lv.thana_id = :thanaId AND lv.union_id = :unionId",
+             nativeQuery = true)
     Page<VillageListItem> findAllByDivisionIdAndDistrictIdAndThanaIdAndUnionId(@Param("divisionId") Long divisionId,
                                                                                @Param("districtId") Long districtId,
                                                                                @Param("thanaId") Long thanaId,
