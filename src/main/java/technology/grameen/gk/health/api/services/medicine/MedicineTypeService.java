@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface MedicineTypeService {
 
-    void addMedicineType(MedicineType medicineType);
+    void addMedicineType(MedicineType medicineType) throws CustomException;
 
     void addMedicineType(Long id, MedicineType medicineType) throws CustomException;
 

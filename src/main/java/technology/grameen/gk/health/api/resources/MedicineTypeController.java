@@ -23,7 +23,7 @@ public class MedicineTypeController {
     }
 
     @PostMapping
-    public ResponseEntity<?> add(@RequestBody MedicineType medicineType){
+    public ResponseEntity<?> add(@RequestBody MedicineType medicineType) throws CustomException {
         medicineTypeService.addMedicineType(medicineType);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

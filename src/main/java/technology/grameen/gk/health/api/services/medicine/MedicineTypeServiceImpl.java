@@ -23,7 +23,11 @@ public class MedicineTypeServiceImpl implements MedicineTypeService{
 
     @Override
     @Transactional
-    public void addMedicineType(MedicineType medicineType) {
+    public void addMedicineType(MedicineType medicineType) throws CustomException {
+        Optional<MedicineType> medicineTypeOptional = medicineTypeRepository.findByName(medicineType.getName());
+        if(medicineTypeOptional.isPresent()) {
+            throw new CustomException("Sorry! Medicine Type Already Exist");
+        }
         this.medicineTypeRepository.save(medicineType);
     }
 
@@ -49,7 +53,7 @@ public class MedicineTypeServiceImpl implements MedicineTypeService{
         if(medicineTypeOptional.isPresent()) {
             Optional<MedicineType> medicineType1 = medicineTypeRepository.findByName(medicineType.getName());
             if(!id.equals(medicineType1.get().getId())){
-                throw new CustomException("Sorry! Name already exist");
+                throw new CustomException("Sorry! Medicine Type Already Exist");
             }
             this.medicineTypeRepository.save(medicineType);
         }
