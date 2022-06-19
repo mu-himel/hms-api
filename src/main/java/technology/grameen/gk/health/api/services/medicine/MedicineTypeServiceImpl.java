@@ -38,6 +38,11 @@ public class MedicineTypeServiceImpl implements MedicineTypeService{
     }
 
     @Override
+    public Optional<MedicineType> getById(Long id) {
+        return medicineTypeRepository.findById(id);
+    }
+
+    @Override
     @Transactional
     public void addMedicineType(Long id, MedicineType medicineType) throws CustomException {
         Optional<MedicineType> medicineTypeOptional = medicineTypeRepository.findById(id);

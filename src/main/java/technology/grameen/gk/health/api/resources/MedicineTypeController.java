@@ -37,12 +37,20 @@ public class MedicineTypeController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getMedicines(@RequestParam Optional<Integer> page,
+    public ResponseEntity<?> getMedicineTypes(@RequestParam Optional<Integer> page,
                                           @RequestParam Optional<Integer> size){
 
         Pageable pageable = PageRequest.of(page.orElse(0),size.orElse(PAGE_SIZE));
         return new ResponseEntity<>(
                 medicineTypeService.getPage(pageable),
+                HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getById(@PathVariable Long id){
+        return new ResponseEntity<>(
+                medicineTypeService.getById(id),
                 HttpStatus.OK
         );
     }

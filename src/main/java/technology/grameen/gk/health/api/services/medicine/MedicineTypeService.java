@@ -7,6 +7,7 @@ import technology.grameen.gk.health.api.exceptions.CustomException;
 
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MedicineTypeService {
 
@@ -19,4 +20,5 @@ public interface MedicineTypeService {
     Page<MedicineType> getPage(Pageable pageable);
 
 
+    Optional<MedicineType> getById(Long id);
 }
