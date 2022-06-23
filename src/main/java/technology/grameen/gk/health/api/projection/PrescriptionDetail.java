@@ -64,6 +64,8 @@ public interface PrescriptionDetail {
         Long getId();
         String getFullName();
         String getAge();
+        String getAgeDays();
+        String getAgeMonth();
         String getGender();
         Boolean getGB();
         String getMobileNumber();
