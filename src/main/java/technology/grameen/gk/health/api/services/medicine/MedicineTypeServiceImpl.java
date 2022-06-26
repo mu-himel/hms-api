@@ -33,7 +33,10 @@ public class MedicineTypeServiceImpl implements MedicineTypeService{
 
     @Override
     public List<MedicineType> getByName(String name) {
-        return medicineTypeRepository.findByNameContainingIgnoreCase(name);
+        if(!name.isEmpty()) {
+            return medicineTypeRepository.findByNameContainingIgnoreCase(name);
+        }
+        return medicineTypeRepository.findAll();
     }
 
     @Override

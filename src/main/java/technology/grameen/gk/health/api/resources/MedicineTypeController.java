@@ -29,9 +29,9 @@ public class MedicineTypeController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<?> getMedicineTypeByName(@RequestParam String name){
+    public ResponseEntity<?> getMedicineTypeByName(@RequestParam Optional<String> name){
         return new ResponseEntity<>(
-                medicineTypeService.getByName(name),
+                medicineTypeService.getByName(name.orElse("")),
                 HttpStatus.OK
         );
     }
