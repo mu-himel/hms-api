@@ -199,7 +199,7 @@ public interface EventRepository extends JpaRepository<Event,Long> {
     @Query(value = "SELECT e FROM Event e " +
             "WHERE e.center= :center AND " +
             "e.eventDate = :eventDate AND " +
-            "e.eventType = :eventType AND" +
+            "e.eventType = :eventType AND " +
             "e.status = 'approved'")
     List<EventLite> findByCenterAndEventDateAndEventType(
             @Param("center") HealthCenter center,
