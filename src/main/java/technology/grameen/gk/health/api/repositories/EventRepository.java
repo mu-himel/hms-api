@@ -196,8 +196,15 @@ public interface EventRepository extends JpaRepository<Event,Long> {
 
     List<LiveEvent> findByCenterAndEventDateAndStatus(HealthCenter center, LocalDateTime eventDate,
                                                                       String status);
-
-    List<EventLite> findByCenterAndEventDateAndEventType(HealthCenter center, LocalDateTime eventDate,String eventType);
+    @Query(value = "SELECT e FROM Event e " +
+            "WHERE e.center= :center AND " +
+            "e.eventDate = :eventDate AND " +
+            "e.eventType = :eventType AND" +
+            "e.status = 'approved'")
+    List<EventLite> findByCenterAndEventDateAndEventType(
+            @Param("center") HealthCenter center,
+            @Param("eventDate") LocalDateTime eventDate,
+            @Param("eventType") String eventType);
 
     interface EventItem{
             Long getId();
