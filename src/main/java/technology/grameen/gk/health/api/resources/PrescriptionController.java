@@ -65,12 +65,14 @@ public class PrescriptionController {
                                                       @RequestParam Optional<String> sortBy,
                                                       @RequestParam Optional<Boolean> sortDesc){
 
-        String _sortBy = sortBy.orElse(null);
+        String _sortBy = sortBy.isPresent()? sortBy.get() : "id";
         _sortBy = (_sortBy.contains("active")) ? "isActive":_sortBy;
         Sort sort = null;
-
-        if(!_sortBy.isEmpty()) {
-            sort =   (sortDesc.orElse(false)) ? Sort.by(_sortBy).descending()
+        if(_sortBy.isEmpty()){
+            _sortBy = "id";
+            sort = Sort.by(_sortBy).descending();
+        }else {
+            sort = (sortDesc.orElse(false)) ? Sort.by(_sortBy).descending()
                     : Sort.by(_sortBy).ascending();
         }
         Pageable pageable = (sort!=null)? PageRequest.of(page.orElse(0),size.orElse(PAGE_SIZE),sort)

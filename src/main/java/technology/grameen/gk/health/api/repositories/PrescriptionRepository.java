@@ -11,12 +11,12 @@ import technology.grameen.gk.health.api.entity.PatientInvoice;
 import technology.grameen.gk.health.api.entity.Prescription;
 import technology.grameen.gk.health.api.projection.PrescriptionDetail;
 import technology.grameen.gk.health.api.projection.PrescriptionListItem;
+import technology.grameen.gk.health.api.services.criteria.PrescriptionListService;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface PrescriptionRepository extends JpaRepository<Prescription,Long> {
+public interface PrescriptionRepository extends JpaRepository<Prescription,Long>, PrescriptionListService {
 
 
 
@@ -237,4 +237,93 @@ public interface PrescriptionRepository extends JpaRepository<Prescription,Long>
     @Query(value = "SELECT count(p.id) from prescriptions p WHERE to_char(p.created_at,'YYYY-MM-DD') = :today AND p.center_id=:centerId", nativeQuery = true)
     Long getMaxId(@Param("centerId") Long centerId, @Param("today") String toDate);
 
+    @Query(value = "SELECT pr.id as prescriptionId, pr.p_number as pNumber, pr.created_at as createdAt, " +
+            "p.id,p.full_name as fullName,last_free_visit_date as lastFreeVisitDate " +
+            " from prescriptions pr" +
+            " JOIN health_centers hc ON pr.center_id = hc.id" +
+            " INNER JOIN patients p ON p.id = pr.prescription_patient_id" +
+            " WHERE pr.p_number LIKE '%'||:pNumber||'%' " +
+            " AND lower(p.full_name) LIKE '%'||:fullName||'%' " +
+            " AND TO_CHAR(pr.created_at,'YYYY-MM-DD') = :date"+
+            " ORDER BY pr.created_at DESC",nativeQuery = true,
+            countQuery = "SELECT count(*) " +
+                    " from prescriptions pr " +
+                    " JOIN health_centers hc ON pr.center_id = hc.id" +
+                    " INNER JOIN patients p ON p.id=pr.prescription_patient_id"+
+                    " WHERE pr.p_number LIKE '%'||:pNumber||'%' " +
+                    " AND lower(p.full_name) LIKE '%'||lower(:fullName)||'%' " +
+                    " AND TO_CHAR(pr.created_at,'YYYY-MM-DD') = :date"+
+                    "AND TO_CHAR(pr.created_at,'YYYY-MM-DD') = :date"
+    )
+    Page<PrescriptionListItem> findAllPrescriptionsByPNumberAndFullNameAndDate(
+            @Param("pNumber") String pNumber,
+            @Param("fullName") String fullName,
+            @Param("date") String date, Pageable pageable);
+
+    @Query(value = "SELECT pr.id as prescriptionId, pr.p_number as pNumber, pr.created_at as createdAt, " +
+            "p.id,p.full_name as fullName,last_free_visit_date as lastFreeVisitDate " +
+            " from prescriptions pr" +
+            " JOIN health_centers hc ON pr.center_id = hc.id" +
+            " INNER JOIN patients p ON p.id = pr.prescription_patient_id" +
+            " WHERE lower(p.full_name) LIKE '%'||:fullName||'%' " +
+            " AND TO_CHAR(pr.created_at,'YYYY-MM-DD') = :date"+
+            " ORDER BY pr.created_at DESC",nativeQuery = true,
+            countQuery = "SELECT count(*) " +
+                    " from prescriptions pr " +
+                    " JOIN health_centers hc ON pr.center_id = hc.id" +
+                    " INNER JOIN patients p ON p.id=pr.prescription_patient_id"+
+                    " WHERE lower(p.full_name) LIKE '%'||lower(:fullName)||'%' " +
+                    " AND TO_CHAR(pr.created_at,'YYYY-MM-DD') = :date"+
+                    "AND TO_CHAR(pr.created_at,'YYYY-MM-DD') = :date"
+    )
+    Page<PrescriptionListItem> findAllPrescriptionsByFullNameAndDate(String fullName, String date, Pageable pageable);
+
+    @Query(value = "SELECT pr.id as prescriptionId, pr.p_number as pNumber, pr.created_at as createdAt, " +
+            "p.id,p.full_name as fullName,last_free_visit_date as lastFreeVisitDate " +
+            " from prescriptions pr" +
+            " JOIN health_centers hc ON pr.center_id = hc.id" +
+            " INNER JOIN patients p ON p.id = pr.prescription_patient_id" +
+            " WHERE NVL(hc.CENTER_CODE,'0') = :centerCode " +
+            " AND pr.p_number LIKE '%'||:pNumber||'%' " +
+            " AND lower(p.full_name) LIKE '%'||:fullName||'%' " +
+            " AND TO_CHAR(pr.created_at,'YYYY-MM-DD') = :date"+
+            " ORDER BY pr.created_at DESC",nativeQuery = true,
+            countQuery = "SELECT count(*) " +
+                    " from prescriptions pr " +
+                    " JOIN health_centers hc ON pr.center_id = hc.id" +
+                    " INNER JOIN patients p ON p.id=pr.prescription_patient_id"+
+                    " WHERE NVL(hc.CENTER_CODE,'0') = :centerCode " +
+                    " AND pr.p_number LIKE '%'||:pNumber||'%' " +
+                    " AND lower(p.full_name) LIKE '%'||lower(:fullName)||'%' " +
+                    " AND TO_CHAR(pr.created_at,'YYYY-MM-DD') = :date"+
+                    "AND TO_CHAR(pr.created_at,'YYYY-MM-DD') = :date"
+    )
+    Page<PrescriptionListItem> findAllPrescriptionsByPNumberAndFullNameAndDate(
+            @Param("centerCode")String centerCode,
+            @Param("pNumber") String pNumber,
+            @Param("fullName") String fullName,
+            @Param("date") String date, Pageable pageable);
+
+    @Query(value = "SELECT pr.id as prescriptionId, pr.p_number as pNumber, pr.created_at as createdAt, " +
+            "p.id,p.full_name as fullName,last_free_visit_date as lastFreeVisitDate " +
+            " from prescriptions pr" +
+            " JOIN health_centers hc ON pr.center_id = hc.id" +
+            " INNER JOIN patients p ON p.id = pr.prescription_patient_id" +
+            " WHERE NVL(hc.CENTER_CODE,'0') = :centerCode " +
+            " AND lower(p.full_name) LIKE '%'||:fullName||'%' " +
+            " AND TO_CHAR(pr.created_at,'YYYY-MM-DD') = :date"+
+            " ORDER BY pr.created_at DESC",nativeQuery = true,
+            countQuery = "SELECT count(*) " +
+                    " from prescriptions pr " +
+                    " JOIN health_centers hc ON pr.center_id = hc.id" +
+                    " INNER JOIN patients p ON p.id=pr.prescription_patient_id"+
+                    " WHERE NVL(hc.CENTER_CODE,'0') = :centerCode " +
+                    " AND lower(p.full_name) LIKE '%'||lower(:fullName)||'%' " +
+                    " AND TO_CHAR(pr.created_at,'YYYY-MM-DD') = :date"+
+                    "AND TO_CHAR(pr.created_at,'YYYY-MM-DD') = :date"
+    )
+    Page<PrescriptionListItem> findAllPrescriptionsByFullNameAndDate(
+            @Param("centerCode") String centerCode,
+            @Param("fullName") String fullName,
+            @Param("date") String date, Pageable pageable);
 }

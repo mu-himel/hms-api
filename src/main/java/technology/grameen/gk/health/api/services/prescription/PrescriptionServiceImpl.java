@@ -158,49 +158,10 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     }
 
     @Override
-    public Page<PrescriptionListItem> getPrescriptions(String regionCode, String centerCode, String pNumber, String fullName, String date, Pageable pageable) {
-        Page<PrescriptionListItem> result = null;
-        if(!regionCode.isEmpty() && centerCode.isEmpty()){
-            if(pNumber.isEmpty() && fullName.isEmpty() && date.isEmpty()){
-                result = prescriptionRepository.findAllPrescriptions(regionCode,pageable);
-            }
-            if(!pNumber.isEmpty() && fullName.isEmpty() && date.isEmpty()){
-                result = prescriptionRepository.findAllPrescriptionsByPNumber(regionCode,pNumber,pageable);
-            }
-            if(pNumber.isEmpty() && !fullName.isEmpty() && date.isEmpty()){
-                result = prescriptionRepository.findAllPrescriptionsByFullName(regionCode,fullName,pageable);
-            }
-            if(pNumber.isEmpty() && fullName.isEmpty() && !date.isEmpty()){
-                result = prescriptionRepository.findAllPrescriptionsByDate(regionCode,date,pageable);
-            }
-        }else if((regionCode.isEmpty() || !regionCode.isEmpty()) && !centerCode.isEmpty()){
-            if(pNumber.isEmpty() && fullName.isEmpty() && date.isEmpty()){
-                result = prescriptionRepository.findAllPrescriptionsByCenter(centerCode,pageable);
-            }
-            if(!pNumber.isEmpty() && fullName.isEmpty() && date.isEmpty()){
-                result = prescriptionRepository.findAllPrescriptionsByPNumberByCenter(centerCode,pNumber,pageable);
-            }
-            if(pNumber.isEmpty() && !fullName.isEmpty() && date.isEmpty()){
-                result = prescriptionRepository.findAllPrescriptionsByFullNameByCenter(centerCode,fullName,pageable);
-            }
-            if(pNumber.isEmpty() && fullName.isEmpty() && !date.isEmpty()){
-                result = prescriptionRepository.findAllPrescriptionsByDateByCenter(centerCode,date,pageable);
-            }
-        }else{
-            if(pNumber.isEmpty() && fullName.isEmpty() && date.isEmpty()){
-                result = prescriptionRepository.findAllPrescriptions(pageable);
-            }
-            if(!pNumber.isEmpty() && fullName.isEmpty() && date.isEmpty()){
-                result = prescriptionRepository.findAllPrescriptionsByPNumber(pNumber,pageable);
-            }
-            if(pNumber.isEmpty() && !fullName.isEmpty() && date.isEmpty()){
-                result = prescriptionRepository.findAllPrescriptionsByFullName(fullName,pageable);
-            }
-            if(pNumber.isEmpty() && fullName.isEmpty() && !date.isEmpty()){
-                result = prescriptionRepository.findAllPrescriptionsByDate(date,pageable);
-            }
-        }
-
+    public Page<?> getPrescriptions(String regionCode, String centerCode, String pNumber,
+                                                       String fullName, String date, Pageable pageable) {
+        Page<?> result = null;
+        result = prescriptionRepository.getPrescriptions(regionCode,centerCode,pNumber,fullName,date,pageable);
         return result;
     }
 

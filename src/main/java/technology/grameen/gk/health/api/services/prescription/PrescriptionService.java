@@ -18,7 +18,7 @@ public interface PrescriptionService {
 
     Page<PrescriptionListItem> getPrescriptions(Pageable pageable);
     Page<PrescriptionListItem> getPrescriptions(String pNumber,String fullName, String date, Pageable pageable);
-    Page<PrescriptionListItem> getPrescriptions(String regionCode, String centerCode,String pNumber,String fullName, String date, Pageable pageable);
+    Page<?> getPrescriptions(String regionCode, String centerCode,String pNumber,String fullName, String date, Pageable pageable);
 
     Optional<PrescriptionDetail> getPrescriptionById(Long id);
 
