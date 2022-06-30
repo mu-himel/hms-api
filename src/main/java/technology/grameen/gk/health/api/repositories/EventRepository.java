@@ -326,7 +326,7 @@ public interface EventRepository extends JpaRepository<Event,Long> {
             "JOIN EVENT_CATEGORIES ec ON e.EVENT_CATEGORY_ID = ec.ID " +
             "JOIN EVENT_PERSONNEL ep ON ep.EVENT_ID =e.ID " +
             "JOIN EMPLOYEES e2 ON ep.EMPLOYEE_ID = e2.ID " +
-            "WHERE e.EVENT_TYPE='camp' " +
+            "WHERE e.EVENT_TYPE='camp' AND e.status = 'approved' " +
             " AND (:raCode IS NULL OR hc.THIRD_LEVEL = :raCode) " +
             " AND (:yearMonth IS NULL OR TO_CHAR(e.event_date,'YYYY-MM') = :yearMonth) " +
             "ORDER BY hc.id ASC , ec.id ASC, e.event_date ASC",nativeQuery = true)

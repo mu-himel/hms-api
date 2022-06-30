@@ -395,7 +395,7 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "    WHERE \n" +
             "    NVL(hc.THIRD_LEVEL,'0') = :regionCode AND\n" +
             "    TO_CHAR(e.EVENT_DATE,'YYYY-MM') = :yearMonth\n" +
-            "    AND e.EVENT_TYPE = 'camp' GROUP BY ec.name,ec.id,e.EVENT_DATE,e.CENTER_ID) c GROUP BY c.id,c.name,c.center_id) t1\n" +
+            "    AND e.EVENT_TYPE = 'camp' AND e.status = 'approved' GROUP BY ec.name,ec.id,e.EVENT_DATE,e.CENTER_ID) c GROUP BY c.id,c.name,c.center_id) t1\n" +
             "            LEFT JOIN (\n" +
             "SELECT sum(c.PAID_AMOUNT) amount, c.name, c.EVENT_ID, c.id id,c.event_date, c.center_id FROM (\n" +
             "SELECT SUM(psd.PAYABLE_AMOUNT) paid_amount,ec.id, ec.name,e.EVENT_DATE , pi2.PATIENT_ID,pi2.EVENT_ID ,pi2.HEALTH_CENTER_ID CENTER_ID \n" +
@@ -455,7 +455,7 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "    WHERE \n" +
             "    hc.OFFICE_TYPE_ID = 6 AND\n" +
             "    TO_CHAR(e.EVENT_DATE,'YYYY-MM') = :yearMonth \n" +
-            "    AND e.EVENT_TYPE = 'camp' GROUP BY ec.name,ec.id,e.EVENT_DATE,e.CENTER_ID) c GROUP BY c.id,c.name,c.center_id) t1\n" +
+            "    AND e.EVENT_TYPE = 'camp' AND e.status = 'approved' GROUP BY ec.name,ec.id,e.EVENT_DATE,e.CENTER_ID) c GROUP BY c.id,c.name,c.center_id) t1\n" +
             "            LEFT JOIN (\n" +
             "SELECT sum(c.PAID_AMOUNT) amount, c.name, c.EVENT_ID, c.id id,c.event_date, c.center_id FROM (\n" +
             "SELECT SUM(psd.PAYABLE_AMOUNT) paid_amount,ec.id, ec.name,e.EVENT_DATE , pi2.PATIENT_ID,pi2.EVENT_ID ,pi2.HEALTH_CENTER_ID CENTER_ID \n" +
@@ -483,7 +483,7 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "    WHERE \n" +
             "    NVL(hc.CENTER_CODE,'0') = :centerCode AND\n" +
             "    TO_CHAR(e.EVENT_DATE,'YYYY-MM') = :yearMonth\n" +
-            "    AND e.EVENT_TYPE = 'camp' GROUP BY ec.name,ec.id,e.EVENT_DATE,e.CENTER_ID) c GROUP BY c.id,c.name,c.center_id) t1\n" +
+            "    AND e.EVENT_TYPE = 'camp' AND e.status = 'approved' GROUP BY ec.name,ec.id,e.EVENT_DATE,e.CENTER_ID) c GROUP BY c.id,c.name,c.center_id) t1\n" +
             "            LEFT JOIN (\n" +
             "SELECT sum(c.PAID_AMOUNT) amount, c.name, c.EVENT_ID, c.id id,c.event_date, c.center_id FROM (\n" +
             "SELECT SUM(psd.PAYABLE_AMOUNT) paid_amount,ec.id, ec.name,e.EVENT_DATE , pi2.PATIENT_ID,pi2.EVENT_ID ,pi2.HEALTH_CENTER_ID CENTER_ID \n" +
@@ -512,7 +512,7 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "    WHERE \n" +
             "    NVL(hc.THIRD_LEVEL,'0') = :regionCode AND\n" +
             "    e.EVENT_DATE BETWEEN :startDate AND :endDate\n" +
-            "    AND e.EVENT_TYPE = 'camp' GROUP BY ec.name,ec.id,e.EVENT_DATE,e.CENTER_ID) c GROUP BY c.id,c.name,c.center_id) t1\n" +
+            "    AND e.EVENT_TYPE = 'camp' AND e.status = 'approved' GROUP BY ec.name,ec.id,e.EVENT_DATE,e.CENTER_ID) c GROUP BY c.id,c.name,c.center_id) t1\n" +
             "            LEFT JOIN (\n" +
             "SELECT sum(c.PAID_AMOUNT) amount, c.name, c.EVENT_ID, c.id id,c.event_date, c.center_id FROM (\n" +
             "SELECT SUM(psd.PAYABLE_AMOUNT) paid_amount,ec.id, ec.name,e.EVENT_DATE , pi2.PATIENT_ID,pi2.EVENT_ID ,pi2.HEALTH_CENTER_ID CENTER_ID \n" +
@@ -542,7 +542,7 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "    WHERE \n" +
             "    hc.OFFICE_TYPE_ID = 6 AND\n" +
             "    e.EVENT_DATE BETWEEN :startDate AND :endDate\n" +
-            "    AND e.EVENT_TYPE = 'camp' GROUP BY ec.name,ec.id,e.EVENT_DATE,e.CENTER_ID) c GROUP BY c.id,c.name,c.center_id) t1\n" +
+            "    AND e.EVENT_TYPE = 'camp' AND e.status = 'approved' GROUP BY ec.name,ec.id,e.EVENT_DATE,e.CENTER_ID) c GROUP BY c.id,c.name,c.center_id) t1\n" +
             "            LEFT JOIN (\n" +
             "SELECT sum(c.PAID_AMOUNT) amount, c.name, c.EVENT_ID, c.id id,c.event_date, c.center_id FROM (\n" +
             "SELECT SUM(psd.PAYABLE_AMOUNT) paid_amount,ec.id, ec.name,e.EVENT_DATE , pi2.PATIENT_ID,pi2.EVENT_ID ,pi2.HEALTH_CENTER_ID CENTER_ID \n" +
@@ -572,7 +572,7 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "    WHERE \n" +
             "    NVL(hc.CENTER_CODE,'0') = :centerCode AND\n" +
             "    e.EVENT_DATE BETWEEN :startDate AND :endDate\n" +
-            "    AND e.EVENT_TYPE = 'camp' GROUP BY ec.name,ec.id,e.EVENT_DATE,e.CENTER_ID) c GROUP BY c.id,c.name,c.center_id) t1\n" +
+            "    AND e.EVENT_TYPE = 'camp' AND e.status = 'approved' GROUP BY ec.name,ec.id,e.EVENT_DATE,e.CENTER_ID) c GROUP BY c.id,c.name,c.center_id) t1\n" +
             "            LEFT JOIN (\n" +
             "SELECT sum(c.PAID_AMOUNT) amount, c.name, c.EVENT_ID, c.id id,c.event_date, c.center_id FROM (\n" +
             "SELECT SUM(psd.PAYABLE_AMOUNT) paid_amount,ec.id, ec.name,e.EVENT_DATE , pi2.PATIENT_ID,pi2.EVENT_ID ,pi2.HEALTH_CENTER_ID CENTER_ID \n" +
