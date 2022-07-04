@@ -220,7 +220,7 @@ public interface EventRepository extends JpaRepository<Event,Long> {
     }
 
     @Query(value = "SELECT e.id, hc.NAME as center , e.event_date as eventDate, ec.NAME as eventCategory , " +
-            "e.EVENT_TYPE as eventType,e.start_time startTime,e.end_time endTime, e2.FULL_NAME as doctor, e.status " +
+            "e.EVENT_TYPE as eventType,e.start_time startTime,e.end_time endTime, e2.FULL_NAME || '(' || e2.designation || - || e2.employee_code || ')' as doctor, e.status " +
             "FROM Events e\n" +
             "LEFT JOIN EVENT_PERSONNEL ep ON ep.EVENT_ID = e.ID \n" +
             "LEFT JOIN EMPLOYEES e2 ON e2.ID  = ep.EMPLOYEE_ID \n" +
