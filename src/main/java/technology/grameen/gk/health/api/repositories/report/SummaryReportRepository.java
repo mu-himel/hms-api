@@ -68,27 +68,27 @@ public interface SummaryReportRepository extends ReportRepository{
         String getServiceName();
     }
     @Query(value = "SELECT NVL(count(pi2.id),0) as total," +
-            "pi2.HEALTH_CENTER_ID as centerId, s.SERVICE_ID as serviceId,s.NAME as serviceName FROM patient_invoices pi2\n" +
+            "pi2.HEALTH_CENTER_ID as centerId FROM patient_invoices pi2\n" +
             "JOIN HEALTH_CENTERS hc ON pi2.HEALTH_CENTER_ID = hc.ID \n" +
             "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID = pi2.id \n" +
             "JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID \n" +
             "JOIN SERVICE_CATEGORIES sc ON sc.ID = s.SERVICE_CATEGORY_ID \n" +
             "WHERE NVL(hc.THIRD_LEVEL,0)=:regionCode AND sc.alias LIKE '%'||:serviceCategory||'%'\n" +
             "AND TO_CHAR(pi2.CREATED_AT,'YYYY-MM') = :yearMonth " +
-            "GROUP BY pi2.HEALTH_CENTER_ID , s.SERVICE_ID,s.NAME",nativeQuery = true)
+            "GROUP BY pi2.HEALTH_CENTER_ID",nativeQuery = true)
     List<VaccineCount> getSummaryOfServiceCount(@Param("regionCode") String regionCode,
                                                            @Param("yearMonth") String yearMonth,
                                                            @Param("serviceCategory") String serviceCategory);
 
     @Query(value = "SELECT NVL(count(pi2.id),0) as total," +
-            "pi2.HEALTH_CENTER_ID as centerId, s.SERVICE_ID as serviceId,s.NAME as serviceName FROM patient_invoices pi2\n" +
+            "pi2.HEALTH_CENTER_ID as centerId FROM patient_invoices pi2\n" +
             "JOIN HEALTH_CENTERS hc ON pi2.HEALTH_CENTER_ID = hc.ID \n" +
             "JOIN PATIENT_SERVICE_DETAILS psd ON psd.PATIENT_INVOICE_ID = pi2.id \n" +
             "JOIN SERVICE s ON s.SERVICE_ID  = psd.SERVICE_ID \n" +
             "JOIN SERVICE_CATEGORIES sc ON sc.ID = s.SERVICE_CATEGORY_ID \n" +
             "WHERE NVL(hc.THIRD_LEVEL,0)=:regionCode AND sc.alias LIKE '%'||:serviceCategory||'%'\n" +
             "AND pi2.CREATED_AT BETWEEN TO_DATE(:startDate,'YYYY-MM-DD') AND TO_DATE(:endDate,'YYYY-MM-DD') " +
-            "GROUP BY pi2.HEALTH_CENTER_ID , s.SERVICE_ID,s.NAME",nativeQuery = true)
+            "GROUP BY pi2.HEALTH_CENTER_ID",nativeQuery = true)
     List<VaccineCount> getSummaryOfServiceCount(@Param("regionCode") String regionCode,
                                                 @Param("startDate") String startDate,
                                                 @Param("endDate") String endDate,
