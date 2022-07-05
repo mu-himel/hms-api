@@ -20,17 +20,17 @@ public interface SummaryReportRepository extends ReportRepository{
     @Query(value = "SELECT hc.id centerId,(SELECT count(e2.id) byDoctor FROM events e\n" +
             "JOIN EVENT_PERSONNEL ep ON e.ID  = ep.EVENT_ID \n" +
             "JOIN EMPLOYEES e2 ON e2.ID = ep.EMPLOYEE_ID \n" +
-            "WHERE e.CENTER_ID = hc.id AND ep.PERSONNEL_TYPE = 'main' AND e2.\"ROLE\" = 'Doctor' " +
+            "WHERE e.CENTER_ID = hc.id AND e.status in ('approved','completed') AND ep.PERSONNEL_TYPE = 'main' AND e2.\"ROLE\" = 'Doctor' " +
             "AND TO_CHAR(e.EVENT_DATE,'YYYY-MM') = :yearMonth ) byDoctor,\n" +
             "(SELECT count(e2.id) byDoctor FROM events e\n" +
             "JOIN EVENT_PERSONNEL ep ON e.ID  = ep.EVENT_ID \n" +
             "JOIN EMPLOYEES e2 ON e2.ID = ep.EMPLOYEE_ID \n" +
-            "WHERE e.CENTER_ID = hc.id AND ep.PERSONNEL_TYPE = 'main' AND e2.\"ROLE\" = 'DMF' " +
+            "WHERE e.CENTER_ID = hc.id AND e.status in ('approved','completed') AND ep.PERSONNEL_TYPE = 'main' AND e2.\"ROLE\" = 'DMF' " +
             "AND TO_CHAR(e.EVENT_DATE,'YYYY-MM') = :yearMonth) byDMF,\n" +
             "(SELECT count(e2.id) byDoctor FROM events e\n" +
             "JOIN EVENT_PERSONNEL ep ON e.ID  = ep.EVENT_ID \n" +
             "JOIN EMPLOYEES e2 ON e2.ID = ep.EMPLOYEE_ID \n" +
-            "WHERE e.CENTER_ID = hc.id AND ep.PERSONNEL_TYPE = 'main' AND e2.\"ROLE\" = 'Paramedic' " +
+            "WHERE e.CENTER_ID = hc.id AND e.status in ('approved','completed') AND ep.PERSONNEL_TYPE = 'main' AND e2.\"ROLE\" = 'Paramedic' " +
             "AND TO_CHAR(e.EVENT_DATE,'YYYY-MM') = :yearMonth) byParamedic\n" +
             "FROM HEALTH_CENTERS hc \n" +
             "WHERE NVL(hc.THIRD_LEVEL,0)=:regionCode", nativeQuery = true)
@@ -42,17 +42,17 @@ public interface SummaryReportRepository extends ReportRepository{
     @Query(value = "SELECT hc.id ,(SELECT count(e2.id) byDoctor FROM events e\n" +
             "JOIN EVENT_PERSONNEL ep ON e.ID  = ep.EVENT_ID \n" +
             "JOIN EMPLOYEES e2 ON e2.ID = ep.EMPLOYEE_ID \n" +
-            "WHERE e.CENTER_ID = hc.id AND ep.PERSONNEL_TYPE = 'main' AND e2.\"ROLE\" = 'Doctor' " +
+            "WHERE e.CENTER_ID = hc.id AND e.status in ('approved','completed') AND ep.PERSONNEL_TYPE = 'main' AND e2.\"ROLE\" = 'Doctor' " +
             "AND e.EVENT_DATE BETWEEN TO_DATE(:startDate,'YYYY-MM-DD') AND TO_DATE(:endDate,'YYYY-MM-DD')) byDoctor,\n" +
             "(SELECT count(e2.id) byDoctor FROM events e\n" +
             "JOIN EVENT_PERSONNEL ep ON e.ID  = ep.EVENT_ID \n" +
             "JOIN EMPLOYEES e2 ON e2.ID = ep.EMPLOYEE_ID \n" +
-            "WHERE e.CENTER_ID = hc.id AND ep.PERSONNEL_TYPE = 'main' AND e2.\"ROLE\" = 'DMF' " +
+            "WHERE e.CENTER_ID = hc.id AND e.status in ('approved','completed') AND ep.PERSONNEL_TYPE = 'main' AND e2.\"ROLE\" = 'DMF' " +
             "AND e.EVENT_DATE BETWEEN TO_DATE(:startDate,'YYYY-MM-DD') AND TO_DATE(:endDate,'YYYY-MM-DD')) byDMF,\n" +
             "(SELECT count(e2.id) byDoctor FROM events e\n" +
             "JOIN EVENT_PERSONNEL ep ON e.ID  = ep.EVENT_ID \n" +
             "JOIN EMPLOYEES e2 ON e2.ID = ep.EMPLOYEE_ID \n" +
-            "WHERE e.CENTER_ID = hc.id AND ep.PERSONNEL_TYPE = 'main' AND e2.\"ROLE\" = 'Paramedic' " +
+            "WHERE e.CENTER_ID = hc.id AND e.status in ('approved','completed') AND ep.PERSONNEL_TYPE = 'main' AND e2.\"ROLE\" = 'Paramedic' " +
             "AND e.EVENT_DATE BETWEEN TO_DATE(:startDate,'YYYY-MM-DD') AND TO_DATE(:endDate,'YYYY-MM-DD')) byParamedic\n" +
             "FROM HEALTH_CENTERS hc \n" +
             "WHERE NVL(hc.THIRD_LEVEL,0)=:regionCode", nativeQuery = true)
