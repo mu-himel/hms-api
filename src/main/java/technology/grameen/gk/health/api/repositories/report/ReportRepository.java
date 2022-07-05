@@ -406,7 +406,7 @@ public interface ReportRepository extends JpaRepository<MonthlyStatisticalCenter
             "   JOIN EVENTS e ON pi2.EVENT_ID  = e.ID\n" +
             "   JOIN EVENT_CATEGORIES ec ON ec.ID  = e.EVENT_CATEGORY_ID \n" +
             "   WHERE TO_CHAR(e.EVENT_DATE,'YYYY-MM') = :yearMonth  \n" +
-            "   AND AND e.status in ('approved','completed') \n" +
+            "   AND e.status in ('approved','completed') \n" +
             "   AND pi2.INVOICE_TYPE = 'camp' AND NVL(hc.THIRD_LEVEL,'0') = :regionCode\n" +
             "   AND psd.refunded = 0 \n" +
             "   GROUP BY pi2.PATIENT_ID,ec.id,ec.name,pi2.EVENT_ID, e.EVENT_DATE  ,pi2.HEALTH_CENTER_ID\n" +
