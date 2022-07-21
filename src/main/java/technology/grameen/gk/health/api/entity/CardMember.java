@@ -2,6 +2,7 @@ package technology.grameen.gk.health.api.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
+@DynamicUpdate
 @Table(name = "card_members")
 public class CardMember {
 
@@ -34,6 +36,7 @@ public class CardMember {
     private Patient patient;
 
     @CreationTimestamp
+    @Column(updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
