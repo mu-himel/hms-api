@@ -33,6 +33,7 @@ public class CardMember {
     private String email;
 
     @OneToOne
+    @JoinColumn(updatable = false)
     private Patient patient;
 
     @CreationTimestamp
