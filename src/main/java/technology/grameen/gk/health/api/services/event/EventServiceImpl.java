@@ -85,18 +85,30 @@ public class EventServiceImpl implements EventService{
     public Event addEvent(EventRequest er) throws CustomException {
         Event event = er.getEvent();
 
-        List<EventRepository.EventLite> hasEvent = new ArrayList<>();
+        List<EventRepository.LiveEvent> hasEvent = new ArrayList<>();
         if(event.getId()==null) {
-            hasEvent = hasEventOnCenterAt(event.getCenter(), event.getEventDate(),event.getEventType());
-            if (hasEvent.size() > 0) {
-                throw new CustomException("Sorry! Event exist on the date");
+            if (event.getEventType() == EventService.CAMP){
+                    hasEvent = hasCampEventOnCenterAt(event.getCenter(), event.getEventDate());
+                    if (hasEvent.size() > 0) {
+                        throw new CustomException("Sorry! Event exist on the date");
+                    }
             }
+
+            if(event.getEventType().equalsIgnoreCase(EventService.SATELLITE)){
+                hasEvent = hasCampEventOnCenterAt(event.getCenter(), event.getEventDate());
+                EventRepository.LiveEvent liveEvent = hasEvent.get(0);
+                if(liveEvent.getEventType() == EventService.CAMP && liveEvent.getEventCategory().getName()
+                        .equalsIgnoreCase("usg")){
+                    throw new CustomException("Sorry! USG Event exist on the date");
+                }
+            }
+
             if(er.getEvent().getEventType() == EventService.CAMP && er.getEventPersonnel().size()==0){
                 throw new CustomException("Sorry! Event Personnel not found");
             }
             for(EventPersonnel ep : er.getEventPersonnel()) {
-                hasEvent = hasEventForDoctorAt(ep.getEmployee(), event.getEventDate());
-                if (hasEvent.size() > 0) {
+                List<EventRepository.EventLite> docEvent = hasEventForDoctorAt(ep.getEmployee(), event.getEventDate());
+                if (docEvent.size() > 0) {
                     throw new CustomException("Sorry! This Doctor has schedule on this date");
                 }
             }
@@ -116,8 +128,8 @@ public class EventServiceImpl implements EventService{
     }
 
     @Override
-    public List<EventRepository.EventLite> hasEventOnCenterAt(HealthCenter center, LocalDateTime eventDate,String eventType) {
-        return eventRepository.findByCenterAndEventDateAndEventType(center, eventDate,eventType);
+    public List<EventRepository.EventLite> hasEventOnCenterAt(HealthCenter center, LocalDateTime eventDate) {
+        return eventRepository.findByCenterAndEventDateAndEventType(center, eventDate,EventService.CAMP);
     }
 
     @Override
@@ -142,7 +154,7 @@ public class EventServiceImpl implements EventService{
 
     @Override
     public List<EventRepository.LiveEvent> hasCampEventOnCenterAt(HealthCenter center, LocalDateTime eventDate) {
-        return eventRepository.findByCenterAndEventDateAndStatus(center,eventDate,EventService.APPROVED);
+        return eventRepository.findAllByEventTypeAndCenterAndEventDateAndStatus(EventService.CAMP,center,eventDate,EventService.APPROVED);
     }
 
     @Override

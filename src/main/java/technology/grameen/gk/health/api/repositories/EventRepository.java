@@ -194,6 +194,9 @@ public interface EventRepository extends JpaRepository<Event,Long> {
     Optional<LiveEvent> findByEventTypeAndCenterAndEventDateAndStatus(String camp, HealthCenter center, LocalDateTime eventDate,
                                                                       String status);
 
+    List<LiveEvent> findAllByEventTypeAndCenterAndEventDateAndStatus(String camp, HealthCenter center, LocalDateTime eventDate,
+                                                                      String status);
+
     List<LiveEvent> findByCenterAndEventDateAndStatus(HealthCenter center, LocalDateTime eventDate,
                                                                       String status);
     @Query(value = "SELECT e FROM Event e " +
