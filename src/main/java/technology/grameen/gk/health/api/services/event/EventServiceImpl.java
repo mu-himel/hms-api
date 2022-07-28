@@ -96,10 +96,12 @@ public class EventServiceImpl implements EventService{
 
             if(event.getEventType().equalsIgnoreCase(EventService.SATELLITE)){
                 hasEvent = hasCampEventOnCenterAt(event.getCenter(), event.getEventDate());
-                EventRepository.LiveEvent liveEvent = hasEvent.get(0);
-                if(liveEvent.getEventType() == EventService.CAMP && (liveEvent.getEventCategory().getName()
-                        .equalsIgnoreCase("Gynae"))){
-                    throw new CustomException("Sorry! Gynae Event exist on the date");
+                if (hasEvent.size() > 0) {
+                    EventRepository.LiveEvent liveEvent = hasEvent.get(0);
+                    if (liveEvent.getEventType() == EventService.CAMP && (liveEvent.getEventCategory().getName()
+                            .equalsIgnoreCase("Gynae"))) {
+                        throw new CustomException("Sorry! Gynae Event exist on the date");
+                    }
                 }
             }
 
