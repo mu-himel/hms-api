@@ -87,7 +87,7 @@ public class EventServiceImpl implements EventService{
 
         List<EventRepository.LiveEvent> hasEvent = new ArrayList<>();
         if(event.getId()==null) {
-            if (event.getEventType() == EventService.CAMP){
+            if (event.getEventType().equalsIgnoreCase(EventService.CAMP)){
                     hasEvent = hasCampEventOnCenterAt(event.getCenter(), event.getEventDate());
                     if (hasEvent.size() > 0) {
                         throw new CustomException("Sorry! Event exist on the date");
@@ -98,7 +98,8 @@ public class EventServiceImpl implements EventService{
                 hasEvent = hasCampEventOnCenterAt(event.getCenter(), event.getEventDate());
                 if (hasEvent.size() > 0) {
                     EventRepository.LiveEvent liveEvent = hasEvent.get(0);
-                    if (liveEvent.getEventType() == EventService.CAMP && (liveEvent.getEventCategory().getName()
+                    if (liveEvent.getEventType().equalsIgnoreCase(EventService.CAMP)
+                            && (liveEvent.getEventCategory().getName()
                             .equalsIgnoreCase("Gynae"))) {
                         throw new CustomException("Sorry! Gynae Event exist on the date");
                     }
