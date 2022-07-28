@@ -98,9 +98,8 @@ public class EventServiceImpl implements EventService{
                 hasEvent = hasCampEventOnCenterAt(event.getCenter(), event.getEventDate());
                 EventRepository.LiveEvent liveEvent = hasEvent.get(0);
                 if(liveEvent.getEventType() == EventService.CAMP && (liveEvent.getEventCategory().getName()
-                        .equalsIgnoreCase("usg") || liveEvent.getEventCategory().getName()
-                        .equalsIgnoreCase("gynae"))){
-                    throw new CustomException("Sorry! USG Event exist on the date");
+                        .equalsIgnoreCase("Gynae"))){
+                    throw new CustomException("Sorry! Gynae Event exist on the date");
                 }
             }
 
