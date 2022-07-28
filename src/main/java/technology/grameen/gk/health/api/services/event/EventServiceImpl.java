@@ -131,8 +131,8 @@ public class EventServiceImpl implements EventService{
     }
 
     @Override
-    public List<EventRepository.EventLite> hasEventOnCenterAt(HealthCenter center, LocalDateTime eventDate) {
-        return eventRepository.findByCenterAndEventDateAndEventType(center, eventDate,EventService.CAMP);
+    public List<EventRepository.LiveEvent> hasEventOnCenterAt(HealthCenter center, LocalDateTime eventDate) {
+        return eventRepository.findByCenterAndEventDateAndStatus(center, eventDate,EventService.APPROVED);
     }
 
     @Override

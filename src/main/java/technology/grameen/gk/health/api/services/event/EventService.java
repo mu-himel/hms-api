@@ -22,7 +22,7 @@ public interface EventService {
 
     Event addEvent(EventRequest event) throws CustomException;
 
-    List<EventRepository.EventLite> hasEventOnCenterAt(HealthCenter center, LocalDateTime eventDate);
+    List<EventRepository.LiveEvent> hasEventOnCenterAt(HealthCenter center, LocalDateTime eventDate);
     List<EventRepository.LiveEvent> hasCampEventOnCenterAt(HealthCenter center, LocalDateTime eventDate);
 
     List<EventRepository.EventLite> hasEventForDoctorAt(Employee doctor, LocalDateTime eventDate);

@@ -96,7 +96,7 @@ public class EventController {
             LocalDateTime ldt = LocalDateTime.parse(eventDate);
             return new ResponseEntity<>(new EntityResponse<>(
                     HttpStatus.OK.value(),
-                    eventService.hasCampEventOnCenterAt(center, ldt)
+                    eventService.hasEventOnCenterAt(center, ldt)
             ), HttpStatus.OK);
         }catch(DateTimeParseException ex){
             throw new CustomException(ex.getMessage());
