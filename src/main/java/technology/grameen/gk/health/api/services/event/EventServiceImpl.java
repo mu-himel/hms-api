@@ -87,7 +87,7 @@ public class EventServiceImpl implements EventService{
 
         List<EventRepository.EventLite> hasEvent = new ArrayList<>();
         if(event.getId()==null) {
-            hasEvent = hasEventOnCenterAt(event.getCenter(), event.getEventDate());
+            hasEvent = hasEventOnCenterAt(event.getCenter(), event.getEventDate(),event.getEventType());
             if (hasEvent.size() > 0) {
                 throw new CustomException("Sorry! Event exist on the date");
             }
@@ -116,8 +116,8 @@ public class EventServiceImpl implements EventService{
     }
 
     @Override
-    public List<EventRepository.EventLite> hasEventOnCenterAt(HealthCenter center, LocalDateTime eventDate) {
-        return eventRepository.findByCenterAndEventDateAndEventType(center, eventDate,EventService.CAMP);
+    public List<EventRepository.EventLite> hasEventOnCenterAt(HealthCenter center, LocalDateTime eventDate,String eventType) {
+        return eventRepository.findByCenterAndEventDateAndEventType(center, eventDate,eventType);
     }
 
     @Override
