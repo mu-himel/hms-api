@@ -90,7 +90,7 @@ public class EventServiceImpl implements EventService{
             if (event.getEventType().equalsIgnoreCase(EventService.CAMP)){
                     hasEvent = hasCampEventOnCenterAt(event.getCenter(), event.getEventDate());
                     if (hasEvent.size() > 0) {
-                        throw new CustomException("Sorry! Event exist on the date");
+                        throw new CustomException("Sorry! Approved Camp Event exist on the date");
                     }
             }
 
