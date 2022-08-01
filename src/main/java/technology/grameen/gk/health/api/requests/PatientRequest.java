@@ -59,6 +59,7 @@ public class PatientRequest {
         this.center = cardMember.getCenter();
         this.home = cardMember.getHome();
         this.createdBy = cardMember.getCreatedBy();
+        this.village = cardMember.getVillage();
     }
 
 
