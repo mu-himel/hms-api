@@ -57,6 +57,7 @@ public class PatientRequest {
         this.gender = cardMember.getGender();
         this.mobileNumber = cardMember.getMobileNumber();
         this.center = cardMember.getCenter();
+        this.home = cardMember.getHome();
         this.createdBy = cardMember.getCreatedBy();
     }
 
